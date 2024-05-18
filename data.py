@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import scipy.stats as stats
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 import os
 
 # Reading the CSV files
@@ -130,6 +131,70 @@ def plot_categorical_correlation_matrix(df, categorical_columns, title):
     sns.heatmap(corr_df, annot=True, cmap='coolwarm', center=0, fmt='.2f')
     plt.title(f'Categorical Correlation Matrix - {title}', fontsize=16)
     plt.show()
+    
+# Function to identify and impute missing values
+def impute_missing_values(df, numeric_columns, categorical_columns):
+    # Separate numeric and categorical columns
+    df_numeric = df[numeric_columns]
+    df_categorical = df[categorical_columns]
+    
+    # Impute numeric columns
+    numeric_imputer = SimpleImputer(strategy='mean')
+    df_numeric_imputed = pd.DataFrame(numeric_imputer.fit_transform(df_numeric), columns=numeric_columns)
+    
+    # Impute categorical columns
+    categorical_imputer = SimpleImputer(strategy='most_frequent')
+    df_categorical_imputed = pd.DataFrame(categorical_imputer.fit_transform(df_categorical), columns=categorical_columns)
+    
+    # Combine the imputed columns back into a single DataFrame
+    df_imputed = pd.concat([df_numeric_imputed, df_categorical_imputed], axis=1)
+    
+    return df_imputed
+
+
+# Function to identify and handle extreme values using IQR
+def handle_extreme_values(df, numeric_columns):
+    Q1 = df[numeric_columns].quantile(0.25)
+    Q3 = df[numeric_columns].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+    df_outliers_removed = df.copy()
+    for col in numeric_columns:
+        df_outliers_removed[col] = np.where(df_outliers_removed[col] < lower_bound[col], np.nan, df_outliers_removed[col])
+        df_outliers_removed[col] = np.where(df_outliers_removed[col] > upper_bound[col], np.nan, df_outliers_removed[col])
+    return df_outliers_removed
+
+# Function to remove highly correlated attributes
+def remove_redundant_attributes(df, numeric_columns, threshold=0.9):
+    # Ensure only numeric columns are considered for correlation
+    numeric_df = df[numeric_columns]
+    
+    # Calculate the correlation matrix
+    corr_matrix = numeric_df.corr().abs()
+    
+    # Select the upper triangle of the correlation matrix
+    upper = corr_matrix.where(np.triu(np.ones(corr_matrix.shape), k=1).astype(bool))
+    
+    # Identify columns to drop based on the threshold
+    to_drop = [column for column in upper.columns if any(upper[column] > threshold)]
+    
+    # Drop the identified columns from the original DataFrame
+    df_reduced = df.drop(columns=to_drop)
+    
+    return df_reduced, to_drop
+
+
+# Function to standardize numerical attributes
+def standardize_data(df, numeric_columns, method='standard'):
+    if method == 'standard':
+        scaler = StandardScaler()
+    elif method == 'minmax':
+        scaler = MinMaxScaler()
+    elif method == 'robust':
+        scaler = RobustScaler()
+    df[numeric_columns] = scaler.fit_transform(df[numeric_columns])
+    return df
 
 def __main__():
     # Create output directory
@@ -162,8 +227,8 @@ def __main__():
         f.write(salary_numeric_statistics.to_string())
 
     # Boxplot for numeric attributes
-    plot_normalized_boxplot(avc_df_full, numeric_columns_avc, 'AVC - Boxplot for Numeric Attributes')
-    plot_normalized_boxplot(salary_df_full, numeric_columns_salary, 'Salary - Boxplot for Numeric Attributes')
+    # plot_normalized_boxplot(avc_df_full, numeric_columns_avc, 'AVC - Boxplot for Numeric Attributes')
+    # plot_normalized_boxplot(salary_df_full, numeric_columns_salary, 'Salary - Boxplot for Numeric Attributes')
 
     # Categorical statistics
     categorical_columns_avc = ['cardiovascular_issues', 'job_category', 'sex', 'tobacco_usage', 'high_blood_pressure', 'married', 'living_area', 'chaotic_sleep', 'cerebrovascular_accident']
@@ -180,35 +245,67 @@ def __main__():
         f.write(salary_categorical_statistics.to_string())
 
     # Histograms for categorical attributes and save them
-    plot_histograms(avc_df_full, categorical_columns_avc, 'AVC - Histograms for Categorical Attributes')
-    plot_histograms(salary_df_full, categorical_columns_salary, 'Salary - Histograms for Categorical Attributes')
+    # plot_histograms(avc_df_full, categorical_columns_avc, 'AVC - Histograms for Categorical Attributes')
+    # plot_histograms(salary_df_full, categorical_columns_salary, 'Salary - Histograms for Categorical Attributes')
     
     # Define the class columns for each dataset
     class_column_avc = 'cerebrovascular_accident'  # This is the class column in the AVC dataset
     class_column_salary = 'money'  # This is the class column in the Salary dataset
 
     # Plot class balance using seaborn for each dataset
-    plot_class_balance(avc_df_full, class_column_avc, 'AVC Dataset Full')
-    plot_class_balance(avc_df_train, class_column_avc, 'AVC Dataset Train')
-    plot_class_balance(avc_df_train, class_column_avc, 'AVC Dataset Test')
-    plot_class_balance(salary_df_full, class_column_salary, 'Salary Dataset Full')
-    plot_class_balance(salary_df_train, class_column_salary, 'Salary Dataset Train')
-    plot_class_balance(salary_df_test, class_column_salary, 'Salary Dataset Test')
+    # plot_class_balance(avc_df_full, class_column_avc, 'AVC Dataset Full')
+    # plot_class_balance(avc_df_train, class_column_avc, 'AVC Dataset Train')
+    # plot_class_balance(avc_df_train, class_column_avc, 'AVC Dataset Test')
+    # plot_class_balance(salary_df_full, class_column_salary, 'Salary Dataset Full')
+    # plot_class_balance(salary_df_train, class_column_salary, 'Salary Dataset Train')
+    # plot_class_balance(salary_df_test, class_column_salary, 'Salary Dataset Test')
     
-    # Plot correlation matrices for numerical attributes
-    plot_correlation_matrix(avc_df_full, numeric_columns_avc, 'AVC Dataset Full')
-    plot_correlation_matrix(salary_df_full, numeric_columns_salary, 'Salary Dataset Full')
-    plot_correlation_matrix(avc_df_train, numeric_columns_avc, 'AVC Dataset Train')
-    plot_correlation_matrix(salary_df_train, numeric_columns_salary, 'Salary Dataset Train')
-    plot_correlation_matrix(avc_df_test, numeric_columns_avc, 'AVC Dataset Test')
-    plot_correlation_matrix(salary_df_test, numeric_columns_salary, 'Salary Dataset Test')
+    # # Plot correlation matrices for numerical attributes
+    # plot_correlation_matrix(avc_df_full, numeric_columns_avc, 'AVC Dataset Full')
+    # plot_correlation_matrix(salary_df_full, numeric_columns_salary, 'Salary Dataset Full')
+    # plot_correlation_matrix(avc_df_train, numeric_columns_avc, 'AVC Dataset Train')
+    # plot_correlation_matrix(salary_df_train, numeric_columns_salary, 'Salary Dataset Train')
+    # plot_correlation_matrix(avc_df_test, numeric_columns_avc, 'AVC Dataset Test')
+    # plot_correlation_matrix(salary_df_test, numeric_columns_salary, 'Salary Dataset Test')
 
     # Plot correlation matrices for categorical attributes
-    plot_categorical_correlation_matrix(avc_df_full, categorical_columns_avc, 'AVC Dataset Full')
-    plot_categorical_correlation_matrix(salary_df_full, categorical_columns_salary, 'Salary Dataset Full')
-    plot_categorical_correlation_matrix(avc_df_train, categorical_columns_avc, 'AVC Dataset Train')
-    plot_categorical_correlation_matrix(salary_df_train, categorical_columns_salary, 'Salary Dataset Train')
-    plot_categorical_correlation_matrix(avc_df_test, categorical_columns_avc, 'AVC Dataset Test')
-    plot_categorical_correlation_matrix(salary_df_test, categorical_columns_salary, 'Salary Dataset Test')
+    # plot_categorical_correlation_matrix(avc_df_full, categorical_columns_avc, 'AVC Dataset Full')
+    # plot_categorical_correlation_matrix(salary_df_full, categorical_columns_salary, 'Salary Dataset Full')
+    # plot_categorical_correlation_matrix(avc_df_train, categorical_columns_avc, 'AVC Dataset Train')
+    # plot_categorical_correlation_matrix(salary_df_train, categorical_columns_salary, 'Salary Dataset Train')
+    # plot_categorical_correlation_matrix(avc_df_test, categorical_columns_avc, 'AVC Dataset Test')
+    # plot_categorical_correlation_matrix(salary_df_test, categorical_columns_salary, 'Salary Dataset Test')
     
+    # Preprocessing for full, train, and test datasets
+    datasets = {
+        'avc_full': avc_df_full,
+        'avc_train': avc_df_train,
+        'avc_test': avc_df_test,
+        'salary_full': salary_df_full,
+        'salary_train': salary_df_train,
+        'salary_test': salary_df_test
+    }
+    
+    
+    for name, df in datasets.items():
+        # Separate columns
+        numeric_columns = numeric_columns_avc if 'avc' in name else numeric_columns_salary
+        categorical_columns = categorical_columns_avc if 'avc' in name else categorical_columns_salary
+
+        # Impute missing values
+        df_imputed = impute_missing_values(df, numeric_columns, categorical_columns)
+
+        # Handle extreme values
+        df_outliers_handled = handle_extreme_values(df_imputed, numeric_columns)
+        df_outliers_imputed = impute_missing_values(df_outliers_handled, numeric_columns, categorical_columns)
+
+        # Remove redundant attributes
+        df_reduced, dropped_columns = remove_redundant_attributes(df_outliers_imputed, numeric_columns, threshold=0.9)
+
+        # Standardize numerical attributes
+        df_standardized = standardize_data(df_reduced, numeric_columns, method='standard')
+
+        # Write the processed data to files for testing
+        df_standardized.to_csv(f'output/{name}_processed.csv', index=False)
+        
 __main__()
