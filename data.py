@@ -159,11 +159,13 @@ def handle_extreme_values(df, numeric_columns):
     IQR = Q3 - Q1
     lower_bound = Q1 - 1.5 * IQR
     upper_bound = Q3 + 1.5 * IQR
-    df_outliers_removed = df.copy()
+    
+    df_outliers_handled = df.copy()
     for col in numeric_columns:
-        df_outliers_removed[col] = np.where(df_outliers_removed[col] < lower_bound[col], np.nan, df_outliers_removed[col])
-        df_outliers_removed[col] = np.where(df_outliers_removed[col] > upper_bound[col], np.nan, df_outliers_removed[col])
-    return df_outliers_removed
+        df_outliers_handled[col] = np.where((df_outliers_handled[col] < lower_bound[col]) | 
+                                            (df_outliers_handled[col] > upper_bound[col]), 
+                                            np.nan, df_outliers_handled[col])
+    return df_outliers_handled
 
 # Function to remove highly correlated attributes
 def remove_redundant_attributes(df, numeric_columns, threshold=0.9):
@@ -178,6 +180,10 @@ def remove_redundant_attributes(df, numeric_columns, threshold=0.9):
     
     # Identify columns to drop based on the threshold
     to_drop = [column for column in upper.columns if any(upper[column] > threshold)]
+    
+    print("Correlation Matrix:\n", corr_matrix)
+    print("Upper Triangle Matrix:\n", upper)
+    print("Columns to drop:", to_drop)
     
     # Drop the identified columns from the original DataFrame
     df_reduced = df.drop(columns=to_drop)
@@ -268,7 +274,7 @@ def __main__():
     # plot_correlation_matrix(avc_df_test, numeric_columns_avc, 'AVC Dataset Test')
     # plot_correlation_matrix(salary_df_test, numeric_columns_salary, 'Salary Dataset Test')
 
-    # Plot correlation matrices for categorical attributes
+    # # Plot correlation matrices for categorical attributes
     # plot_categorical_correlation_matrix(avc_df_full, categorical_columns_avc, 'AVC Dataset Full')
     # plot_categorical_correlation_matrix(salary_df_full, categorical_columns_salary, 'Salary Dataset Full')
     # plot_categorical_correlation_matrix(avc_df_train, categorical_columns_avc, 'AVC Dataset Train')
@@ -297,10 +303,17 @@ def __main__():
 
         # Handle extreme values
         df_outliers_handled = handle_extreme_values(df_imputed, numeric_columns)
+        
+        # Impute missing values again after handling extreme values
         df_outliers_imputed = impute_missing_values(df_outliers_handled, numeric_columns, categorical_columns)
 
         # Remove redundant attributes
         df_reduced, dropped_columns = remove_redundant_attributes(df_outliers_imputed, numeric_columns, threshold=0.9)
+        
+        # Print what columns have been dropped and why
+        with open(f'output/{name}_dropped_columns.txt', 'w') as f:
+            f.write(f'Dropped columns: {dropped_columns}\n')
+            f.write(f'Reason: Highly correlated with other columns\n')
 
         # Standardize numerical attributes
         df_standardized = standardize_data(df_reduced, numeric_columns, method='standard')
