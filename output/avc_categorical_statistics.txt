@@ -1,0 +1,10 @@
+                  Attribute Number of Non-Missing Values Number of Unique Values
+0     cardiovascular_issues                         5110                       2
+1              job_category                         5110                       5
+2                       sex                         5110                       2
+3             tobacco_usage                         5110                       4
+4       high_blood_pressure                         5110                       2
+5                   married                         4599                       2
+6               living_area                         5110                       2
+7             chaotic_sleep                         5110                       2
+8  cerebrovascular_accident                         5110                       2

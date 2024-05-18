@@ -1,0 +1,10 @@
+   Attribute Number of Non-Missing Values Number of Unique Values
+0   relation                         9999                       6
+1    country                         9999                      41
+2        job                         9999                      14
+3  work_type                         9999                       9
+4    partner                         9999                       7
+5        edu                         9999                      16
+6     gender                         9199                       2
+7       race                         9999                       5
+8      gtype                         9999                       2

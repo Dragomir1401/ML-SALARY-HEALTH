@@ -1,0 +1,18 @@
+    Attribute     Type Number of Missing Values Number of Unique Values
+0         fnl    int64                        0                    8501
+1         hpw  float64                      800                      86
+2    relation   object                        0                       6
+3        gain    int64                        0                     101
+4     country   object                        0                      41
+5         job   object                        0                      14
+6     edu_int    int64                        0                      96
+7       years    int64                        0                      71
+8        loss    int64                        0                      70
+9   work_type   object                        0                       9
+10    partner   object                        0                       7
+11        edu   object                        0                      16
+12     gender   object                      800                       2
+13       race   object                        0                       5
+14       prod    int64                        0                     498
+15      gtype   object                        0                       2
+16      money   object                        0                       2

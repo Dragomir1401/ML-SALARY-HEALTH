@@ -1,0 +1,15 @@
+                   Attribute     Type Number of Missing Values Number of Unique Values
+0     mean_blood_sugar_level  float64                        0                    3979
+1      cardiovascular_issues    int64                        0                       2
+2               job_category   object                        0                       5
+3        body_mass_indicator  float64                      201                     418
+4                        sex   object                        0                       2
+5              tobacco_usage   object                        0                       4
+6        high_blood_pressure    int64                        0                       2
+7                    married   object                      511                       2
+8                living_area   object                        0                       2
+9                  years_old  float64                        0                     156
+10             chaotic_sleep    int64                        0                       2
+11          analysis_results  float64                      511                    4599
+12      biological_age_index  float64                        0                    5110
+13  cerebrovascular_accident    int64                        0                       2
