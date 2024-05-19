@@ -482,9 +482,10 @@ def __main__():
 
     # Save results
     with open('output/mlp_results.txt', 'w') as f:
-        f.write("Manual MLP Results:\n")
-        f.write(f"AVC Dataset - Train Accuracy: {max(train_acc_avc_manual)}, Test Accuracy: {max(test_acc_avc_manual)}\n")
-        f.write(f"Salary Dataset - Train Accuracy: {max(train_acc_salary_manual)}, Test Accuracy: {max(test_acc_salary_manual)}\n\n")
+        f.write("Manual Logistic Regression Results:\n")
+        f.write(f"AVC Dataset - Train Accuracy: {train_acc_avc[-1]}, Test Accuracy: {test_acc_avc[-1]}\n")
+        f.write(f"Salary Dataset - Train Accuracy: {train_acc_salary[-1]}, Test Accuracy: {test_acc_salary[-1]}\n\n")
+
 
         f.write("Scikit-learn MLP Results:\n")
         f.write(f"AVC Dataset - Train Accuracy: {train_acc_avc_sklearn}, Test Accuracy: {test_acc_avc_sklearn}\n")
@@ -500,8 +501,10 @@ def __main__():
     report_salary_train_manual, report_salary_test_manual, report_salary_train_sklearn, report_salary_test_sklearn = generate_classification_reports(
         mlp_manual_salary, model_salary_sklearn, X_salary_train, T_salary_train, X_salary_test, T_salary_test, "Salary")
     
-    # Plot learning curves
+    # Plot learning curves for avc and salary datasets
     plot_all_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual,
-                             train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual)
+                         train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual,
+                         train_acc_avc_sklearn, test_acc_avc_sklearn,
+                         train_acc_salary_sklearn, test_acc_salary_sklearn)
 
 __main__()

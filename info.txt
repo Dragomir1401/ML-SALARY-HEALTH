@@ -40,3 +40,21 @@ Generalization:
 The small difference between train and test accuracies indicates good generalization, meaning the models are not overfitting.
 Conclusion:
 The obtained data and results are good. The preprocessing steps ensured the datasets were in an optimal state for logistic regression. The high accuracy on the AVC dataset and reasonable accuracy on the salary dataset demonstrate effective handling of the data. The scikit-learn models show slight improvements, highlighting the benefits of using well-optimized libraries for machine learning tasks. Overall, the models are performing well, and the results suggest that the preprocessing and logistic regression implementations are effective for these datasets.
+
+
+
+Accuracy:
+The training accuracy curve (blue) rises quickly and stabilizes close to 0.95.
+The test accuracy curve (red) follows a similar pattern but stabilizes slightly lower, around 0.93.
+Loss:
+The training loss curve (blue) decreases sharply and stabilizes around 0.2.
+The test loss curve (red) follows a similar pattern but stabilizes slightly higher, around 0.3.
+Overfitting Analysis:
+Training vs. Test Accuracy: The training accuracy is slightly higher than the test accuracy, but both curves are quite close. This indicates that the model is performing well on both the training and test data.
+Training vs. Test Loss: The training loss is slightly lower than the test loss, but both curves follow a similar decreasing pattern.
+Conclusion:
+The model does not show significant signs of overfitting. In an overfitted model, you would typically see a much larger gap between the training and test accuracies, with the training accuracy continuing to improve while the test accuracy plateaus or even decreases. Similarly, the training loss would continue to decrease while the test loss might increase.
+Here, both the training and test metrics (accuracy and loss) are quite close to each other, suggesting that the model generalizes well to the test data.
+Recommendations:
+To further ensure the model is not overfitting, you could use techniques such as cross-validation, early stopping (if not already implemented), and regularization.
+Monitoring validation accuracy and loss during training can also help in making decisions about when to stop training to prevent overfitting.

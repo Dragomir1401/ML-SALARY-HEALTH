@@ -62,7 +62,32 @@ def plot_learning_curves(train_acc, test_acc, train_loss, test_loss, title):
 
     plt.tight_layout()
     plt.show()
+    
+# def plot_learning_curves_without_loss(train_acc, test_acc, title):
+#     if isinstance(train_acc, float):
+#         train_acc = [train_acc]
+#     if isinstance(test_acc, float):
+#         test_acc = [test_acc]
+#     epochs = range(1, len(train_acc) + 1)
+#     plt.figure(figsize=(14, 6))
 
-def plot_all_learning_curves(train_acc_manual, test_acc_manual, train_loss_manual, test_loss_manual, train_acc_sklearn, test_acc_sklearn, train_loss_sklearn, test_loss_sklearn):
-    plot_learning_curves(train_acc_manual, test_acc_manual, train_loss_manual, test_loss_manual, "Manual MLP")
-    plot_learning_curves(train_acc_sklearn, test_acc_sklearn, train_loss_sklearn, test_loss_sklearn, "Scikit-learn MLP")
+#     plt.plot(epochs, train_acc, 'bo-', label='Train Accuracy')
+#     plt.plot(epochs, test_acc, 'ro-', label='Test Accuracy')
+#     plt.title(f'{title} - Accuracy')
+#     plt.xlabel('Epochs')
+#     plt.ylabel('Accuracy')
+#     plt.legend()
+
+#     plt.tight_layout()
+#     plt.show()
+
+def plot_all_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual, 
+                             train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual, 
+                             train_acc_avc_sklearn, test_acc_avc_sklearn, 
+                             train_acc_salary_sklearn, test_acc_salary_sklearn):
+    
+    plot_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual, "Manual MLP - AVC")
+    plot_learning_curves(train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual, "Manual MLP - Salary")
+    
+    # plot_learning_curves_without_loss(train_acc_avc_sklearn, test_acc_avc_sklearn, "Scikit-learn MLP - AVC")
+    # plot_learning_curves_without_loss(train_acc_salary_sklearn, test_acc_salary_sklearn, "Scikit-learn MLP - Salary")
