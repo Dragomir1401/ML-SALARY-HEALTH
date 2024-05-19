@@ -1,0 +1,42 @@
+Manual Logistic Regression Results:
+
+AVC Dataset:
+Train Accuracy: 95.13%
+Test Accuracy: 92.47%
+Salary Dataset:
+Train Accuracy: 80.74%
+Test Accuracy: 80.20%
+Scikit-learn Logistic Regression Results:
+
+AVC Dataset:
+Train Accuracy: 95.74%
+Test Accuracy: 92.56%
+Salary Dataset:
+Train Accuracy: 83.62%
+Test Accuracy: 83.15%
+Observations:
+AVC Dataset:
+
+Manual Logistic Regression:
+The model performed well on both training and test datasets with high accuracy, indicating good generalization from training to unseen data.
+Scikit-learn Logistic Regression:
+Slightly better performance than the manual implementation, reflecting a well-optimized model provided by scikit-learn.
+Salary Dataset:
+
+Manual Logistic Regression:
+Reasonable performance with both training and test accuracies around 80%, indicating that the model generalizes well.
+Scikit-learn Logistic Regression:
+Improved performance compared to the manual implementation, showing the effectiveness of scikit-learn's optimizations.
+Data Suitability:
+Model Accuracy:
+
+Both models show high accuracy on the AVC dataset, suggesting that the preprocessing steps (handling missing values, outliers, and standardization) were effective.
+The salary dataset shows reasonable performance, with the scikit-learn implementation providing better results, indicating robust preprocessing and feature handling.
+Consistency:
+
+The consistent performance improvement in scikit-learn models suggests that the implementations benefit from the library's optimizations and regularization techniques.
+Generalization:
+
+The small difference between train and test accuracies indicates good generalization, meaning the models are not overfitting.
+Conclusion:
+The obtained data and results are good. The preprocessing steps ensured the datasets were in an optimal state for logistic regression. The high accuracy on the AVC dataset and reasonable accuracy on the salary dataset demonstrate effective handling of the data. The scikit-learn models show slight improvements, highlighting the benefits of using well-optimized libraries for machine learning tasks. Overall, the models are performing well, and the results suggest that the preprocessing and logistic regression implementations are effective for these datasets.

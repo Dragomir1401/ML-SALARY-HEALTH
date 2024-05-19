@@ -9,6 +9,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, log_loss
 from sklearn.compose import ColumnTransformer
 import os
+from mlp import train_and_evaluate_manual_mlp, train_and_evaluate_sklearn_mlp
 
 # Reading the CSV files
 avc_df_full = pd.read_csv('tema2_AVC/AVC_full.csv')
@@ -445,5 +446,48 @@ def __main__():
         f.write(f"AVC Dataset - Train Accuracy: {train_acc_avc_sklearn}, Test Accuracy: {test_acc_avc_sklearn}\n")
         f.write(f"Salary Dataset - Train Accuracy: {train_acc_salary_sklearn}, Test Accuracy: {test_acc_salary_sklearn}\n")
         
+    # Define the MLP architecture and training parameters
+    input_size_avc = X_avc_train.shape[1]
+    hidden_size_avc = 10  # Example size, adjust based on experimentation
+    output_size_avc = len(np.unique(T_avc_train))  # Number of classes
 
+    input_size_salary = X_salary_train.shape[1]
+    hidden_size_salary = 20  # Example size, adjust based on experimentation
+    output_size_salary = len(np.unique(T_salary_train))  # Number of classes
+
+    epochs = 1000
+    learning_rate = 0.01
+
+    # Manual MLP Training and Evaluation
+    train_acc_avc_manual, test_acc_avc_manual = train_and_evaluate_manual_mlp(
+        X_avc_train, T_avc_train, X_avc_test, T_avc_test, input_size_avc, hidden_size_avc, output_size_avc, epochs, learning_rate)
+    
+    train_acc_salary_manual, test_acc_salary_manual = train_and_evaluate_manual_mlp(
+        X_salary_train, T_salary_train, X_salary_test, T_salary_test, input_size_salary, hidden_size_salary, output_size_salary, epochs, learning_rate)
+
+    # Scikit-learn MLP Training and Evaluation
+    hidden_layer_sizes = (hidden_size_avc,)  # Single hidden layer example
+    max_iter = 500
+    learning_rate_init = 0.01
+    alpha = 0.0001  # L2 regularization term
+
+    train_acc_avc_sklearn, test_acc_avc_sklearn, model_avc = train_and_evaluate_sklearn_mlp(
+        X_avc_train, T_avc_train, X_avc_test, T_avc_test, hidden_layer_sizes, max_iter, learning_rate_init, alpha)
+
+    hidden_layer_sizes = (hidden_size_salary,)  # Single hidden layer example
+
+    train_acc_salary_sklearn, test_acc_salary_sklearn, model_salary = train_and_evaluate_sklearn_mlp(
+        X_salary_train, T_salary_train, X_salary_test, T_salary_test, hidden_layer_sizes, max_iter, learning_rate_init, alpha)
+
+    # Save results
+    with open('output/mlp_results.txt', 'w') as f:
+        f.write("Manual MLP Results:\n")
+        f.write(f"AVC Dataset - Train Accuracy: {train_acc_avc_manual}, Test Accuracy: {test_acc_avc_manual}\n")
+        f.write(f"Salary Dataset - Train Accuracy: {train_acc_salary_manual}, Test Accuracy: {test_acc_salary_manual}\n\n")
+
+        f.write("Scikit-learn MLP Results:\n")
+        f.write(f"AVC Dataset - Train Accuracy: {train_acc_avc_sklearn}, Test Accuracy: {test_acc_avc_sklearn}\n")
+        f.write(f"Salary Dataset - Train Accuracy: {train_acc_salary_sklearn}, Test Accuracy: {test_acc_salary_sklearn}\n")
+        
+        
 __main__()
