@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
+from sklearn.model_selection import GridSearchCV
 
 # Activation Functions
 def sigmoid(x):
@@ -9,15 +10,34 @@ def sigmoid(x):
 def sigmoid_derivative(x):
     return x * (1 - x)
 
+def relu(x):
+    return np.maximum(0, x)
+
+def relu_derivative(x):
+    return np.where(x > 0, 1, 0)
+
 class ReLU:
     def forward(self, x):
         self.x = x
-        return np.maximum(0, x)
+        return relu(x)
 
     def backward(self, x, dldy):
-        dx = np.array(dldy, copy=True)
-        dx[self.x <= 0] = 0
+        dx = relu_derivative(self.x) * dldy
         return dx
+
+class Dropout:
+    def __init__(self, rate=0.5):
+        self.rate = rate
+
+    def forward(self, x, train=True):
+        if train:
+            self.mask = np.random.binomial(1, 1 - self.rate, size=x.shape) / (1 - self.rate)
+            return x * self.mask
+        else:
+            return x
+
+    def backward(self, x, dldy):
+        return dldy * self.mask
 
 class CrossEntropy:
     def forward(self, y, t):
@@ -62,14 +82,17 @@ class FeedForwardNetwork:
     def __init__(self, layers):
         self.layers = layers
 
-    def forward(self, x):
+    def forward(self, x, train=True):
         for layer in self.layers:
-            x = layer.forward(x)
+            if isinstance(layer, Dropout):
+                x = layer.forward(x, train)
+            else:
+                x = layer.forward(x)
         return x
 
     def backward(self, dldy):
         for layer in reversed(self.layers):
-            dldy = layer.backward(layer.x, dldy)
+            dldy = layer.backward(layer.x if hasattr(layer, 'x') else None, dldy)
 
 def accuracy(y, t):
     predictions = np.argmax(y, axis=1)
@@ -80,6 +103,7 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
     layers = [
         Linear(input_size, hidden_size),
         ReLU(),
+        Dropout(rate=0.5),  # Add dropout with 50% rate
         Linear(hidden_size, output_size)
     ]
 
@@ -87,7 +111,7 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
     ce_loss = CrossEntropy()
 
     for epoch in range(epochs):
-        output = mlp.forward(X_train)
+        output = mlp.forward(X_train, train=True)
         loss = ce_loss.forward(output, T_train)
         dldy = ce_loss.backward(output, T_train)
         mlp.backward(dldy)
@@ -101,8 +125,8 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
             train_acc = accuracy(output, T_train)
             print(f'Epoch {epoch + 1}, Loss: {loss}, Train Accuracy: {train_acc}')
 
-    train_acc = accuracy(mlp.forward(X_train), T_train)
-    test_acc = accuracy(mlp.forward(X_test), T_test)
+    train_acc = accuracy(mlp.forward(X_train, train=False), T_train)
+    test_acc = accuracy(mlp.forward(X_test, train=False), T_test)
     return train_acc, test_acc
 
 
