@@ -483,8 +483,8 @@ def __main__():
     # Save results
     with open('output/mlp_results.txt', 'w') as f:
         f.write("Manual MLP Results:\n")
-        f.write(f"AVC Dataset - Train Accuracy: {train_acc_avc_manual}, Test Accuracy: {test_acc_avc_manual}\n")
-        f.write(f"Salary Dataset - Train Accuracy: {train_acc_salary_manual}, Test Accuracy: {test_acc_salary_manual}\n\n")
+        f.write(f"AVC Dataset - Train Accuracy: {max(train_acc_avc_manual)}, Test Accuracy: {max(test_acc_avc_manual)}\n")
+        f.write(f"Salary Dataset - Train Accuracy: {max(train_acc_salary_manual)}, Test Accuracy: {max(test_acc_salary_manual)}\n\n")
 
         f.write("Scikit-learn MLP Results:\n")
         f.write(f"AVC Dataset - Train Accuracy: {train_acc_avc_sklearn}, Test Accuracy: {test_acc_avc_sklearn}\n")

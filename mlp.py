@@ -110,10 +110,10 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
     mlp = FeedForwardNetwork(layers)
     ce_loss = CrossEntropy()
 
-    train_acc = []
-    test_acc = []
-    train_loss = []
-    test_loss = []
+    train_acc_list = []
+    test_acc_list = []
+    train_loss_list = []
+    test_loss_list = []
 
     for epoch in range(epochs):
         output = mlp.forward(X_train, train=True)
@@ -126,19 +126,18 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
                 layer.weight -= learning_rate * layer.dweight
                 layer.bias -= learning_rate * layer.dbias
 
-        if (epoch + 1) % 100 == 0:
-            train_accuracy = accuracy(output, T_train)
-            train_acc.append(train_accuracy)
-            train_loss.append(loss)
-            test_output = mlp.forward(X_test, train=False)
-            test_accuracy = accuracy(test_output, T_test)
-            test_acc.append(test_accuracy)
-            test_loss.append(ce_loss.forward(test_output, T_test))
-            print(f'Epoch {epoch + 1}, Loss: {loss}, Train Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}')
+        train_acc = accuracy(mlp.forward(X_train, train=False), T_train)
+        test_acc = accuracy(mlp.forward(X_test, train=False), T_test)
+        train_acc_list.append(train_acc)
+        test_acc_list.append(test_acc)
+        train_loss_list.append(loss)
+        test_loss_list.append(ce_loss.forward(mlp.forward(X_test, train=False), T_test))
 
-    train_accuracy = accuracy(mlp.forward(X_train, train=False), T_train)
-    test_accuracy = accuracy(mlp.forward(X_test, train=False), T_test)
-    return mlp, train_acc, test_acc, train_loss, test_loss
+        if (epoch + 1) % 100 == 0:
+            print(f'Epoch {epoch + 1}, Loss: {loss}, Train Accuracy: {train_acc}, Test Accuracy: {test_acc}')
+
+    return mlp, train_acc_list, test_acc_list, train_loss_list, test_loss_list
+
 
 
 # Training and Evaluating the Scikit-learn MLP

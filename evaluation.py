@@ -22,7 +22,7 @@ def generate_confusion_matrices(mlp_manual, model_sklearn, X_train, T_train, X_t
     plot_confusion_matrix(T_test, y_test_pred_sklearn, f"Confusion Matrix - Scikit-learn MLP - {dataset_name} Test")
 
 def print_classification_report(y_true, y_pred, title):
-    report = classification_report(y_true, y_pred, output_dict=True)
+    report = classification_report(y_true, y_pred, output_dict=True, zero_division=0)
     df = pd.DataFrame(report).transpose()
     print(f"{title}\n{df}\n")
     return df
