@@ -10,6 +10,7 @@ from sklearn.metrics import accuracy_score, log_loss
 from sklearn.compose import ColumnTransformer
 import os
 from mlp import train_and_evaluate_manual_mlp, train_and_evaluate_sklearn_mlp
+from evaluation import generate_confusion_matrices, generate_classification_reports, plot_all_learning_curves
 
 # Reading the CSV files
 avc_df_full = pd.read_csv('tema2_AVC/AVC_full.csv')
@@ -459,10 +460,10 @@ def __main__():
     learning_rate = 0.01
 
     # Manual MLP Training and Evaluation
-    train_acc_avc_manual, test_acc_avc_manual = train_and_evaluate_manual_mlp(
+    mlp_manual_avc, train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual = train_and_evaluate_manual_mlp(
         X_avc_train, T_avc_train, X_avc_test, T_avc_test, input_size_avc, hidden_size_avc, output_size_avc, epochs, learning_rate)
     
-    train_acc_salary_manual, test_acc_salary_manual = train_and_evaluate_manual_mlp(
+    mlp_manual_salary, train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual = train_and_evaluate_manual_mlp(
         X_salary_train, T_salary_train, X_salary_test, T_salary_test, input_size_salary, hidden_size_salary, output_size_salary, epochs, learning_rate)
 
     # Scikit-learn MLP Training and Evaluation
@@ -471,12 +472,12 @@ def __main__():
     learning_rate_init = 0.01
     alpha = 0.0001  # L2 regularization term
 
-    train_acc_avc_sklearn, test_acc_avc_sklearn, model_avc = train_and_evaluate_sklearn_mlp(
+    train_acc_avc_sklearn, test_acc_avc_sklearn, model_avc_sklearn = train_and_evaluate_sklearn_mlp(
         X_avc_train, T_avc_train, X_avc_test, T_avc_test, hidden_layer_sizes, max_iter, learning_rate_init, alpha)
 
     hidden_layer_sizes = (hidden_size_salary,)  # Single hidden layer example
 
-    train_acc_salary_sklearn, test_acc_salary_sklearn, model_salary = train_and_evaluate_sklearn_mlp(
+    train_acc_salary_sklearn, test_acc_salary_sklearn, model_salary_sklearn = train_and_evaluate_sklearn_mlp(
         X_salary_train, T_salary_train, X_salary_test, T_salary_test, hidden_layer_sizes, max_iter, learning_rate_init, alpha)
 
     # Save results
@@ -488,6 +489,19 @@ def __main__():
         f.write("Scikit-learn MLP Results:\n")
         f.write(f"AVC Dataset - Train Accuracy: {train_acc_avc_sklearn}, Test Accuracy: {test_acc_avc_sklearn}\n")
         f.write(f"Salary Dataset - Train Accuracy: {train_acc_salary_sklearn}, Test Accuracy: {test_acc_salary_sklearn}\n")
-        
-        
+
+    # Generate and plot confusion matrices
+    generate_confusion_matrices(mlp_manual_avc, model_avc_sklearn, X_avc_train, T_avc_train, X_avc_test, T_avc_test, "AVC")
+    generate_confusion_matrices(mlp_manual_salary, model_salary_sklearn, X_salary_train, T_salary_train, X_salary_test, T_salary_test, "Salary")
+    
+    # Generate and print classification reports
+    report_avc_train_manual, report_avc_test_manual, report_avc_train_sklearn, report_avc_test_sklearn = generate_classification_reports(
+        mlp_manual_avc, model_avc_sklearn, X_avc_train, T_avc_train, X_avc_test, T_avc_test, "AVC")
+    report_salary_train_manual, report_salary_test_manual, report_salary_train_sklearn, report_salary_test_sklearn = generate_classification_reports(
+        mlp_manual_salary, model_salary_sklearn, X_salary_train, T_salary_train, X_salary_test, T_salary_test, "Salary")
+    
+    # Plot learning curves
+    plot_all_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual,
+                             train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual)
+
 __main__()
