@@ -4,7 +4,10 @@ import seaborn as sns
 import numpy as np
 import scipy.stats as stats
 from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler, LabelEncoder, OneHotEncoder
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, log_loss
+from sklearn.compose import ColumnTransformer
 import os
 
 # Reading the CSV files
@@ -181,10 +184,6 @@ def remove_redundant_attributes(df, numeric_columns, threshold=0.9):
     # Identify columns to drop based on the threshold
     to_drop = [column for column in upper.columns if any(upper[column] > threshold)]
     
-    print("Correlation Matrix:\n", corr_matrix)
-    print("Upper Triangle Matrix:\n", upper)
-    print("Columns to drop:", to_drop)
-    
     # Drop the identified columns from the original DataFrame
     df_reduced = df.drop(columns=to_drop)
     
@@ -201,6 +200,91 @@ def standardize_data(df, numeric_columns, method='standard'):
         scaler = RobustScaler()
     df[numeric_columns] = scaler.fit_transform(df[numeric_columns])
     return df
+
+
+# Encode categorical variables
+def encode_categorical(df, target_column, encoder=None):
+    df = df.copy()
+    categorical_columns = df.select_dtypes(include=['object']).columns.tolist()
+    categorical_columns.remove(target_column)
+    
+    label_encoder = LabelEncoder()
+    df[target_column] = label_encoder.fit_transform(df[target_column])
+    
+    if encoder is None:
+        encoder = OneHotEncoder(sparse_output=False, drop='first')
+        df_onehot = pd.DataFrame(encoder.fit_transform(df[categorical_columns]), columns=encoder.get_feature_names_out(categorical_columns))
+    else:
+        df_onehot = pd.DataFrame(encoder.transform(df[categorical_columns]), columns=encoder.get_feature_names_out(categorical_columns))
+    
+    df = pd.concat([df, df_onehot], axis=1)
+    df.drop(categorical_columns, axis=1, inplace=True)
+    
+    return df, label_encoder, encoder
+
+def logistic(x):
+    x = np.array(x, dtype=float)  # Ensure x is a numpy array with float type
+    return 1 / (1 + np.exp(-x))
+
+def nll(Y, T):
+    N = T.shape[0]
+    return -np.sum(T * np.log(Y) + (1 - T) * np.log(1 - Y)) / N
+
+def accuracy(Y, T):
+    N = Y.shape[0]
+    acc = 0
+    for i in range(N):
+        if (Y[i] >= 0.5 and T[i] == 1) or (Y[i] < 0.5 and T[i] == 0):
+            acc += 1
+    return acc / N
+
+def predict_logistic(X, w):
+    return logistic(np.dot(X, w))
+
+def train_and_eval_logistic(X_train, T_train, X_test, T_test, lr=0.01, epochs_no=100):
+    (N, D) = X_train.shape
+    
+    # Initial weights
+    w = np.random.randn(D)
+    
+    train_acc, test_acc = [], []
+    train_nll, test_nll = [], []
+
+    for epoch in range(epochs_no):
+        Y_train = predict_logistic(X_train, w)
+        Y_test = predict_logistic(X_test, w)
+
+        train_acc.append(accuracy(Y_train, T_train))
+        test_acc.append(accuracy(Y_test, T_test))
+        train_nll.append(nll(Y_train, T_train))
+        test_nll.append(nll(Y_test, T_test))
+
+        w = w - lr * np.dot(X_train.T, Y_train - T_train) / N
+        
+    return w, train_nll, test_nll, train_acc, test_acc
+
+
+def train_and_eval_sklearn_logistic(X_train, T_train, X_test, T_test):
+    model = LogisticRegression(max_iter=1000)
+    model.fit(X_train, T_train)
+    
+    Y_train = model.predict_proba(X_train)[:, 1]
+    Y_test = model.predict_proba(X_test)[:, 1]
+    
+    train_acc = accuracy_score(T_train, (Y_train >= 0.5).astype(int))
+    test_acc = accuracy_score(T_test, (Y_test >= 0.5).astype(int))
+    train_nll = log_loss(T_train, Y_train)
+    test_nll = log_loss(T_test, Y_test)
+    
+    return model, train_nll, test_nll, train_acc, test_acc
+
+# Encode categorical variables and prepare datasets for logistic regression
+def preprocess_data(df, target_column, encoder=None):
+    df_encoded, label_encoder, encoder = encode_categorical(df, target_column, encoder)
+    X = df_encoded.drop(columns=[target_column]).values
+    T = df_encoded[target_column].values
+    return X, T, label_encoder, encoder
+
 
 def __main__():
     # Create output directory
@@ -238,7 +322,7 @@ def __main__():
 
     # Categorical statistics
     categorical_columns_avc = ['cardiovascular_issues', 'job_category', 'sex', 'tobacco_usage', 'high_blood_pressure', 'married', 'living_area', 'chaotic_sleep', 'cerebrovascular_accident']
-    categorical_columns_salary = ['relation', 'country', 'job', 'work_type', 'partner', 'edu', 'gender', 'race', 'gtype']
+    categorical_columns_salary = ['relation', 'country', 'job', 'work_type', 'partner', 'edu', 'gender', 'race', 'gtype', 'money']
 
     avc_categorical_statistics = categorical_statistics(avc_df_full, categorical_columns_avc)
     salary_categorical_statistics = categorical_statistics(salary_df_full, categorical_columns_salary)
@@ -292,33 +376,74 @@ def __main__():
         'salary_test': salary_df_test
     }
     
+    processed_datasets = {}
     
     for name, df in datasets.items():
         # Separate columns
         numeric_columns = numeric_columns_avc if 'avc' in name else numeric_columns_salary
         categorical_columns = categorical_columns_avc if 'avc' in name else categorical_columns_salary
+        
+        # First eliminate highly correlated attributes
+        df_reduced, dropped_columns = remove_redundant_attributes(df, numeric_columns, threshold=0.9)
+        
+        # Make a copy of numeric columns without the dropped columns
+        numeric_columns_after_drop = [col for col in numeric_columns if col not in dropped_columns]
 
         # Impute missing values
-        df_imputed = impute_missing_values(df, numeric_columns, categorical_columns)
+        df_imputed = impute_missing_values(df_reduced, numeric_columns_after_drop, categorical_columns)
 
         # Handle extreme values
-        df_outliers_handled = handle_extreme_values(df_imputed, numeric_columns)
+        df_outliers_handled = handle_extreme_values(df_imputed, numeric_columns_after_drop)
         
         # Impute missing values again after handling extreme values
-        df_outliers_imputed = impute_missing_values(df_outliers_handled, numeric_columns, categorical_columns)
+        df_outliers_imputed = impute_missing_values(df_outliers_handled, numeric_columns_after_drop, categorical_columns)
 
-        # Remove redundant attributes
-        df_reduced, dropped_columns = remove_redundant_attributes(df_outliers_imputed, numeric_columns, threshold=0.9)
-        
         # Print what columns have been dropped and why
         with open(f'output/{name}_dropped_columns.txt', 'w') as f:
             f.write(f'Dropped columns: {dropped_columns}\n')
             f.write(f'Reason: Highly correlated with other columns\n')
 
         # Standardize numerical attributes
-        df_standardized = standardize_data(df_reduced, numeric_columns, method='standard')
+        df_standardized = standardize_data(df_outliers_imputed, numeric_columns_after_drop, method='standard')
+
+        # Save the processed dataframe for logistic regression
+        processed_datasets[name] = df_standardized
 
         # Write the processed data to files for testing
         df_standardized.to_csv(f'output/{name}_processed.csv', index=False)
+    
+    # Encode categorical variables and prepare datasets for logistic regression
+    X_avc_full, T_avc_full, label_encoder_avc, onehot_encoder_avc = preprocess_data(processed_datasets['avc_full'], class_column_avc)
+    X_avc_train, T_avc_train, _, _ = preprocess_data(processed_datasets['avc_train'], class_column_avc, encoder=onehot_encoder_avc)
+    X_avc_test, T_avc_test, _, _ = preprocess_data(processed_datasets['avc_test'], class_column_avc, encoder=onehot_encoder_avc)
+
+    X_salary_full, T_salary_full, label_encoder_salary, onehot_encoder_salary = preprocess_data(processed_datasets['salary_full'], class_column_salary)
+    X_salary_train, T_salary_train, _, _ = preprocess_data(processed_datasets['salary_train'], class_column_salary, encoder=onehot_encoder_salary)
+    X_salary_test, T_salary_test, _, _ = preprocess_data(processed_datasets['salary_test'], class_column_salary, encoder=onehot_encoder_salary)
+
+    # Manual Logistic Regression
+    w_avc, train_nll_avc, test_nll_avc, train_acc_avc, test_acc_avc = train_and_eval_logistic(
+        X_avc_train, T_avc_train, X_avc_test, T_avc_test, lr=0.1, epochs_no=500)
+
+    w_salary, train_nll_salary, test_nll_salary, train_acc_salary, test_acc_salary = train_and_eval_logistic(
+        X_salary_train, T_salary_train, X_salary_test, T_salary_test, lr=0.1, epochs_no=500)
+
+    # Logistic Regression using scikit-learn
+    model_avc, train_nll_avc_sklearn, test_nll_avc_sklearn, train_acc_avc_sklearn, test_acc_avc_sklearn = train_and_eval_sklearn_logistic(
+        X_avc_train, T_avc_train, X_avc_test, T_avc_test)
+
+    model_salary, train_nll_salary_sklearn, test_nll_salary_sklearn, train_acc_salary_sklearn, test_acc_salary_sklearn = train_and_eval_sklearn_logistic(
+        X_salary_train, T_salary_train, X_salary_test, T_salary_test)
+
+    # Save logistic regression results
+    with open('output/logistic_regression_results.txt', 'w') as f:
+        f.write("Manual Logistic Regression Results:\n")
+        f.write(f"AVC Dataset - Train Accuracy: {train_acc_avc[-1]}, Test Accuracy: {test_acc_avc[-1]}\n")
+        f.write(f"Salary Dataset - Train Accuracy: {train_acc_salary[-1]}, Test Accuracy: {test_acc_salary[-1]}\n\n")
+
+        f.write("Scikit-learn Logistic Regression Results:\n")
+        f.write(f"AVC Dataset - Train Accuracy: {train_acc_avc_sklearn}, Test Accuracy: {test_acc_avc_sklearn}\n")
+        f.write(f"Salary Dataset - Train Accuracy: {train_acc_salary_sklearn}, Test Accuracy: {test_acc_salary_sklearn}\n")
         
+
 __main__()

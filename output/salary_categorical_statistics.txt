@@ -8,3 +8,4 @@
 6     gender                         9199                       2
 7       race                         9999                       5
 8      gtype                         9999                       2
+9      money                         9999                       2

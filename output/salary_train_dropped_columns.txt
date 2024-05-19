@@ -1,2 +1,2 @@
-Dropped columns: []
+Dropped columns: ['prod']
 Reason: Highly correlated with other columns
