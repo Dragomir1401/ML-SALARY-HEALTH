@@ -1,7 +1,6 @@
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
-from sklearn.model_selection import GridSearchCV
 
 # Activation Functions
 def sigmoid(x):
