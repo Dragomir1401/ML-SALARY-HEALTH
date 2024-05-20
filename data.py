@@ -49,22 +49,18 @@ def numeric_statistics(df, numeric_columns):
     })
     return statistics[['number_of_non_missing_values', 'mean_value', 'standard_deviation', 'minimum_value', '25th_percentile', '50th_percentile', '75th_percentile', 'maximum_value']]
 
-def plot_normalized_boxplot(df, numeric_columns, title):
-    # Normalize the data
-    scaler = MinMaxScaler()
-    normalized_data = scaler.fit_transform(df[numeric_columns])
-    normalized_df = pd.DataFrame(normalized_data, columns=numeric_columns)
-    
-    # Plot the normalized data using pandas boxplot
-    plt.figure(figsize=(15, 10))
-    normalized_df.boxplot(rot=45)
-    plt.title(title, fontsize=20)
-    plt.xlabel('Numeric Columns', fontsize=15)
-    plt.ylabel('Normalized Values', fontsize=15)
-    plt.xticks(fontsize=12)
-    plt.yticks(fontsize=12)
-    plt.tight_layout()
-    plt.show()
+def plot_boxplot(df, numeric_columns, title_prefix):
+    # Plot each numeric column separately
+    for column in numeric_columns:
+        plt.figure(figsize=(10, 6))
+        df.boxplot(column=column)
+        plt.title(f'{title_prefix} - {column}', fontsize=20)
+        plt.xlabel(column, fontsize=15)
+        plt.ylabel('Values', fontsize=15)
+        plt.xticks(fontsize=12)
+        plt.yticks(fontsize=12)
+        plt.tight_layout()
+        plt.show()
 
 def categorical_statistics(df, categorical_columns):
     statistics = pd.DataFrame(columns=['Attribute', 'Number of Non-Missing Values', 'Number of Unique Values'])
@@ -319,8 +315,8 @@ def __main__():
         f.write(salary_numeric_statistics.to_string())
 
     # Boxplot for numeric attributes
-    # plot_normalized_boxplot(avc_df_full, numeric_columns_avc, 'AVC - Boxplot for Numeric Attributes')
-    # plot_normalized_boxplot(salary_df_full, numeric_columns_salary, 'Salary - Boxplot for Numeric Attributes')
+    plot_boxplot(avc_df_full, numeric_columns_avc, 'AVC - Boxplot for Numeric Attributes')
+    plot_boxplot(salary_df_full, numeric_columns_salary, 'Salary - Boxplot for Numeric Attributes')
 
     # Categorical statistics
     categorical_columns_avc = ['cardiovascular_issues', 'job_category', 'sex', 'tobacco_usage', 'high_blood_pressure', 'married', 'living_area', 'chaotic_sleep', 'cerebrovascular_accident']
@@ -482,7 +478,7 @@ def __main__():
 
     # Save results
     with open('output/mlp_results.txt', 'w') as f:
-        f.write("Manual Logistic Regression Results:\n")
+        f.write("Manual MLP Results:\n")
         f.write(f"AVC Dataset - Train Accuracy: {train_acc_avc[-1]}, Test Accuracy: {test_acc_avc[-1]}\n")
         f.write(f"Salary Dataset - Train Accuracy: {train_acc_salary[-1]}, Test Accuracy: {test_acc_salary[-1]}\n\n")
 
@@ -503,8 +499,8 @@ def __main__():
     
     # Plot learning curves for avc and salary datasets
     plot_all_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual,
-                         train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual,
-                         train_acc_avc_sklearn, test_acc_avc_sklearn,
-                         train_acc_salary_sklearn, test_acc_salary_sklearn)
+                            train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual,
+                            train_acc_avc_sklearn, test_acc_avc_sklearn,
+                            train_acc_salary_sklearn, test_acc_salary_sklearn)
 
 __main__()

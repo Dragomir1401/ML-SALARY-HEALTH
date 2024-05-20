@@ -1,4 +1,4 @@
-Manual Logistic Regression Results:
+Manual MLP Results:
 AVC Dataset - Train Accuracy: 0.9474070450097848, Test Accuracy: 0.913894324853229
 Salary Dataset - Train Accuracy: 0.7989748718589824, Test Accuracy: 0.7985
 
