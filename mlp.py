@@ -15,13 +15,67 @@ def relu(x):
 def relu_derivative(x):
     return np.where(x > 0, 1, 0)
 
-class ReLU:
+def tanh(x):
+    return np.tanh(x)
+
+def tanh_derivative(x):
+    return 1 - np.tanh(x)**2
+
+def leaky_relu(x, alpha=0.01):
+    return np.where(x > 0, x, alpha * x)
+
+def leaky_relu_derivative(x, alpha=0.01):
+    return np.where(x > 0, 1, alpha)
+
+def elu(x, alpha=1.0):
+    return np.where(x > 0, x, alpha * (np.exp(x) - 1))
+
+def elu_derivative(x, alpha=1.0):
+    return np.where(x > 0, 1, elu(x, alpha) + alpha)
+
+class Sigmoid:
+    def forward(self, x):
+        self.x = x
+        return sigmoid(x)
+
+    def backward(self, x, dldy):
+        dx = sigmoid_derivative(sigmoid(self.x)) * dldy
+        return dx
+    
+class ReLu:
     def forward(self, x):
         self.x = x
         return relu(x)
 
     def backward(self, x, dldy):
         dx = relu_derivative(self.x) * dldy
+        return dx
+
+class Tanh:
+    def forward(self, x):
+        self.x = x
+        return tanh(x)
+
+    def backward(self, x, dldy):
+        dx = tanh_derivative(tanh(self.x)) * dldy
+        return dx
+
+class LeakyReLU:
+    def forward(self, x):
+        self.x = x
+        return leaky_relu(x)
+
+    def backward(self, x, dldy):
+        dx = leaky_relu_derivative(self.x) * dldy
+        return dx
+
+class ELU:
+    def forward(self, x):
+        self.x = x
+        return elu(x)
+
+    def backward(self, x, dldy):
+        dx = elu_derivative(self.x) * dldy
         return dx
 
 class Dropout:
@@ -101,7 +155,7 @@ def accuracy(y, t):
 def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, hidden_size, output_size, epochs, learning_rate):
     layers = [
         Linear(input_size, hidden_size),
-        ReLU(),
+        ELU(),
         Dropout(rate=0.5),  # Add dropout with 50% rate
         Linear(hidden_size, output_size)
     ]

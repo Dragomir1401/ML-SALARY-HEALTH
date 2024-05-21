@@ -286,19 +286,19 @@ def __main__():
     train_acc_avc_sklearn, test_acc_avc_sklearn, train_acc_salary_sklearn, test_acc_salary_sklearn = return_tuple_sklearn
 
     # Generate and plot confusion matrices
-    generate_confusion_matrices(mlp_manual_avc, model_avc_sklearn, X_avc_train, T_avc_train, X_avc_test, T_avc_test, "AVC")
-    generate_confusion_matrices(mlp_manual_salary, model_salary_sklearn, X_salary_train, T_salary_train, X_salary_test, T_salary_test, "Salary")
+    # generate_confusion_matrices(mlp_manual_avc, model_avc_sklearn, X_avc_train, T_avc_train, X_avc_test, T_avc_test, "AVC")
+    # generate_confusion_matrices(mlp_manual_salary, model_salary_sklearn, X_salary_train, T_salary_train, X_salary_test, T_salary_test, "Salary")
     
     # Generate and print classification reports
-    report_avc_train_manual, report_avc_test_manual, report_avc_train_sklearn, report_avc_test_sklearn = generate_classification_reports(
-        mlp_manual_avc, model_avc_sklearn, X_avc_train, T_avc_train, X_avc_test, T_avc_test, "AVC")
-    report_salary_train_manual, report_salary_test_manual, report_salary_train_sklearn, report_salary_test_sklearn = generate_classification_reports(
-        mlp_manual_salary, model_salary_sklearn, X_salary_train, T_salary_train, X_salary_test, T_salary_test, "Salary")
+    # report_avc_train_manual, report_avc_test_manual, report_avc_train_sklearn, report_avc_test_sklearn = generate_classification_reports(
+    #     mlp_manual_avc, model_avc_sklearn, X_avc_train, T_avc_train, X_avc_test, T_avc_test, "AVC")
+    # report_salary_train_manual, report_salary_test_manual, report_salary_train_sklearn, report_salary_test_sklearn = generate_classification_reports(
+    #     mlp_manual_salary, model_salary_sklearn, X_salary_train, T_salary_train, X_salary_test, T_salary_test, "Salary")
     
-    # Plot learning curves for avc and salary datasets
-    plot_all_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual,
-                            train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual,
-                            train_acc_avc_sklearn, test_acc_avc_sklearn,
-                            train_acc_salary_sklearn, test_acc_salary_sklearn)
+    # # Plot learning curves for avc and salary datasets
+    # plot_all_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual,
+    #                         train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual,
+    #                         train_acc_avc_sklearn, test_acc_avc_sklearn,
+    #                         train_acc_salary_sklearn, test_acc_salary_sklearn)
 
 __main__()
