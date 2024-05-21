@@ -170,8 +170,9 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
     test_loss_list = []
 
     best_test_loss = float('inf')
-    best_epoch = 0
     early_stop_counter = 0
+    best_model_weights = None
+    best_model_biases = None
 
     for epoch in range(epochs):
         output = mlp.forward(X_train, train=True)
@@ -191,10 +192,13 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
         train_loss_list.append(loss)
         test_loss_list.append(ce_loss.forward(mlp.forward(X_test, train=False), T_test))
 
+        # Early stopping check
         if test_loss_list[-1] < best_test_loss:
             best_test_loss = test_loss_list[-1]
-            best_epoch = epoch
             early_stop_counter = 0
+            # Save the best model weights
+            best_model_weights = [layer.weight.copy() for layer in mlp.layers if isinstance(layer, Linear)]
+            best_model_biases = [layer.bias.copy() for layer in mlp.layers if isinstance(layer, Linear)]
         else:
             early_stop_counter += 1
 
@@ -205,8 +209,13 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
         if (epoch + 1) % 100 == 0:
             print(f'Epoch {epoch + 1}, Loss: {loss}, Train Accuracy: {train_acc}, Test Accuracy: {test_acc}')
 
-    return mlp, train_acc_list, test_acc_list, train_loss_list, test_loss_list
+    # Restore the best model weights
+    if best_model_weights is not None and best_model_biases is not None:
+        for i, layer in enumerate([layer for layer in mlp.layers if isinstance(layer, Linear)]):
+            layer.weight = best_model_weights[i]
+            layer.bias = best_model_biases[i]
 
+    return mlp, train_acc_list, test_acc_list, train_loss_list, test_loss_list
 
 # Training and Evaluating the Scikit-learn MLP
 def train_and_evaluate_sklearn_mlp(X_train, T_train, X_test, T_test, hidden_layer_sizes, max_iter, learning_rate_init, alpha):
