@@ -115,7 +115,7 @@ def softmax(x):
 
 # Linear Layer Class
 class Linear:
-    def __init__(self, input_dim, output_dim, l2_reg=0.0):
+    def __init__(self, input_dim, output_dim, l2_reg=0.01):
         self.input_dim = input_dim
         self.output_dim = output_dim
         self.weight = np.random.randn(input_dim, output_dim) * np.sqrt(2 / input_dim)  # He Initialization
