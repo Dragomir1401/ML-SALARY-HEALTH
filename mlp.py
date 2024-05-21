@@ -115,18 +115,19 @@ def softmax(x):
 
 # Linear Layer Class
 class Linear:
-    def __init__(self, input_dim, output_dim):
+    def __init__(self, input_dim, output_dim, l2_reg=0.0):
         self.input_dim = input_dim
         self.output_dim = output_dim
         self.weight = np.random.randn(input_dim, output_dim) * np.sqrt(2 / input_dim)  # He Initialization
         self.bias = np.zeros((1, output_dim))
+        self.l2_reg = l2_reg
 
     def forward(self, x):
         self.x = x
         return np.dot(x, self.weight) + self.bias
 
     def backward(self, x, dldy):
-        self.dweight = np.dot(self.x.T, dldy)
+        self.dweight = np.dot(self.x.T, dldy) + self.l2_reg * self.weight
         self.dbias = np.sum(dldy, axis=0, keepdims=True)
         return np.dot(dldy, self.weight.T)
 
@@ -152,12 +153,12 @@ def accuracy(y, t):
     return np.mean(predictions == t)
 
 # Training and Evaluating the MLP
-def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, hidden_size, output_size, epochs, learning_rate):
+def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, hidden_size, output_size, epochs, learning_rate, l2_reg=0.0, patience=10):
     layers = [
-        Linear(input_size, hidden_size),
+        Linear(input_size, hidden_size, l2_reg=l2_reg),
         ELU(),
         Dropout(rate=0.5),  # Add dropout with 50% rate
-        Linear(hidden_size, output_size)
+        Linear(hidden_size, output_size, l2_reg=l2_reg)
     ]
 
     mlp = FeedForwardNetwork(layers)
@@ -167,6 +168,10 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
     test_acc_list = []
     train_loss_list = []
     test_loss_list = []
+
+    best_test_loss = float('inf')
+    best_epoch = 0
+    early_stop_counter = 0
 
     for epoch in range(epochs):
         output = mlp.forward(X_train, train=True)
@@ -186,11 +191,21 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
         train_loss_list.append(loss)
         test_loss_list.append(ce_loss.forward(mlp.forward(X_test, train=False), T_test))
 
+        if test_loss_list[-1] < best_test_loss:
+            best_test_loss = test_loss_list[-1]
+            best_epoch = epoch
+            early_stop_counter = 0
+        else:
+            early_stop_counter += 1
+
+        if early_stop_counter >= patience:
+            print(f'Early stopping at epoch {epoch + 1}')
+            break
+
         if (epoch + 1) % 100 == 0:
             print(f'Epoch {epoch + 1}, Loss: {loss}, Train Accuracy: {train_acc}, Test Accuracy: {test_acc}')
 
     return mlp, train_acc_list, test_acc_list, train_loss_list, test_loss_list
-
 
 
 # Training and Evaluating the Scikit-learn MLP

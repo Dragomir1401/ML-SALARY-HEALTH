@@ -82,9 +82,9 @@ def plot_learning_curves(train_acc, test_acc, train_loss, test_loss, title):
 #     plt.show()
 
 def plot_all_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual, 
-                             train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual, 
-                             train_acc_avc_sklearn, test_acc_avc_sklearn, 
-                             train_acc_salary_sklearn, test_acc_salary_sklearn):
+                                train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual, 
+                                train_acc_avc_sklearn, test_acc_avc_sklearn, 
+                                train_acc_salary_sklearn, test_acc_salary_sklearn):
     
     plot_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual, "Manual MLP - AVC")
     plot_learning_curves(train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual, "Manual MLP - Salary")
