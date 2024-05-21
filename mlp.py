@@ -153,11 +153,11 @@ def accuracy(y, t):
     return np.mean(predictions == t)
 
 # Training and Evaluating the MLP
-def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, hidden_size, output_size, epochs, learning_rate, l2_reg=0.0, patience=10):
+def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, hidden_size, output_size, epochs, learning_rate, l2_reg=0.0, patience=10, batch_size=32):
     layers = [
         Linear(input_size, hidden_size, l2_reg=l2_reg),
         ELU(),
-        Dropout(rate=0.5),  # Add dropout with 50% rate
+        Dropout(rate=0.5),
         Linear(hidden_size, output_size, l2_reg=l2_reg)
     ]
 
@@ -175,15 +175,26 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
     best_model_biases = None
 
     for epoch in range(epochs):
-        output = mlp.forward(X_train, train=True)
-        loss = ce_loss.forward(output, T_train)
-        dldy = ce_loss.backward(output, T_train)
-        mlp.backward(dldy)
+        # Shuffle the data at the beginning of each epoch
+        indices = np.arange(X_train.shape[0])
+        np.random.shuffle(indices)
+        X_train = X_train[indices]
+        T_train = T_train[indices]
 
-        for layer in mlp.layers:
-            if isinstance(layer, Linear):
-                layer.weight -= learning_rate * layer.dweight
-                layer.bias -= learning_rate * layer.dbias
+        for start_idx in range(0, X_train.shape[0], batch_size):
+            end_idx = min(start_idx + batch_size, X_train.shape[0])
+            X_batch = X_train[start_idx:end_idx]
+            T_batch = T_train[start_idx:end_idx]
+
+            output = mlp.forward(X_batch, train=True)
+            loss = ce_loss.forward(output, T_batch)
+            dldy = ce_loss.backward(output, T_batch)
+            mlp.backward(dldy)
+
+            for layer in mlp.layers:
+                if isinstance(layer, Linear):
+                    layer.weight -= learning_rate * layer.dweight
+                    layer.bias -= learning_rate * layer.dbias
 
         train_acc = accuracy(mlp.forward(X_train, train=False), T_train)
         test_acc = accuracy(mlp.forward(X_test, train=False), T_test)
@@ -192,11 +203,9 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
         train_loss_list.append(loss)
         test_loss_list.append(ce_loss.forward(mlp.forward(X_test, train=False), T_test))
 
-        # Early stopping check
         if test_loss_list[-1] < best_test_loss:
             best_test_loss = test_loss_list[-1]
             early_stop_counter = 0
-            # Save the best model weights
             best_model_weights = [layer.weight.copy() for layer in mlp.layers if isinstance(layer, Linear)]
             best_model_biases = [layer.bias.copy() for layer in mlp.layers if isinstance(layer, Linear)]
         else:
@@ -209,7 +218,6 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
         if (epoch + 1) % 100 == 0:
             print(f'Epoch {epoch + 1}, Loss: {loss}, Train Accuracy: {train_acc}, Test Accuracy: {test_acc}')
 
-    # Restore the best model weights
     if best_model_weights is not None and best_model_biases is not None:
         for i, layer in enumerate([layer for layer in mlp.layers if isinstance(layer, Linear)]):
             layer.weight = best_model_weights[i]
