@@ -152,7 +152,49 @@ def accuracy(y, t):
     predictions = np.argmax(y, axis=1)
     return np.mean(predictions == t)
 
-# Training and Evaluating the MLP
+class AdamOptimizer:
+    def __init__(self, layers, learning_rate=0.001, beta1=0.9, beta2=0.999, epsilon=1e-8):
+        self.learning_rate = learning_rate
+        self.beta1 = beta1
+        self.beta2 = beta2
+        self.epsilon = epsilon
+        self.layers = [layer for layer in layers if isinstance(layer, Linear)]
+        self.t = 0
+        self.m = [np.zeros_like(layer.weight) for layer in self.layers]
+        self.v = [np.zeros_like(layer.weight) for layer in self.layers]
+        self.m_bias = [np.zeros_like(layer.bias) for layer in self.layers]
+        self.v_bias = [np.zeros_like(layer.bias) for layer in self.layers]
+
+    def update(self):
+        self.t += 1
+        for i, layer in enumerate(self.layers):
+            # Compute biased first moment estimate
+            self.m[i] = self.beta1 * self.m[i] + (1 - self.beta1) * layer.dweight
+            # Compute biased second moment estimate
+            self.v[i] = self.beta2 * self.v[i] + (1 - self.beta2) * (layer.dweight ** 2)
+
+            # Compute bias-corrected first moment estimate
+            m_hat = self.m[i] / (1 - self.beta1 ** self.t)
+            # Compute bias-corrected second moment estimate
+            v_hat = self.v[i] / (1 - self.beta2 ** self.t)
+
+            # Update weights
+            layer.weight -= self.learning_rate * m_hat / (np.sqrt(v_hat) + self.epsilon)
+
+            # Compute biased first moment estimate for bias
+            self.m_bias[i] = self.beta1 * self.m_bias[i] + (1 - self.beta1) * layer.dbias
+            # Compute biased second moment estimate for bias
+            self.v_bias[i] = self.beta2 * self.v_bias[i] + (1 - self.beta2) * (layer.dbias ** 2)
+
+            # Compute bias-corrected first moment estimate for bias
+            m_hat_bias = self.m_bias[i] / (1 - self.beta1 ** self.t)
+            # Compute bias-corrected second moment estimate for bias
+            v_hat_bias = self.v_bias[i] / (1 - self.beta2 ** self.t)
+
+            # Update biases
+            layer.bias -= self.learning_rate * m_hat_bias / (np.sqrt(v_hat_bias) + self.epsilon)
+
+
 def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, hidden_size, output_size, epochs, learning_rate, l2_reg=0.0, patience=10, batch_size=32):
     layers = [
         Linear(input_size, hidden_size, l2_reg=l2_reg),
@@ -163,6 +205,7 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
 
     mlp = FeedForwardNetwork(layers)
     ce_loss = CrossEntropy()
+    optimizer = AdamOptimizer(layers, learning_rate=learning_rate)
 
     train_acc_list = []
     test_acc_list = []
@@ -175,7 +218,6 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
     best_model_biases = None
 
     for epoch in range(epochs):
-        # Shuffle the data at the beginning of each epoch
         indices = np.arange(X_train.shape[0])
         np.random.shuffle(indices)
         X_train = X_train[indices]
@@ -191,10 +233,7 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
             dldy = ce_loss.backward(output, T_batch)
             mlp.backward(dldy)
 
-            for layer in mlp.layers:
-                if isinstance(layer, Linear):
-                    layer.weight -= learning_rate * layer.dweight
-                    layer.bias -= learning_rate * layer.dbias
+            optimizer.update()
 
         train_acc = accuracy(mlp.forward(X_train, train=False), T_train)
         test_acc = accuracy(mlp.forward(X_test, train=False), T_test)
