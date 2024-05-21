@@ -224,8 +224,8 @@ def mlp_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train
     # Save results
     with open('output/mlp_results.txt', 'w') as f:
         f.write("Manual MLP Results:\n")
-        f.write(f"AVC Dataset - Train Accuracy: {train_acc_avc_manual[-1]}, Test Accuracy: {train_acc_avc_manual[-1]}\n")
-        f.write(f"Salary Dataset - Train Accuracy: {train_acc_salary_manual[-1]}, Test Accuracy: {train_acc_salary_manual[-1]}\n\n")
+        f.write(f"AVC Dataset - Train Accuracy: {train_acc_avc_manual[-1]}, Test Accuracy: {test_acc_avc_manual[-1]}\n")
+        f.write(f"Salary Dataset - Train Accuracy: {train_acc_salary_manual[-1]}, Test Accuracy: {test_acc_salary_manual[-1]}\n\n")
 
 
         f.write("Scikit-learn MLP Results:\n")
@@ -243,29 +243,29 @@ def __main__():
     if not os.path.exists('output'):
         os.makedirs('output')
         
-    # Analyze attributes
-    analyze_wrapper()
+    # # Analyze attributes
+    # analyze_wrapper()
     
-    # Numeric statistics
-    numeric_statistics_wrapper()
+    # # Numeric statistics
+    # numeric_statistics_wrapper()
 
-    # Boxplots for numeric attributes
-    boxplots_wrapper()
+    # # Boxplots for numeric attributes
+    # boxplots_wrapper()
 
-    # Categorial statistics
-    categorial_statistics_wrapper()
+    # # Categorial statistics
+    # categorial_statistics_wrapper()
 
-    # Histograms for categorical attributes
-    histograms_wrapper()
+    # # Histograms for categorical attributes
+    # histograms_wrapper()
     
-    # Class balance
-    class_balance_wrapper()
+    # # Class balance
+    # class_balance_wrapper()
     
-    # Correlation matrices for numerical attributes
-    correlation_matrix_wrapper()
+    # # Correlation matrices for numerical attributes
+    # correlation_matrix_wrapper()
     
-    # Correlation matrices for categorical attributes
-    categorial_correlation_matrix_wrapper()
+    # # Correlation matrices for categorical attributes
+    # categorial_correlation_matrix_wrapper()
 
     # Preprocess data
     processed_datasets, return_tuple_avc, return_tuple_salary = preprocess_data_wrapper()
