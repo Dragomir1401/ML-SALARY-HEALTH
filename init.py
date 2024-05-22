@@ -207,9 +207,9 @@ def mlp_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train
     hidden_size_avc = 128
     hidden_size_salary = 128
     epochs = 1000
-    learning_rate = 0.001
+    learning_rate = 0.00001
     l2_reg = 0.001
-    batch_size = 64
+    batch_size = 16
 
     # Manual MLP Training and Evaluation for AVC dataset
     mlp_manual_avc, train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual = train_and_evaluate_manual_mlp(
