@@ -87,10 +87,8 @@ def generate_comparative_table(reports, dataset_name):
     
     # Highlight maximum values for each metric
     for metric in metrics:
-        max_train_idx = table[table['Algorithm'].str.contains('Train')].groupby('Class')[metric].idxmax()
-        max_test_idx = table[table['Algorithm'].str.contains('Test')].groupby('Class')[metric].idxmax()
-        table.loc[max_train_idx, metric] = table.loc[max_train_idx, metric].apply(lambda x: f"**{x:.4f}**")
-        table.loc[max_test_idx, metric] = table.loc[max_test_idx, metric].apply(lambda x: f"**{x:.4f}**")
+        max_idx = table[metric].idxmax()
+        table.loc[max_idx, metric] = f"**{table.loc[max_idx, metric]:.4f}**"
     
     print(f"Comparative Table for {dataset_name}\n{table}\n")
     table.to_csv(f'output/{dataset_name}_comparative_table.csv', index=False)

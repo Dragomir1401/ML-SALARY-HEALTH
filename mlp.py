@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
+from imblearn.combine import SMOTEENN
 
 # Activation Functions
 def sigmoid(x):
@@ -177,18 +178,69 @@ class SGDOptimizer:
             layer.weight -= self.learning_rate * layer.dweight
             layer.bias -= self.learning_rate * layer.dbias
 
+class AdamOptimizer:
+    def __init__(self, layers, learning_rate=0.001, beta1=0.9, beta2=0.999, epsilon=1e-8):
+        self.learning_rate = learning_rate
+        self.beta1 = beta1
+        self.beta2 = beta2
+        self.epsilon = epsilon
+        self.layers = [layer for layer in layers if isinstance(layer, Linear)]
+        self.t = 0
+        self.m = [np.zeros_like(layer.weight) for layer in self.layers]
+        self.v = [np.zeros_like(layer.weight) for layer in self.layers]
+        self.m_bias = [np.zeros_like(layer.bias) for layer in self.layers]
+        self.v_bias = [np.zeros_like(layer.bias) for layer in self.layers]
+
+    def update(self):
+        self.t += 1
+        for i, layer in enumerate(self.layers):
+            # Compute biased first moment estimate
+            self.m[i] = self.beta1 * self.m[i] + (1 - self.beta1) * layer.dweight
+            # Compute biased second moment estimate
+            self.v[i] = self.beta2 * self.v[i] + (1 - self.beta2) * (layer.dweight ** 2)
+
+            # Compute bias-corrected first moment estimate
+            m_hat = self.m[i] / (1 - self.beta1 ** self.t)
+            # Compute bias-corrected second moment estimate
+            v_hat = self.v[i] / (1 - self.beta2 ** self.t)
+
+            # Update weights
+            layer.weight -= self.learning_rate * m_hat / (np.sqrt(v_hat) + self.epsilon)
+
+            # Compute biased first moment estimate for bias
+            self.m_bias[i] = self.beta1 * self.m_bias[i] + (1 - self.beta1) * layer.dbias
+            # Compute biased second moment estimate for bias
+            self.v_bias[i] = self.beta2 * self.v_bias[i] + (1 - self.beta2) * (layer.dbias ** 2)
+
+            # Compute bias-corrected first moment estimate for bias
+            m_hat_bias = self.m_bias[i] / (1 - self.beta1 ** self.t)
+            # Compute bias-corrected second moment estimate for bias
+            v_hat_bias = self.v_bias[i] / (1 - self.beta2 ** self.t)
+
+            # Update biases
+            layer.bias -= self.learning_rate * m_hat_bias / (np.sqrt(v_hat_bias) + self.epsilon)
+            
+# Function to apply SMOTEENN
+def apply_smote_enn(X_train, T_train):
+    smote_enn = SMOTEENN()
+    X_train_resampled, T_train_resampled = smote_enn.fit_resample(X_train, T_train)
+    return X_train_resampled, T_train_resampled
+
 # Training and Evaluating the MLP
 def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, hidden_size, output_size, epochs, learning_rate, l2_reg=0.0, batch_size=32):
+    # Apply SMOTEENN
+    # X_train, T_train = apply_smote_enn(X_train, T_train)
+    
     layers = [
         Linear(input_size, hidden_size, l2_reg=l2_reg),
-        ReLu(),
+        ELU(),
         Dropout(rate=0.5),
         Linear(hidden_size, output_size, l2_reg=l2_reg)
     ]
 
-    net = FeedForwardNetwork(layers)
-    cost_function = CrossEntropy()
-    optimizer_args = {'mode': 'SGD', 'lr': learning_rate}
+    mlp = FeedForwardNetwork(layers)
+    ce_loss = CrossEntropy()
+    optimizer = SGDOptimizer(mlp.layers, learning_rate=learning_rate)
 
     train_acc_list = []
     test_acc_list = []
@@ -196,39 +248,45 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
     test_loss_list = []
 
     for epoch in range(epochs):
-        for b_no, idx in enumerate(range(0, len(X_train), batch_size)):
-            x_batch = X_train[idx:idx + batch_size]
-            t_batch = T_train[idx:idx + batch_size]
+        indices = np.arange(X_train.shape[0])
+        np.random.shuffle(indices)
+        X_train = X_train[indices]
+        T_train = T_train[indices]
+
+        for start_idx in range(0, X_train.shape[0], batch_size):
+            end_idx = min(start_idx + batch_size, X_train.shape[0])
+            X_batch = X_train[start_idx:end_idx]
+            T_batch = T_train[start_idx:end_idx]
 
             # Forward pass
-            y = net.forward(x_batch, train=True)
-            loss = cost_function.forward(y, t_batch)
-
+            output = mlp.forward(X_batch, train=True)
+            
+            # Compute loss
+            loss = ce_loss.forward(output, T_batch)
+            
             # Backward pass (compute gradients)
-            dy = cost_function.backward(y, t_batch)
-            net.backward(dy)
+            dldy = ce_loss.backward(output, T_batch)
+            mlp.backward(dldy)
 
             # Update parameters with optimizer
-            net.update(**optimizer_args)
-
-            print(f'\rEpoch {epoch + 1:02d} | Batch {b_no:03d} | Train NLL: {loss:.6f} | Train Acc: {accuracy(y, t_batch) * 100:.2f}% ', end='')
+            optimizer.update()
 
         # Evaluate on training and test sets
-        train_output = net.forward(X_train, train=False)
-        test_output = net.forward(X_test, train=False)
+        train_output = mlp.forward(X_train, train=False)
+        test_output = mlp.forward(X_test, train=False)
         train_acc = accuracy(train_output, T_train)
         test_acc = accuracy(test_output, T_test)
-        train_loss = cost_function.forward(train_output, T_train)
-        test_loss = cost_function.forward(test_output, T_test)
-
         train_acc_list.append(train_acc)
         test_acc_list.append(test_acc)
-        train_loss_list.append(train_loss)
-        test_loss_list.append(test_loss)
+        train_loss_list.append(loss)
+        test_loss_list.append(ce_loss.forward(test_output, T_test))
 
+        # Add debugging information
+        test_loss = ce_loss.forward(test_output, T_test)
+        print(f'Epoch {epoch + 1}, Loss: {loss}, Train Accuracy: {train_acc}, Test Accuracy: {test_acc}')
         print(f'| Test NLL: {test_loss:.6f} | Test Acc: {test_acc * 100:.2f}%')
 
-    return net, train_acc_list, test_acc_list, train_loss_list, test_loss_list
+    return mlp, train_acc_list, test_acc_list, train_loss_list, test_loss_list
 
 # Training and Evaluating the Scikit-learn MLP
 def train_and_evaluate_sklearn_mlp(X_train, T_train, X_test, T_test, hidden_layer_sizes, max_iter, learning_rate_init, alpha):
