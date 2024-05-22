@@ -63,24 +63,6 @@ def plot_learning_curves(train_acc, test_acc, train_loss, test_loss, title):
     plt.tight_layout()
     plt.show()
     
-# def plot_learning_curves_without_loss(train_acc, test_acc, title):
-#     if isinstance(train_acc, float):
-#         train_acc = [train_acc]
-#     if isinstance(test_acc, float):
-#         test_acc = [test_acc]
-#     epochs = range(1, len(train_acc) + 1)
-#     plt.figure(figsize=(14, 6))
-
-#     plt.plot(epochs, train_acc, 'bo-', label='Train Accuracy')
-#     plt.plot(epochs, test_acc, 'ro-', label='Test Accuracy')
-#     plt.title(f'{title} - Accuracy')
-#     plt.xlabel('Epochs')
-#     plt.ylabel('Accuracy')
-#     plt.legend()
-
-#     plt.tight_layout()
-#     plt.show()
-
 def plot_all_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual, 
                                 train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual, 
                                 train_acc_avc_sklearn, test_acc_avc_sklearn, 
@@ -88,6 +70,27 @@ def plot_all_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_lo
     
     plot_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual, "Manual MLP - AVC")
     plot_learning_curves(train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual, "Manual MLP - Salary")
+
+def generate_comparative_table(reports, dataset_name):
+    metrics = ['precision', 'recall', 'f1-score']
+    table = pd.DataFrame(columns=['Algorithm', 'Class'] + metrics)
     
-    # plot_learning_curves_without_loss(train_acc_avc_sklearn, test_acc_avc_sklearn, "Scikit-learn MLP - AVC")
-    # plot_learning_curves_without_loss(train_acc_salary_sklearn, test_acc_salary_sklearn, "Scikit-learn MLP - Salary")
+    for algo, (train_report, test_report) in reports.items():
+        for class_label in train_report.index[:-3]:  # Exclude 'accuracy', 'macro avg', 'weighted avg'
+            train_row = [f'{algo} Train', class_label]
+            test_row = [f'{algo} Test', class_label]
+            for metric in metrics:
+                train_row.append(train_report.loc[class_label, metric])
+                test_row.append(test_report.loc[class_label, metric])
+            table = pd.concat([table, pd.Series(train_row, index=table.columns).to_frame().T], ignore_index=True)
+            table = pd.concat([table, pd.Series(test_row, index=table.columns).to_frame().T], ignore_index=True)
+    
+    # Highlight maximum values for each metric
+    for metric in metrics:
+        max_train_idx = table[table['Algorithm'].str.contains('Train')].groupby('Class')[metric].idxmax()
+        max_test_idx = table[table['Algorithm'].str.contains('Test')].groupby('Class')[metric].idxmax()
+        table.loc[max_train_idx, metric] = table.loc[max_train_idx, metric].apply(lambda x: f"**{x:.4f}**")
+        table.loc[max_test_idx, metric] = table.loc[max_test_idx, metric].apply(lambda x: f"**{x:.4f}**")
+    
+    print(f"Comparative Table for {dataset_name}\n{table}\n")
+    table.to_csv(f'output/{dataset_name}_comparative_table.csv', index=False)

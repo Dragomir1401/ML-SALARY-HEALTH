@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from mlp import train_and_evaluate_manual_mlp, train_and_evaluate_sklearn_mlp
 from logistic_regression import train_and_eval_logistic, train_and_eval_sklearn_logistic
-from evaluation import generate_confusion_matrices, generate_classification_reports, plot_all_learning_curves
+from evaluation import generate_confusion_matrices, generate_classification_reports, plot_all_learning_curves, generate_comparative_table
 from preprocess import impute_missing_values, handle_extreme_values, remove_redundant_attributes, preprocess_data, standardize_data, encode_categorical
 from visualisation import analyze_attributes, numeric_statistics, plot_boxplot, categorical_statistics, plot_histograms, plot_class_balance, plot_correlation_matrix, plot_categorical_correlation_matrix
 
@@ -114,32 +114,43 @@ def preprocess_data_wrapper():
     processed_datasets = {}
     
     for name, df in datasets.items():
+        print(f"Processing dataset: {name}")
+        
+        # Check if target column is present in the dataset
+        target_column = class_column_avc if 'avc' in name else class_column_salary
+        if target_column not in df.columns:
+            raise KeyError(f"Target column '{target_column}' not found in dataset '{name}'")
+
         # Separate columns
         numeric_columns = numeric_columns_avc if 'avc' in name else numeric_columns_salary
         categorical_columns = categorical_columns_avc if 'avc' in name else categorical_columns_salary
         
         # First eliminate highly correlated attributes
         df_reduced, dropped_columns = remove_redundant_attributes(df, numeric_columns, threshold=0.9)
-        
+        print(f"Dropped columns in {name}: {dropped_columns}")
+
         # Make a copy of numeric columns without the dropped columns
         numeric_columns_after_drop = [col for col in numeric_columns if col not in dropped_columns]
 
         # Impute missing values
         df_imputed = impute_missing_values(df_reduced, numeric_columns_after_drop, categorical_columns)
+        if target_column not in df_imputed.columns:
+            raise KeyError(f"Target column '{target_column}' missing after imputation in dataset '{name}'")
 
         # Handle extreme values
         df_outliers_handled = handle_extreme_values(df_imputed, numeric_columns_after_drop)
-        
+        if target_column not in df_outliers_handled.columns:
+            raise KeyError(f"Target column '{target_column}' missing after handling extreme values in dataset '{name}'")
+
         # Impute missing values again after handling extreme values
         df_outliers_imputed = impute_missing_values(df_outliers_handled, numeric_columns_after_drop, categorical_columns)
-
-        # Print what columns have been dropped and why
-        with open(f'output/{name}_dropped_columns.txt', 'w') as f:
-            f.write(f'Dropped columns: {dropped_columns}\n')
-            f.write(f'Reason: Highly correlated with other columns\n')
+        if target_column not in df_outliers_imputed.columns:
+            raise KeyError(f"Target column '{target_column}' missing after second imputation in dataset '{name}'")
 
         # Standardize numerical attributes
         df_standardized = standardize_data(df_outliers_imputed, numeric_columns_after_drop, method='standard')
+        if target_column not in df_standardized.columns:
+            raise KeyError(f"Target column '{target_column}' missing after standardization in dataset '{name}'")
 
         # Save the processed dataframe for logistic regression
         processed_datasets[name] = df_standardized
@@ -190,43 +201,48 @@ def logistic_regression_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test
 def mlp_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test):
     # Define the MLP architecture and training parameters
     input_size_avc = X_avc_train.shape[1]
-    hidden_size_avc = 10  # Example size, adjust based on experimentation
-    output_size_avc = len(np.unique(T_avc_train))  # Number of classes
-
     input_size_salary = X_salary_train.shape[1]
-    hidden_size_salary = 20  # Example size, adjust based on experimentation
-    output_size_salary = len(np.unique(T_salary_train))  # Number of classes
+    output_size = 2  # Binary classification
 
+    hidden_size_avc = 128
+    hidden_size_salary = 128
     epochs = 1000
-    learning_rate = 0.01
+    learning_rate = 0.001
+    l2_reg = 0.001
+    batch_size = 64
 
-    # Manual MLP Training and Evaluation
+    # Manual MLP Training and Evaluation for AVC dataset
     mlp_manual_avc, train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual = train_and_evaluate_manual_mlp(
-        X_avc_train, T_avc_train, X_avc_test, T_avc_test, input_size_avc, hidden_size_avc, output_size_avc, epochs, learning_rate)
+        X_avc_train, T_avc_train, X_avc_test, T_avc_test, input_size_avc, hidden_size_avc, output_size, epochs, learning_rate, l2_reg, batch_size
+    )
     
+    # Manual MLP Training and Evaluation for Salary dataset
     mlp_manual_salary, train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual = train_and_evaluate_manual_mlp(
-        X_salary_train, T_salary_train, X_salary_test, T_salary_test, input_size_salary, hidden_size_salary, output_size_salary, epochs, learning_rate)
+        X_salary_train, T_salary_train, X_salary_test, T_salary_test, input_size_salary, hidden_size_salary, output_size, epochs, learning_rate, l2_reg, batch_size
+    )
 
-    # Scikit-learn MLP Training and Evaluation
+    # Scikit-learn MLP Training and Evaluation for AVC dataset
     hidden_layer_sizes = (hidden_size_avc,)  # Single hidden layer example
     max_iter = 500
     learning_rate_init = 0.01
     alpha = 0.0001  # L2 regularization term
 
     train_acc_avc_sklearn, test_acc_avc_sklearn, model_avc_sklearn = train_and_evaluate_sklearn_mlp(
-        X_avc_train, T_avc_train, X_avc_test, T_avc_test, hidden_layer_sizes, max_iter, learning_rate_init, alpha)
+        X_avc_train, T_avc_train, X_avc_test, T_avc_test, hidden_layer_sizes, max_iter, learning_rate_init, alpha
+    )
 
+    # Scikit-learn MLP Training and Evaluation for Salary dataset
     hidden_layer_sizes = (hidden_size_salary,)  # Single hidden layer example
 
     train_acc_salary_sklearn, test_acc_salary_sklearn, model_salary_sklearn = train_and_evaluate_sklearn_mlp(
-        X_salary_train, T_salary_train, X_salary_test, T_salary_test, hidden_layer_sizes, max_iter, learning_rate_init, alpha)
+        X_salary_train, T_salary_train, X_salary_test, T_salary_test, hidden_layer_sizes, max_iter, learning_rate_init, alpha
+    )
 
     # Save results
     with open('output/mlp_results.txt', 'w') as f:
         f.write("Manual MLP Results:\n")
         f.write(f"AVC Dataset - Train Accuracy: {train_acc_avc_manual[-1]}, Test Accuracy: {test_acc_avc_manual[-1]}\n")
         f.write(f"Salary Dataset - Train Accuracy: {train_acc_salary_manual[-1]}, Test Accuracy: {test_acc_salary_manual[-1]}\n\n")
-
 
         f.write("Scikit-learn MLP Results:\n")
         f.write(f"AVC Dataset - Train Accuracy: {train_acc_avc_sklearn}, Test Accuracy: {test_acc_avc_sklearn}\n")
@@ -286,19 +302,34 @@ def __main__():
     train_acc_avc_sklearn, test_acc_avc_sklearn, train_acc_salary_sklearn, test_acc_salary_sklearn = return_tuple_sklearn
 
     # Generate and plot confusion matrices
-    # generate_confusion_matrices(mlp_manual_avc, model_avc_sklearn, X_avc_train, T_avc_train, X_avc_test, T_avc_test, "AVC")
-    # generate_confusion_matrices(mlp_manual_salary, model_salary_sklearn, X_salary_train, T_salary_train, X_salary_test, T_salary_test, "Salary")
+    generate_confusion_matrices(mlp_manual_avc, model_avc_sklearn, X_avc_train, T_avc_train, X_avc_test, T_avc_test, "AVC")
+    generate_confusion_matrices(mlp_manual_salary, model_salary_sklearn, X_salary_train, T_salary_train, X_salary_test, T_salary_test, "Salary")
     
     # Generate and print classification reports
-    # report_avc_train_manual, report_avc_test_manual, report_avc_train_sklearn, report_avc_test_sklearn = generate_classification_reports(
-    #     mlp_manual_avc, model_avc_sklearn, X_avc_train, T_avc_train, X_avc_test, T_avc_test, "AVC")
-    # report_salary_train_manual, report_salary_test_manual, report_salary_train_sklearn, report_salary_test_sklearn = generate_classification_reports(
-    #     mlp_manual_salary, model_salary_sklearn, X_salary_train, T_salary_train, X_salary_test, T_salary_test, "Salary")
+    report_train_manual_avc, report_test_manual_avc, report_train_sklearn_avc, report_test_sklearn_avc = generate_classification_reports(
+        mlp_manual_avc, model_avc_sklearn, X_avc_train, T_avc_train, X_avc_test, T_avc_test, "AVC")
+    report_train_manual_salary, report_test_manual_salary, report_train_sklearn_salary, report_test_sklearn_salary = generate_classification_reports(
+        mlp_manual_salary, model_salary_sklearn, X_salary_train, T_salary_train, X_salary_test, T_salary_test, "Salary")
     
-    # # Plot learning curves for avc and salary datasets
-    # plot_all_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual,
-    #                         train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual,
-    #                         train_acc_avc_sklearn, test_acc_avc_sklearn,
-    #                         train_acc_salary_sklearn, test_acc_salary_sklearn)
+    # Plot learning curves for avc and salary datasets
+    plot_all_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual,
+                                train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual,
+                                train_acc_avc_sklearn, test_acc_avc_sklearn,
+                                train_acc_salary_sklearn, test_acc_salary_sklearn)
+
+    # Create dictionaries for classification reports
+    reports_avc = {
+        'Manual MLP': (report_train_manual_avc, report_test_manual_avc),
+        'Scikit-learn MLP': (report_train_sklearn_avc, report_test_sklearn_avc),
+    }
+
+    reports_salary = {
+        'Manual MLP': (report_train_manual_salary, report_test_manual_salary),
+        'Scikit-learn MLP': (report_train_sklearn_salary, report_test_sklearn_salary),
+    }
+
+    # Generate comparative tables
+    generate_comparative_table(reports_avc, 'AVC')
+    generate_comparative_table(reports_salary, 'Salary')
 
 __main__()

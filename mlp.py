@@ -194,8 +194,8 @@ class AdamOptimizer:
             # Update biases
             layer.bias -= self.learning_rate * m_hat_bias / (np.sqrt(v_hat_bias) + self.epsilon)
 
-
-def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, hidden_size, output_size, epochs, learning_rate, l2_reg=0.0, patience=10, batch_size=32):
+# Training and Evaluating the MLP
+def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, hidden_size, output_size, epochs, learning_rate, l2_reg=0.0, batch_size=32):
     layers = [
         Linear(input_size, hidden_size, l2_reg=l2_reg),
         ELU(),
@@ -212,11 +212,6 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
     train_loss_list = []
     test_loss_list = []
 
-    best_test_loss = float('inf')
-    early_stop_counter = 0
-    best_model_weights = None
-    best_model_biases = None
-
     for epoch in range(epochs):
         indices = np.arange(X_train.shape[0])
         np.random.shuffle(indices)
@@ -228,39 +223,36 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
             X_batch = X_train[start_idx:end_idx]
             T_batch = T_train[start_idx:end_idx]
 
+            # Forward pass
             output = mlp.forward(X_batch, train=True)
+            
+            # Compute loss
             loss = ce_loss.forward(output, T_batch)
+            
+            # Backward pass (compute gradients)
             dldy = ce_loss.backward(output, T_batch)
             mlp.backward(dldy)
 
+            # Update parameters with optimizer
             optimizer.update()
 
-        train_acc = accuracy(mlp.forward(X_train, train=False), T_train)
-        test_acc = accuracy(mlp.forward(X_test, train=False), T_test)
+        # Evaluate on training and test sets
+        train_output = mlp.forward(X_train, train=False)
+        test_output = mlp.forward(X_test, train=False)
+        train_acc = accuracy(train_output, T_train)
+        test_acc = accuracy(test_output, T_test)
         train_acc_list.append(train_acc)
         test_acc_list.append(test_acc)
         train_loss_list.append(loss)
-        test_loss_list.append(ce_loss.forward(mlp.forward(X_test, train=False), T_test))
+        test_loss_list.append(ce_loss.forward(test_output, T_test))
 
-        if test_loss_list[-1] < best_test_loss:
-            best_test_loss = test_loss_list[-1]
-            early_stop_counter = 0
-            best_model_weights = [layer.weight.copy() for layer in mlp.layers if isinstance(layer, Linear)]
-            best_model_biases = [layer.bias.copy() for layer in mlp.layers if isinstance(layer, Linear)]
-        else:
-            early_stop_counter += 1
-
-        if early_stop_counter >= patience:
-            print(f'Early stopping at epoch {epoch + 1}')
-            break
-
+        # Add debugging information
         if (epoch + 1) % 100 == 0:
             print(f'Epoch {epoch + 1}, Loss: {loss}, Train Accuracy: {train_acc}, Test Accuracy: {test_acc}')
-
-    if best_model_weights is not None and best_model_biases is not None:
-        for i, layer in enumerate([layer for layer in mlp.layers if isinstance(layer, Linear)]):
-            layer.weight = best_model_weights[i]
-            layer.bias = best_model_biases[i]
+            # Print weight norms to monitor weight updates
+            for i, layer in enumerate(mlp.layers):
+                if isinstance(layer, Linear):
+                    print(f"Epoch {epoch + 1}, Layer {i} weight norm: {np.linalg.norm(layer.weight)}")
 
     return mlp, train_acc_list, test_acc_list, train_loss_list, test_loss_list
 

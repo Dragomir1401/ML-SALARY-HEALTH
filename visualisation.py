@@ -84,7 +84,6 @@ def plot_class_balance(df, class_column, title):
     plt.tight_layout()
     plt.show()
 
-
 # Function to calculate Pearson correlation and plot heatmap for numerical attributes
 def plot_correlation_matrix(df, numeric_columns, title):
     correlation_matrix = df[numeric_columns].corr(method='pearson')
