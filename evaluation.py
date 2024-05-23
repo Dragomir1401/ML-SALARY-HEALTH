@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from logistic_regression import predict_logistic
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classification_report
 
 def plot_confusion_matrix(y_true, y_pred, title):
@@ -10,7 +11,7 @@ def plot_confusion_matrix(y_true, y_pred, title):
     plt.title(title)
     plt.show()
 
-def generate_confusion_matrices(mlp_manual, model_sklearn, X_train, T_train, X_test, T_test, dataset_name):
+def generate_confusion_matrices_mlp(mlp_manual, model_sklearn, X_train, T_train, X_test, T_test, dataset_name):
     y_train_pred_manual = np.argmax(mlp_manual.forward(X_train, train=False), axis=1)
     y_test_pred_manual = np.argmax(mlp_manual.forward(X_test, train=False), axis=1)
     plot_confusion_matrix(T_train, y_train_pred_manual, f"Confusion Matrix - Manual MLP - {dataset_name} Train")
@@ -20,6 +21,22 @@ def generate_confusion_matrices(mlp_manual, model_sklearn, X_train, T_train, X_t
     y_test_pred_sklearn = model_sklearn.predict(X_test)
     plot_confusion_matrix(T_train, y_train_pred_sklearn, f"Confusion Matrix - Scikit-learn MLP - {dataset_name} Train")
     plot_confusion_matrix(T_test, y_test_pred_sklearn, f"Confusion Matrix - Scikit-learn MLP - {dataset_name} Test")
+    
+def generate_confusion_matrices_logreg(w_manual, model_sklearn, X_train, T_train, X_test, T_test, dataset_name):
+    # Generate predictions for manual logistic regression model
+    y_train_pred_manual = (predict_logistic(X_train, w_manual) >= 0.5).astype(int)
+    y_test_pred_manual = (predict_logistic(X_test, w_manual) >= 0.5).astype(int)
+    
+    plot_confusion_matrix(T_train, y_train_pred_manual, f"Confusion Matrix - Manual LogReg - {dataset_name} Train")
+    plot_confusion_matrix(T_test, y_test_pred_manual, f"Confusion Matrix - Manual LogReg - {dataset_name} Test")
+    
+    # Generate predictions for scikit-learn logistic regression model
+    y_train_pred_sklearn = model_sklearn.predict(X_train)
+    y_test_pred_sklearn = model_sklearn.predict(X_test)
+    
+    plot_confusion_matrix(T_train, y_train_pred_sklearn, f"Confusion Matrix - Scikit-learn LogReg - {dataset_name} Train")
+    plot_confusion_matrix(T_test, y_test_pred_sklearn, f"Confusion Matrix - Scikit-learn LogReg - {dataset_name} Test")
+
 
 def print_classification_report(y_true, y_pred, title):
     report = classification_report(y_true, y_pred, output_dict=True, zero_division=0)
@@ -27,7 +44,7 @@ def print_classification_report(y_true, y_pred, title):
     print(f"{title}\n{df}\n")
     return df
 
-def generate_classification_reports(mlp_manual, model_sklearn, X_train, T_train, X_test, T_test, dataset_name):
+def generate_classification_reports_mlp(mlp_manual, model_sklearn, X_train, T_train, X_test, T_test, dataset_name):
     y_train_pred_manual = np.argmax(mlp_manual.forward(X_train, train=False), axis=1)
     y_test_pred_manual = np.argmax(mlp_manual.forward(X_test, train=False), axis=1)
     report_train_manual = print_classification_report(T_train, y_train_pred_manual, f"Manual MLP - {dataset_name} Train")
@@ -39,6 +56,20 @@ def generate_classification_reports(mlp_manual, model_sklearn, X_train, T_train,
     report_test_sklearn = print_classification_report(T_test, y_test_pred_sklearn, f"Scikit-learn MLP - {dataset_name} Test")
     
     return report_train_manual, report_test_manual, report_train_sklearn, report_test_sklearn
+
+def generate_classification_reports_logreg(w_manual, model_sklearn, X_train, T_train, X_test, T_test, dataset_name):
+    y_train_pred_manual = (predict_logistic(X_train, w_manual) >= 0.5).astype(int)
+    y_test_pred_manual = (predict_logistic(X_test, w_manual) >= 0.5).astype(int)
+    report_train_manual = print_classification_report(T_train, y_train_pred_manual, f"Manual LogReg - {dataset_name} Train")
+    report_test_manual = print_classification_report(T_test, y_test_pred_manual, f"Manual LogReg - {dataset_name} Test")
+    
+    y_train_pred_sklearn = model_sklearn.predict(X_train)
+    y_test_pred_sklearn = model_sklearn.predict(X_test)
+    report_train_sklearn = print_classification_report(T_train, y_train_pred_sklearn, f"Scikit-learn LogReg - {dataset_name} Train")
+    report_test_sklearn = print_classification_report(T_test, y_test_pred_sklearn, f"Scikit-learn LogReg - {dataset_name} Test")
+    
+    return report_train_manual, report_test_manual, report_train_sklearn, report_test_sklearn
+
 
 def plot_learning_curves(train_acc, test_acc, train_loss, test_loss, title):
     epochs = range(1, len(train_acc) + 1)
@@ -66,12 +97,13 @@ def plot_learning_curves(train_acc, test_acc, train_loss, test_loss, title):
 def plot_all_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual, 
                                 train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual, 
                                 train_acc_avc_sklearn, test_acc_avc_sklearn, 
-                                train_acc_salary_sklearn, test_acc_salary_sklearn):
-    
-    plot_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual, "Manual MLP - AVC")
-    plot_learning_curves(train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual, "Manual MLP - Salary")
+                                train_acc_salary_sklearn, test_acc_salary_sklearn, algorithm_name):
+    plot_name = f"Manual {algorithm_name} - AVC"
+    plot_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual, plot_name)
+    plot_name = f"Manual {algorithm_name} - Salary"
+    plot_learning_curves(train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual, plot_name)
 
-def generate_comparative_table(reports, dataset_name):
+def generate_comparative_table(reports, dataset_name, algorithm_name):
     metrics = ['precision', 'recall', 'f1-score']
     table = pd.DataFrame(columns=['Algorithm', 'Class'] + metrics)
     
@@ -91,4 +123,4 @@ def generate_comparative_table(reports, dataset_name):
         table.loc[max_idx, metric] = f"**{table.loc[max_idx, metric]:.4f}**"
     
     print(f"Comparative Table for {dataset_name}\n{table}\n")
-    table.to_csv(f'output/{dataset_name}_comparative_table.csv', index=False)
+    table.to_csv(f'output/{dataset_name}_{algorithm_name}_comparative_table.csv', index=False)

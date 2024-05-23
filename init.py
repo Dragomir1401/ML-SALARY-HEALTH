@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from mlp import train_and_evaluate_manual_mlp, train_and_evaluate_sklearn_mlp
 from logistic_regression import train_and_eval_logistic, train_and_eval_sklearn_logistic
-from evaluation import generate_confusion_matrices, generate_classification_reports, plot_all_learning_curves, generate_comparative_table
+from evaluation import generate_confusion_matrices_mlp, generate_confusion_matrices_logreg, generate_classification_reports_logreg, generate_classification_reports_mlp, plot_all_learning_curves, generate_comparative_table
 from preprocess import impute_missing_values, handle_extreme_values, remove_redundant_attributes, preprocess_data, standardize_data, encode_categorical
 from visualisation import analyze_attributes, numeric_statistics, plot_boxplot, categorical_statistics, plot_histograms, plot_class_balance, plot_correlation_matrix, plot_categorical_correlation_matrix
 
@@ -170,7 +170,7 @@ def preprocess_data_wrapper():
     return_tuple_avc = (X_avc_full, T_avc_full, label_encoder_avc, onehot_encoder_avc, X_avc_train, T_avc_train, X_avc_test, T_avc_test)
     return_tuple_salary = (X_salary_full, T_salary_full, label_encoder_salary, onehot_encoder_salary, X_salary_train, T_salary_train, X_salary_test, T_salary_test)
 
-    return processed_datasets, return_tuple_avc, return_tuple_salary
+    return return_tuple_avc, return_tuple_salary
 
 
 def logistic_regression_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test):
@@ -198,6 +198,12 @@ def logistic_regression_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test
         f.write(f"AVC Dataset - Train Accuracy: {train_acc_avc_sklearn}, Test Accuracy: {test_acc_avc_sklearn}\n")
         f.write(f"Salary Dataset - Train Accuracy: {train_acc_salary_sklearn}, Test Accuracy: {test_acc_salary_sklearn}\n")
         
+    return_tuple_avc = (w_avc, model_avc, train_acc_avc, test_acc_avc, train_nll_avc, test_nll_avc)
+    return_tuple_salary = (w_salary, model_salary, train_acc_salary, test_acc_salary, train_nll_salary, test_nll_salary)
+    return_tuple_sklearn = (train_acc_avc_sklearn, test_acc_avc_sklearn, train_acc_salary_sklearn, test_acc_salary_sklearn)
+    
+    return return_tuple_avc, return_tuple_salary, return_tuple_sklearn
+        
 def mlp_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test):
     # Define the MLP architecture and training parameters
     input_size_avc = X_avc_train.shape[1]
@@ -207,7 +213,7 @@ def mlp_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train
     hidden_size_avc = 128
     hidden_size_salary = 128
     epochs = 1000
-    learning_rate = 0.00001
+    learning_rate = 0.00002
     l2_reg = 0.001
     batch_size = 16
 
@@ -254,6 +260,57 @@ def mlp_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train
     
     return return_tuple_avc, return_tuple_salary, return_tuple_sklearn
 
+
+def process_and_generate_reports(return_tuple_avc, return_tuple_salary, return_tuple_sklearn, 
+                                X_avc_train, T_avc_train, X_avc_test, T_avc_test, 
+                                X_salary_train, T_salary_train, X_salary_test, T_salary_test, 
+                                algorithm_name):
+    # Parse return tuples
+    model_manual_avc, model_sklearn_avc, train_acc_avc, test_acc_avc, train_nll_avc, test_nll_avc = return_tuple_avc
+    model_manual_salary, model_sklearn_salary, train_acc_salary, test_acc_salary, train_nll_salary, test_nll_salary = return_tuple_salary
+    train_acc_avc_sklearn, test_acc_avc_sklearn, train_acc_salary_sklearn, test_acc_salary_sklearn = return_tuple_sklearn
+    
+    # Generate and plot confusion matrices
+    if algorithm_name == "MLP":
+        generate_confusion_matrices_mlp(model_manual_avc, model_sklearn_avc, X_avc_train, T_avc_train, X_avc_test, T_avc_test, "AVC")
+        generate_confusion_matrices_mlp(model_manual_salary, model_sklearn_salary, X_salary_train, T_salary_train, X_salary_test, T_salary_test, "Salary")
+        
+        report_train_manual_avc, report_test_manual_avc, report_train_sklearn_avc, report_test_sklearn_avc = generate_classification_reports_mlp(
+            model_manual_avc, model_sklearn_avc, X_avc_train, T_avc_train, X_avc_test, T_avc_test, f"AVC {algorithm_name}")
+        report_train_manual_salary, report_test_manual_salary, report_train_sklearn_salary, report_test_sklearn_salary = generate_classification_reports_mlp(
+            model_manual_salary, model_sklearn_salary, X_salary_train, T_salary_train, X_salary_test, T_salary_test, f"Salary {algorithm_name}")
+    elif algorithm_name == "LogReg":
+        generate_confusion_matrices_logreg(model_manual_avc, model_sklearn_avc, X_avc_train, T_avc_train, X_avc_test, T_avc_test, "AVC")
+        generate_confusion_matrices_logreg(model_manual_salary, model_sklearn_salary, X_salary_train, T_salary_train, X_salary_test, T_salary_test, "Salary")
+        
+        report_train_manual_avc, report_test_manual_avc, report_train_sklearn_avc, report_test_sklearn_avc = generate_classification_reports_logreg(
+            model_manual_avc, model_sklearn_avc, X_avc_train, T_avc_train, X_avc_test, T_avc_test, f"AVC {algorithm_name}")
+        report_train_manual_salary, report_test_manual_salary, report_train_sklearn_salary, report_test_sklearn_salary = generate_classification_reports_logreg(
+            model_manual_salary, model_sklearn_salary, X_salary_train, T_salary_train, X_salary_test, T_salary_test, f"Salary {algorithm_name}")
+    else:
+        raise ValueError("Unsupported algorithm name")
+    
+    # Plot learning curves for avc and salary datasets
+    plot_all_learning_curves(train_acc_avc, test_acc_avc, train_nll_avc, test_nll_avc,
+                            train_acc_salary, test_acc_salary, train_nll_salary, test_nll_salary,
+                            train_acc_avc_sklearn, test_acc_avc_sklearn,
+                            train_acc_salary_sklearn, test_acc_salary_sklearn, algorithm_name)
+    
+    # Create dictionaries for classification reports
+    reports_avc = {
+        f'Manual {algorithm_name}': (report_train_manual_avc, report_test_manual_avc),
+        f'Scikit-learn {algorithm_name}': (report_train_sklearn_avc, report_test_sklearn_avc),
+    }
+    
+    reports_salary = {
+        f'Manual {algorithm_name}': (report_train_manual_salary, report_test_manual_salary),
+        f'Scikit-learn {algorithm_name}': (report_train_sklearn_salary, report_test_sklearn_salary),
+    }
+    
+    # Generate comparative tables
+    generate_comparative_table(reports_avc, 'AVC', algorithm_name)
+    generate_comparative_table(reports_salary, 'Salary', algorithm_name)
+
 def __main__():
     # Create output directory
     if not os.path.exists('output'):
@@ -284,52 +341,32 @@ def __main__():
     # categorial_correlation_matrix_wrapper()
 
     # Preprocess data
-    processed_datasets, return_tuple_avc, return_tuple_salary = preprocess_data_wrapper()
+    return_tuple_avc, return_tuple_salary = preprocess_data_wrapper()
     
     # Parse return tuples
     X_avc_full, T_avc_full, label_encoder_avc, onehot_encoder_avc, X_avc_train, T_avc_train, X_avc_test, T_avc_test = return_tuple_avc
     X_salary_full, T_salary_full, label_encoder_salary, onehot_encoder_salary, X_salary_train, T_salary_train, X_salary_test, T_salary_test = return_tuple_salary
-    
+
     # Logistic Regression
-    logistic_regression_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test)
+    return_tuple_avc_logreg, return_tuple_salary_logreg, return_tuple_sklearn_logreg = logistic_regression_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test)
+
+    # First call for LogReg algorithm
+    process_and_generate_reports(
+        return_tuple_avc_logreg, return_tuple_salary_logreg, return_tuple_sklearn_logreg,
+        X_avc_train, T_avc_train, X_avc_test, T_avc_test, 
+        X_salary_train, T_salary_train, X_salary_test, T_salary_test, 
+        "LogReg"
+    )
         
     # Define the MLP architecture and training parameters
-    return_tuple_avc, return_tuple_salary, return_tuple_sklearn = mlp_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test)
+    return_tuple_avc_mlp, return_tuple_salary_mlp, return_tuple_sklearn_mlp = mlp_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test)
     
-    # Parse return tuples
-    mlp_manual_avc, model_avc_sklearn, train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual = return_tuple_avc
-    mlp_manual_salary, model_salary_sklearn, train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual = return_tuple_salary
-    train_acc_avc_sklearn, test_acc_avc_sklearn, train_acc_salary_sklearn, test_acc_salary_sklearn = return_tuple_sklearn
-
-    # Generate and plot confusion matrices
-    generate_confusion_matrices(mlp_manual_avc, model_avc_sklearn, X_avc_train, T_avc_train, X_avc_test, T_avc_test, "AVC")
-    generate_confusion_matrices(mlp_manual_salary, model_salary_sklearn, X_salary_train, T_salary_train, X_salary_test, T_salary_test, "Salary")
-    
-    # Generate and print classification reports
-    report_train_manual_avc, report_test_manual_avc, report_train_sklearn_avc, report_test_sklearn_avc = generate_classification_reports(
-        mlp_manual_avc, model_avc_sklearn, X_avc_train, T_avc_train, X_avc_test, T_avc_test, "AVC")
-    report_train_manual_salary, report_test_manual_salary, report_train_sklearn_salary, report_test_sklearn_salary = generate_classification_reports(
-        mlp_manual_salary, model_salary_sklearn, X_salary_train, T_salary_train, X_salary_test, T_salary_test, "Salary")
-    
-    # Plot learning curves for avc and salary datasets
-    plot_all_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual,
-                                train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual,
-                                train_acc_avc_sklearn, test_acc_avc_sklearn,
-                                train_acc_salary_sklearn, test_acc_salary_sklearn)
-
-    # Create dictionaries for classification reports
-    reports_avc = {
-        'Manual MLP': (report_train_manual_avc, report_test_manual_avc),
-        'Scikit-learn MLP': (report_train_sklearn_avc, report_test_sklearn_avc),
-    }
-
-    reports_salary = {
-        'Manual MLP': (report_train_manual_salary, report_test_manual_salary),
-        'Scikit-learn MLP': (report_train_sklearn_salary, report_test_sklearn_salary),
-    }
-
-    # Generate comparative tables
-    generate_comparative_table(reports_avc, 'AVC')
-    generate_comparative_table(reports_salary, 'Salary')
+    # Second call for MLP algorithm
+    process_and_generate_reports(
+        return_tuple_avc_mlp, return_tuple_salary_mlp, return_tuple_sklearn_mlp,
+        X_avc_train, T_avc_train, X_avc_test, T_avc_test, 
+        X_salary_train, T_salary_train, X_salary_test, T_salary_test, 
+        "MLP"
+    )
 
 __main__()
