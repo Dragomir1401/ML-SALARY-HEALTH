@@ -1,5 +1,5 @@
 Algorithm,Dataset,precision,recall,f1-score
-Manual LogReg Train,LogReg,**0.5502**,**0.5021**,**0.4943**
+Manual LogReg Train,LogReg,**0.5315**,**0.5036**,**0.4985**
 Manual LogReg Test,LogReg,0.46330724070450097,0.5,0.4809547993905536
 Scikit-learn LogReg Train,LogReg,0.4787077826725404,0.49974450689831373,0.489
 Scikit-learn LogReg Test,LogReg,0.46330724070450097,0.5,0.4809547993905536

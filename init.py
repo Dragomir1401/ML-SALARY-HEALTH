@@ -31,11 +31,11 @@ class_column_salary = 'money'  # This is the class column in the Salary dataset
 
 # Preprocessing for full, train, and test datasets
 datasets = {
-    'avc_full': avc_df_full,
     'avc_train': avc_df_train,
-    'avc_test': avc_df_test,
-    'salary_full': salary_df_full,
     'salary_train': salary_df_train,
+    'avc_full': avc_df_full,
+    'salary_full': salary_df_full,
+    'avc_test': avc_df_test,
     'salary_test': salary_df_test
 }
 
@@ -112,63 +112,88 @@ def categorial_correlation_matrix_wrapper():
     
 def preprocess_data_wrapper():
     processed_datasets = {}
-    
+    fitted_scalers = {}
+    fitted_imputers = {}
+    fitted_encoders = {}
+
     for name, df in datasets.items():
+        # Skip the full datasets
+        if 'full' in name:
+            continue
+
         print(f"Processing dataset: {name}")
-        
-        # Check if target column is present in the dataset
+
+        # Determine the target column based on dataset name
         target_column = class_column_avc if 'avc' in name else class_column_salary
         if target_column not in df.columns:
             raise KeyError(f"Target column '{target_column}' not found in dataset '{name}'")
 
-        # Separate columns
+        # Separate numeric and categorical columns
         numeric_columns = numeric_columns_avc if 'avc' in name else numeric_columns_salary
         categorical_columns = categorical_columns_avc if 'avc' in name else categorical_columns_salary
-        
-        # First eliminate highly correlated attributes
-        df_reduced, dropped_columns = remove_redundant_attributes(df, numeric_columns, threshold=0.5)
-        print(f"Dropped columns in {name}: {dropped_columns}")
 
-        # Make a copy of numeric columns without the dropped columns
-        numeric_columns_after_drop = [col for col in numeric_columns if col not in dropped_columns]
+        if 'train' in name:
+            # Eliminate highly correlated attributes
+            df_reduced, dropped_columns = remove_redundant_attributes(df, numeric_columns, threshold=0.5)
+            print(f"Dropped columns in {name}: {dropped_columns}")
 
-        # Impute missing values
-        df_imputed = impute_missing_values(df_reduced, numeric_columns_after_drop, categorical_columns)
-        if target_column not in df_imputed.columns:
-            raise KeyError(f"Target column '{target_column}' missing after imputation in dataset '{name}'")
+            # Adjust numeric columns after dropping correlated ones
+            numeric_columns_after_drop = [col for col in numeric_columns if col not in dropped_columns]
 
-        # Handle extreme values
-        df_outliers_handled = handle_extreme_values(df_imputed, numeric_columns_after_drop)
-        if target_column not in df_outliers_handled.columns:
-            raise KeyError(f"Target column '{target_column}' missing after handling extreme values in dataset '{name}'")
+            # Impute missing values
+            df_imputed, imputer = impute_missing_values(df_reduced, numeric_columns_after_drop, categorical_columns, fit=True)
+            fitted_imputers[name] = imputer
 
-        # Impute missing values again after handling extreme values
-        df_outliers_imputed = impute_missing_values(df_outliers_handled, numeric_columns_after_drop, categorical_columns)
-        if target_column not in df_outliers_imputed.columns:
-            raise KeyError(f"Target column '{target_column}' missing after second imputation in dataset '{name}'")
+            # Handle extreme values and impute again
+            df_outliers_handled = handle_extreme_values(df_imputed, numeric_columns_after_drop)
+            df_outliers_imputed, imputer = impute_missing_values(df_outliers_handled, numeric_columns_after_drop, categorical_columns, fit=True)
+            fitted_imputers[name] = imputer
 
-        # Standardize numerical attributes
-        df_standardized = standardize_data(df_outliers_imputed, numeric_columns_after_drop, method='standard')
-        if target_column not in df_standardized.columns:
-            raise KeyError(f"Target column '{target_column}' missing after standardization in dataset '{name}'")
+            # Standardize numerical attributes
+            df_standardized, scaler = standardize_data(df_outliers_imputed, numeric_columns_after_drop, method='standard', fit=True)
+            fitted_scalers[name] = scaler
 
-        # Save the processed dataframe for logistic regression
-        processed_datasets[name] = df_standardized
-        
-        # Write the processed data to files for testing
-        df_standardized.to_csv(f'output/{name}_processed.csv', index=False)
-    
-    # Encode categorical variables and prepare datasets for logistic regression
-    X_avc_full, T_avc_full, label_encoder_avc, onehot_encoder_avc = preprocess_data(processed_datasets['avc_full'], class_column_avc)
-    X_avc_train, T_avc_train, _, _ = preprocess_data(processed_datasets['avc_train'], class_column_avc, encoder=onehot_encoder_avc)
-    X_avc_test, T_avc_test, _, _ = preprocess_data(processed_datasets['avc_test'], class_column_avc, encoder=onehot_encoder_avc)
+            # Encode categorical variables
+            df_encoded, label_encoder, onehot_encoder = encode_categorical(df_standardized, target_column, encoder=None)
+            fitted_encoders[name] = (label_encoder, onehot_encoder)
 
-    X_salary_full, T_salary_full, label_encoder_salary, onehot_encoder_salary = preprocess_data(processed_datasets['salary_full'], class_column_salary)
-    X_salary_train, T_salary_train, _, _ = preprocess_data(processed_datasets['salary_train'], class_column_salary, encoder=onehot_encoder_salary)
-    X_salary_test, T_salary_test, _, _ = preprocess_data(processed_datasets['salary_test'], class_column_salary, encoder=onehot_encoder_salary)
-    
-    return_tuple_avc = (X_avc_full, T_avc_full, label_encoder_avc, onehot_encoder_avc, X_avc_train, T_avc_train, X_avc_test, T_avc_test)
-    return_tuple_salary = (X_salary_full, T_salary_full, label_encoder_salary, onehot_encoder_salary, X_salary_train, T_salary_train, X_salary_test, T_salary_test)
+            processed_datasets[name] = df_encoded
+            processed_datasets[name].to_csv(f'output/{name}_processed.csv', index=False)
+
+        else:
+            train_name = name.replace('test', 'train').replace('full', 'train')
+            dropped_columns = [col for col in numeric_columns if col not in processed_datasets[train_name].columns]
+            numeric_columns_after_drop = [col for col in numeric_columns if col not in dropped_columns]
+
+            imputer = fitted_imputers[train_name]
+            scaler = fitted_scalers[train_name]
+
+            # Apply the transformations using the fitted objects
+            df_imputed, _ = impute_missing_values(df, numeric_columns_after_drop, categorical_columns, fit=False, imputer=imputer)
+            df_outliers_handled = handle_extreme_values(df_imputed, numeric_columns_after_drop)
+            df_outliers_imputed, _ = impute_missing_values(df_outliers_handled, numeric_columns_after_drop, categorical_columns, fit=False, imputer=imputer)
+            df_standardized = standardize_data(df_outliers_imputed, numeric_columns_after_drop, method='standard', fit=False, scaler=scaler)
+            df_encoded, _, _ = encode_categorical(df_standardized, target_column, encoder=None)
+
+            # Ensure the test data has the same columns as the train data
+            train_columns = processed_datasets[train_name].columns
+            for col in train_columns:
+                if col not in df_encoded.columns:
+                    df_encoded[col] = 0
+            df_encoded = df_encoded[train_columns]
+
+            processed_datasets[name] = df_encoded
+            processed_datasets[name].to_csv(f'output/{name}_processed.csv', index=False)
+
+    # Prepare datasets for logistic regression
+    X_avc_train, T_avc_train, _, _ = preprocess_data(processed_datasets['avc_train'], class_column_avc, encoder=None)
+    X_avc_test, T_avc_test, _, _ = preprocess_data(processed_datasets['avc_test'], class_column_avc, encoder=None)
+
+    X_salary_train, T_salary_train, _, _ = preprocess_data(processed_datasets['salary_train'], class_column_salary, encoder=None)
+    X_salary_test, T_salary_test, _, _ = preprocess_data(processed_datasets['salary_test'], class_column_salary, encoder=None)
+
+    return_tuple_avc = (X_avc_train, T_avc_train, X_avc_test, T_avc_test)
+    return_tuple_salary = (X_salary_train, T_salary_train, X_salary_test, T_salary_test)
 
     return return_tuple_avc, return_tuple_salary
 
@@ -344,8 +369,8 @@ def __main__():
     return_tuple_avc, return_tuple_salary = preprocess_data_wrapper()
     
     # Parse return tuples
-    X_avc_full, T_avc_full, label_encoder_avc, onehot_encoder_avc, X_avc_train, T_avc_train, X_avc_test, T_avc_test = return_tuple_avc
-    X_salary_full, T_salary_full, label_encoder_salary, onehot_encoder_salary, X_salary_train, T_salary_train, X_salary_test, T_salary_test = return_tuple_salary
+    X_avc_train, T_avc_train, X_avc_test, T_avc_test = return_tuple_avc
+    X_salary_train, T_salary_train, X_salary_test, T_salary_test = return_tuple_salary
 
     # Logistic Regression
     return_tuple_avc_logreg, return_tuple_salary_logreg, return_tuple_sklearn_logreg = logistic_regression_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test)
