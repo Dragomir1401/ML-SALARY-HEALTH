@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, log_loss
-
+from imblearn.over_sampling import SMOTE
 
 def logistic(x):
     x = np.array(x, dtype=float)  # Ensure x is a numpy array with float type

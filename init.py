@@ -126,7 +126,7 @@ def preprocess_data_wrapper():
         categorical_columns = categorical_columns_avc if 'avc' in name else categorical_columns_salary
         
         # First eliminate highly correlated attributes
-        df_reduced, dropped_columns = remove_redundant_attributes(df, numeric_columns, threshold=0.9)
+        df_reduced, dropped_columns = remove_redundant_attributes(df, numeric_columns, threshold=0.5)
         print(f"Dropped columns in {name}: {dropped_columns}")
 
         # Make a copy of numeric columns without the dropped columns
@@ -334,10 +334,10 @@ def __main__():
     # # Class balance
     # class_balance_wrapper()
     
-    # # Correlation matrices for numerical attributes
+    # Correlation matrices for numerical attributes
     # correlation_matrix_wrapper()
     
-    # # Correlation matrices for categorical attributes
+    # # # Correlation matrices for categorical attributes
     # categorial_correlation_matrix_wrapper()
 
     # Preprocess data
