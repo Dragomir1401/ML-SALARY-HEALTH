@@ -105,17 +105,17 @@ def plot_all_learning_curves(train_acc_avc_manual, test_acc_avc_manual, train_lo
 
 def generate_comparative_table(reports, dataset_name, algorithm_name):
     metrics = ['precision', 'recall', 'f1-score']
-    table = pd.DataFrame(columns=['Algorithm', 'Class'] + metrics)
+    table = pd.DataFrame(columns=['Algorithm', 'Dataset'] + metrics)
     
     for algo, (train_report, test_report) in reports.items():
-        for class_label in train_report.index[:-3]:  # Exclude 'accuracy', 'macro avg', 'weighted avg'
-            train_row = [f'{algo} Train', class_label]
-            test_row = [f'{algo} Test', class_label]
-            for metric in metrics:
-                train_row.append(train_report.loc[class_label, metric])
-                test_row.append(test_report.loc[class_label, metric])
-            table = pd.concat([table, pd.Series(train_row, index=table.columns).to_frame().T], ignore_index=True)
-            table = pd.concat([table, pd.Series(test_row, index=table.columns).to_frame().T], ignore_index=True)
+        # Extract macro avg metrics for train and test datasets
+        train_row = [f'{algo} Train', algorithm_name]
+        test_row = [f'{algo} Test', algorithm_name]
+        for metric in metrics:
+            train_row.append(train_report.loc['macro avg', metric])
+            test_row.append(test_report.loc['macro avg', metric])
+        table = pd.concat([table, pd.Series(train_row, index=table.columns).to_frame().T], ignore_index=True)
+        table = pd.concat([table, pd.Series(test_row, index=table.columns).to_frame().T], ignore_index=True)
     
     # Highlight maximum values for each metric
     for metric in metrics:
