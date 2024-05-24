@@ -1,6 +1,9 @@
 import os
 import pandas as pd
+from sklearn.model_selection import GridSearchCV
+from sklearn.linear_model import LogisticRegression
 from imblearn.over_sampling import SMOTE, ADASYN, SMOTEN, BorderlineSMOTE, SVMSMOTE
+from imblearn.under_sampling import TomekLinks
 from mlp import train_and_evaluate_manual_mlp, train_and_evaluate_sklearn_mlp
 from logistic_regression import train_and_eval_logistic, train_and_eval_sklearn_logistic
 from evaluation import generate_confusion_matrices_mlp, generate_confusion_matrices_logreg, generate_classification_reports_logreg, generate_classification_reports_mlp, plot_all_learning_curves, generate_comparative_table
@@ -158,10 +161,16 @@ def preprocess_data_wrapper():
             fitted_encoders[name] = (label_encoder, onehot_encoder)
             
             # Apply SMOTE to balance the classes
-            oversampler = SVMSMOTE()
-            X_oversampled, T_oversampled = oversampler.fit_resample(df_encoded.drop(columns=[target_column]), df_encoded[target_column])
-            df_encoded = pd.DataFrame(X_oversampled, columns=df_encoded.drop(columns=[target_column]).columns)
-            df_encoded[target_column] = T_oversampled
+            # oversampler = SMOTEN()
+            # X_oversampled, T_oversampled = oversampler.fit_resample(df_encoded.drop(columns=[target_column]), df_encoded[target_column])
+            # df_encoded = pd.DataFrame(X_oversampled, columns=df_encoded.drop(columns=[target_column]).columns)
+            # df_encoded[target_column] = T_oversampled
+            
+            # Apply Tomek Links to balance the classes
+            tl = TomekLinks()
+            X_resampled, y_resampled = tl.fit_resample(df_encoded.drop(columns=[target_column]), df_encoded[target_column])
+            df_encoded = pd.DataFrame(X_resampled, columns=df_encoded.drop(columns=[target_column]).columns)
+            df_encoded[target_column] = y_resampled
 
             processed_datasets[name] = df_encoded
             processed_datasets[name].to_csv(f'output/{name}_processed.csv', index=False)
@@ -341,6 +350,29 @@ def process_and_generate_reports(return_tuple_avc, return_tuple_salary, return_t
     # Generate comparative tables
     generate_comparative_table(reports_avc, 'AVC', algorithm_name)
     generate_comparative_table(reports_salary, 'Salary', algorithm_name)
+    
+def find_best_logreg_hyperparams(X_train, T_train, X_test, T_test):
+    # Define the parameter grid
+    param_grid = {
+        'C': [0.01, 0.1, 1, 10, 100],
+        'penalty': ['l1', 'l2'],
+        'solver': ['liblinear']
+    }
+
+    # Initialize the logistic regression model
+    log_reg = LogisticRegression()
+
+    # Initialize GridSearchCV
+    grid_search = GridSearchCV(estimator=log_reg, param_grid=param_grid, cv=5, scoring='f1', verbose=1, n_jobs=-1)
+
+    # Fit GridSearchCV on the training data
+    grid_search.fit(X_train, T_train)
+
+    # Get the best model
+    best_model = grid_search.best_estimator_
+
+    # Return the best model and the report
+    return best_model
 
 def __main__():
     # Create output directory
@@ -374,11 +406,20 @@ def __main__():
     # Preprocess data
     return_tuple_avc, return_tuple_salary = preprocess_data_wrapper()
     
-    boxplots_wrapper(avc_df_train, salary_df_train)
+    # boxplots_wrapper(avc_df_train, salary_df_train)
     
     # Parse return tuples
     X_avc_train, T_avc_train, X_avc_test, T_avc_test = return_tuple_avc
     X_salary_train, T_salary_train, X_salary_test, T_salary_test = return_tuple_salary
+    
+    # # Find best hyperparameters for logistic regression
+    # best_model_avc = find_best_logreg_hyperparams(X_avc_train, T_avc_train, X_avc_test, T_avc_test)
+    # best_model_salary = find_best_logreg_hyperparams(X_salary_train, T_salary_train, X_salary_test, T_salary_test)
+    
+    # # Print best hyperparameters
+    # print(f"Best hyperparameters for AVC dataset: {best_model_avc.get_params()}")
+    # print(f"Best hyperparameters for Salary dataset: {best_model_salary.get_params()}")
+    
 
     # Logistic Regression
     return_tuple_avc_logreg, return_tuple_salary_logreg, return_tuple_sklearn_logreg = logistic_regression_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test)
@@ -391,15 +432,15 @@ def __main__():
         "LogReg"
     )
         
-    # Define the MLP architecture and training parameters
-    return_tuple_avc_mlp, return_tuple_salary_mlp, return_tuple_sklearn_mlp = mlp_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test)
+    # # Define the MLP architecture and training parameters
+    # return_tuple_avc_mlp, return_tuple_salary_mlp, return_tuple_sklearn_mlp = mlp_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test)
     
-    # Second call for MLP algorithm
-    process_and_generate_reports(
-        return_tuple_avc_mlp, return_tuple_salary_mlp, return_tuple_sklearn_mlp,
-        X_avc_train, T_avc_train, X_avc_test, T_avc_test, 
-        X_salary_train, T_salary_train, X_salary_test, T_salary_test, 
-        "MLP"
-    )
+    # # Second call for MLP algorithm
+    # process_and_generate_reports(
+    #     return_tuple_avc_mlp, return_tuple_salary_mlp, return_tuple_sklearn_mlp,
+    #     X_avc_train, T_avc_train, X_avc_test, T_avc_test, 
+    #     X_salary_train, T_salary_train, X_salary_test, T_salary_test, 
+    #     "MLP"
+    # )
 
 __main__()
