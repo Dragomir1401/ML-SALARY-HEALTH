@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-import numpy as np
+from imblearn.over_sampling import SMOTE, ADASYN, SMOTEN, BorderlineSMOTE, SVMSMOTE
 from mlp import train_and_evaluate_manual_mlp, train_and_evaluate_sklearn_mlp
 from logistic_regression import train_and_eval_logistic, train_and_eval_sklearn_logistic
 from evaluation import generate_confusion_matrices_mlp, generate_confusion_matrices_logreg, generate_classification_reports_logreg, generate_classification_reports_mlp, plot_all_learning_curves, generate_comparative_table
@@ -62,10 +62,10 @@ def numeric_statistics_wrapper():
     with open('output/salary_numeric_statistics.txt', 'w') as f:
         f.write(salary_numeric_statistics.to_string())
         
-def boxplots_wrapper():
+def boxplots_wrapper(dataset_avc, dataset_salary):
     # Boxplot for numeric attributes
-    plot_boxplot(avc_df_full, numeric_columns_avc, 'AVC - Boxplot for Numeric Attributes')
-    plot_boxplot(salary_df_full, numeric_columns_salary, 'Salary - Boxplot for Numeric Attributes')
+    plot_boxplot(dataset_avc, numeric_columns_avc, 'AVC - Boxplot for Numeric Attributes')
+    plot_boxplot(dataset_salary, numeric_columns_salary, 'Salary - Boxplot for Numeric Attributes')
     
 def categorial_statistics_wrapper():
     avc_categorical_statistics = categorical_statistics(avc_df_full, categorical_columns_avc)
@@ -156,6 +156,12 @@ def preprocess_data_wrapper():
             # Encode categorical variables
             df_encoded, label_encoder, onehot_encoder = encode_categorical(df_standardized, target_column, encoder=None)
             fitted_encoders[name] = (label_encoder, onehot_encoder)
+            
+            # Apply SMOTE to balance the classes
+            oversampler = SVMSMOTE()
+            X_oversampled, T_oversampled = oversampler.fit_resample(df_encoded.drop(columns=[target_column]), df_encoded[target_column])
+            df_encoded = pd.DataFrame(X_oversampled, columns=df_encoded.drop(columns=[target_column]).columns)
+            df_encoded[target_column] = T_oversampled
 
             processed_datasets[name] = df_encoded
             processed_datasets[name].to_csv(f'output/{name}_processed.csv', index=False)
@@ -348,7 +354,7 @@ def __main__():
     # numeric_statistics_wrapper()
 
     # # Boxplots for numeric attributes
-    # boxplots_wrapper()
+    # boxplots_wrapper(avc_df_full, salary_df_full)
 
     # # Categorial statistics
     # categorial_statistics_wrapper()
@@ -367,6 +373,8 @@ def __main__():
 
     # Preprocess data
     return_tuple_avc, return_tuple_salary = preprocess_data_wrapper()
+    
+    boxplots_wrapper(avc_df_train, salary_df_train)
     
     # Parse return tuples
     X_avc_train, T_avc_train, X_avc_test, T_avc_test = return_tuple_avc

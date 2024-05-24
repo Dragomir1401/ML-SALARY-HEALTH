@@ -1,7 +1,6 @@
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
-from imblearn.combine import SMOTEENN
 
 # Activation Functions
 def sigmoid(x):
@@ -142,7 +141,7 @@ class Linear:
     def __init__(self, input_dim, output_dim, l2_reg=0.01):
         self.input_dim = input_dim
         self.output_dim = output_dim
-        self.weight = np.random.randn(input_dim, output_dim) * np.sqrt(2 / input_dim)  # He Initialization
+        self.weight = np.random.randn(input_dim, output_dim) * np.sqrt(2 / input_dim)
         self.bias = np.zeros((1, output_dim))
         self.l2_reg = l2_reg
         self.dweight = np.zeros_like(self.weight)
@@ -228,8 +227,6 @@ def apply_smote_enn(X_train, T_train):
 
 # Training and Evaluating the MLP
 def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, hidden_size, output_size, epochs, learning_rate, l2_reg=0.0, batch_size=32):
-    # Apply SMOTEENN
-    # X_train, T_train = apply_smote_enn(X_train, T_train)
     
     layers = [
         Linear(input_size, hidden_size, l2_reg=l2_reg),
