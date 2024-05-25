@@ -10,27 +10,27 @@ from evaluation import generate_confusion_matrices_mlp, generate_confusion_matri
 from preprocess import impute_missing_values, handle_extreme_values, remove_redundant_attributes, preprocess_data, standardize_data, encode_categorical
 from visualisation import analyze_attributes, numeric_statistics, plot_boxplot, categorical_statistics, plot_histograms, plot_class_balance, plot_correlation_matrix, plot_categorical_correlation_matrix
 
-# Reading the CSV files
+# Reading the CSV files for avc
 avc_df_full = pd.read_csv('tema2_AVC/AVC_full.csv')
 avc_df_train = pd.read_csv('tema2_AVC/AVC_train.csv')
 avc_df_test = pd.read_csv('tema2_AVC/AVC_test.csv')
 
-# Reading the CSV files
+# Reading the CSV files for salary
 salary_df_full = pd.read_csv('tema2_SalaryPrediction/SalaryPrediction_full.csv')
 salary_df_train = pd.read_csv('tema2_SalaryPrediction/SalaryPrediction_train.csv')
 salary_df_test = pd.read_csv('tema2_SalaryPrediction/SalaryPrediction_test.csv')
 
-# Numeric statistics
+# Numeric columns
 numeric_columns_avc = ['mean_blood_sugar_level', 'body_mass_indicator', 'years_old', 'analysis_results', 'biological_age_index']
 numeric_columns_salary = ['fnl', 'hpw', 'gain', 'edu_int', 'years', 'loss', 'prod']
 
-# Categorical statistics
+# Categorical columns
 categorical_columns_avc = ['cardiovascular_issues', 'job_category', 'sex', 'tobacco_usage', 'high_blood_pressure', 'married', 'living_area', 'chaotic_sleep', 'cerebrovascular_accident']
 categorical_columns_salary = ['relation', 'country', 'job', 'work_type', 'partner', 'edu', 'gender', 'race', 'gtype', 'money']
 
 # Define the class columns for each dataset
-class_column_avc = 'cerebrovascular_accident'  # This is the class column in the AVC dataset
-class_column_salary = 'money'  # This is the class column in the Salary dataset
+class_column_avc = 'cerebrovascular_accident'
+class_column_salary = 'money'
 
 # Preprocessing for full, train, and test datasets
 datasets = {
@@ -42,18 +42,20 @@ datasets = {
     'salary_test': salary_df_test
 }
 
+# Wrapper functions for analysis of the datasets
 def analyze_wrapper():
     # Analyze attributes
     avc_attribute_info = analyze_attributes(avc_df_full)
     salary_attribute_info = analyze_attributes(salary_df_full)
     
-    # Open 2 files in dir output/
+    # Write the attribute information to files
     with open('output/avc_attribute_info.txt', 'w') as f:
         f.write(avc_attribute_info.to_string())
         
     with open('output/salary_attribute_info.txt', 'w') as f:
         f.write(salary_attribute_info.to_string())
-        
+
+# Wrapper functions for numeric statistics
 def numeric_statistics_wrapper():
     avc_numeric_statistics = numeric_statistics(avc_df_full, numeric_columns_avc)
     salary_numeric_statistics = numeric_statistics(salary_df_full, numeric_columns_salary)
@@ -64,12 +66,14 @@ def numeric_statistics_wrapper():
         
     with open('output/salary_numeric_statistics.txt', 'w') as f:
         f.write(salary_numeric_statistics.to_string())
-        
+    
+# Wrapper functions for boxplots    
 def boxplots_wrapper(dataset_avc, dataset_salary):
     # Boxplot for numeric attributes
     plot_boxplot(dataset_avc, numeric_columns_avc, 'AVC - Boxplot for Numeric Attributes')
     plot_boxplot(dataset_salary, numeric_columns_salary, 'Salary - Boxplot for Numeric Attributes')
-    
+
+# Wrapper functions for categorical statistics
 def categorial_statistics_wrapper():
     avc_categorical_statistics = categorical_statistics(avc_df_full, categorical_columns_avc)
     salary_categorical_statistics = categorical_statistics(salary_df_full, categorical_columns_salary)
@@ -81,11 +85,13 @@ def categorial_statistics_wrapper():
     with open('output/salary_categorical_statistics.txt', 'w') as f:
         f.write(salary_categorical_statistics.to_string())
         
+# Wrapper functions for histograms
 def histograms_wrapper():
     # Histograms for categorical attributes and save them
     plot_histograms(avc_df_full, categorical_columns_avc, 'AVC - Histograms for Categorical Attributes')
     plot_histograms(salary_df_full, categorical_columns_salary, 'Salary - Histograms for Categorical Attributes')
-    
+
+# Wrapper functions for class balance
 def class_balance_wrapper():
     # Plot class balance using seaborn for each dataset
     plot_class_balance(avc_df_full, class_column_avc, 'AVC Dataset Full')
@@ -94,7 +100,8 @@ def class_balance_wrapper():
     plot_class_balance(salary_df_full, class_column_salary, 'Salary Dataset Full')
     plot_class_balance(salary_df_train, class_column_salary, 'Salary Dataset Train')
     plot_class_balance(salary_df_test, class_column_salary, 'Salary Dataset Test')
-    
+
+# Wrapper functions for correlation matrices
 def correlation_matrix_wrapper():
     # Plot correlation matrices for numerical attributes
     plot_correlation_matrix(avc_df_full, numeric_columns_avc, 'AVC Dataset Full')
@@ -103,7 +110,8 @@ def correlation_matrix_wrapper():
     plot_correlation_matrix(salary_df_train, numeric_columns_salary, 'Salary Dataset Train')
     plot_correlation_matrix(avc_df_test, numeric_columns_avc, 'AVC Dataset Test')
     plot_correlation_matrix(salary_df_test, numeric_columns_salary, 'Salary Dataset Test')
-    
+
+# Wrapper functions for categorical correlation matrices
 def categorial_correlation_matrix_wrapper():
     # Plot correlation matrices for categorical attributes
     plot_categorical_correlation_matrix(avc_df_full, categorical_columns_avc, 'AVC Dataset Full')
@@ -112,7 +120,8 @@ def categorial_correlation_matrix_wrapper():
     plot_categorical_correlation_matrix(salary_df_train, categorical_columns_salary, 'Salary Dataset Train')
     plot_categorical_correlation_matrix(avc_df_test, categorical_columns_avc, 'AVC Dataset Test')
     plot_categorical_correlation_matrix(salary_df_test, categorical_columns_salary, 'Salary Dataset Test')
-    
+
+# Wrapper functions for preprocessing the datasets 
 def preprocess_data_wrapper():
     processed_datasets = {}
     fitted_scalers = {}
@@ -149,11 +158,9 @@ def preprocess_data_wrapper():
 
             # Handle extreme values and impute again
             df_outliers_handled = handle_extreme_values(df_imputed, numeric_columns_after_drop)
-            df_outliers_imputed, imputer = impute_missing_values(df_outliers_handled, numeric_columns_after_drop, categorical_columns, fit=True)
-            fitted_imputers[name] = imputer
 
             # Standardize numerical attributes
-            df_standardized, scaler = standardize_data(df_outliers_imputed, numeric_columns_after_drop, method='standard', fit=True)
+            df_standardized, scaler = standardize_data(df_outliers_handled, numeric_columns_after_drop, method='standard', fit=True)
             fitted_scalers[name] = scaler
 
             # Encode categorical variables
@@ -167,19 +174,21 @@ def preprocess_data_wrapper():
             # df_encoded[target_column] = T_oversampled
             
             # Apply Tomek Links to balance the classes
-            tl = TomekLinks()
-            X_resampled, y_resampled = tl.fit_resample(df_encoded.drop(columns=[target_column]), df_encoded[target_column])
-            df_encoded = pd.DataFrame(X_resampled, columns=df_encoded.drop(columns=[target_column]).columns)
-            df_encoded[target_column] = y_resampled
+            # tl = TomekLinks()
+            # X_resampled, y_resampled = tl.fit_resample(df_encoded.drop(columns=[target_column]), df_encoded[target_column])
+            # df_encoded = pd.DataFrame(X_resampled, columns=df_encoded.drop(columns=[target_column]).columns)
+            # df_encoded[target_column] = y_resampled
 
             processed_datasets[name] = df_encoded
             processed_datasets[name].to_csv(f'output/{name}_processed.csv', index=False)
 
         else:
+            # Get the name for the inputers used on train
             train_name = name.replace('test', 'train').replace('full', 'train')
             dropped_columns = [col for col in numeric_columns if col not in processed_datasets[train_name].columns]
             numeric_columns_after_drop = [col for col in numeric_columns if col not in dropped_columns]
 
+            # Get the fitted objects from the train data
             imputer = fitted_imputers[train_name]
             scaler = fitted_scalers[train_name]
 
@@ -197,10 +206,11 @@ def preprocess_data_wrapper():
                     df_encoded[col] = 0
             df_encoded = df_encoded[train_columns]
 
+            # Write the processed data to a CSV file
             processed_datasets[name] = df_encoded
             processed_datasets[name].to_csv(f'output/{name}_processed.csv', index=False)
 
-    # Prepare datasets for logistic regression
+    # Prepare datasets for learning algorithms
     X_avc_train, T_avc_train, _, _ = preprocess_data(processed_datasets['avc_train'], class_column_avc, encoder=None)
     X_avc_test, T_avc_test, _, _ = preprocess_data(processed_datasets['avc_test'], class_column_avc, encoder=None)
 
@@ -217,14 +227,12 @@ def logistic_regression_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test
     # Manual Logistic Regression
     w_avc, train_nll_avc, test_nll_avc, train_acc_avc, test_acc_avc = train_and_eval_logistic(
         X_avc_train, T_avc_train, X_avc_test, T_avc_test, lr=0.1, epochs_no=500)
-
     w_salary, train_nll_salary, test_nll_salary, train_acc_salary, test_acc_salary = train_and_eval_logistic(
         X_salary_train, T_salary_train, X_salary_test, T_salary_test, lr=0.1, epochs_no=500)
 
     # Logistic Regression using scikit-learn
     model_avc, train_nll_avc_sklearn, test_nll_avc_sklearn, train_acc_avc_sklearn, test_acc_avc_sklearn = train_and_eval_sklearn_logistic(
         X_avc_train, T_avc_train, X_avc_test, T_avc_test)
-
     model_salary, train_nll_salary_sklearn, test_nll_salary_sklearn, train_acc_salary_sklearn, test_acc_salary_sklearn = train_and_eval_sklearn_logistic(
         X_salary_train, T_salary_train, X_salary_test, T_salary_test)
 
@@ -249,7 +257,6 @@ def mlp_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train
     input_size_avc = X_avc_train.shape[1]
     input_size_salary = X_salary_train.shape[1]
     output_size = 2  # Binary classification
-
     hidden_size_avc = 128
     hidden_size_salary = 128
     epochs = 1000
@@ -268,7 +275,7 @@ def mlp_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train
     )
 
     # Scikit-learn MLP Training and Evaluation for AVC dataset
-    hidden_layer_sizes = (hidden_size_avc,)  # Single hidden layer example
+    hidden_layer_sizes = (100, 50)
     max_iter = 500
     learning_rate_init = 0.01
     alpha = 0.0001  # L2 regularization term
@@ -351,7 +358,7 @@ def process_and_generate_reports(return_tuple_avc, return_tuple_salary, return_t
     generate_comparative_table(reports_avc, 'AVC', algorithm_name)
     generate_comparative_table(reports_salary, 'Salary', algorithm_name)
     
-def find_best_logreg_hyperparams(X_train, T_train, X_test, T_test):
+def find_best_logreg_hyperparams(X_train, T_train):
     # Define the parameter grid
     param_grid = {
         'C': [0.01, 0.1, 1, 10, 100],
