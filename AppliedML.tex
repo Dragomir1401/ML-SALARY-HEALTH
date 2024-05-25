@@ -1313,7 +1313,7 @@ These metrics provide a comprehensive view of the model's performance, ensuring 
 
 \subsection{Logistic Regression Performance}
 
-\subsubsection{AVC Dataset}
+\subsubsection{AVC Dataset Metrics}
 
 \begin{table}[h!]
     \centering
@@ -1380,7 +1380,7 @@ These metrics provide a comprehensive view of the model's performance, ensuring 
     \end{table}
     
     \newpage
-    \subsubsection{Salary Dataset}
+\subsubsection{Salary Dataset Metrics}
     
     \begin{table}[h!]
     \centering
@@ -1446,6 +1446,7 @@ These metrics provide a comprehensive view of the model's performance, ensuring 
     \end{tabularx}
     \end{table}
 \newpage
+
 \subsubsection{Observations}
 \begin{itemize}
     \item \textbf{AVC Dataset:} Both manual and scikit-learn logistic regression models perform similarly in terms of precision, recall, and F1-score for Class 0. However, the manual implementation shows slightly higher test accuracy.
@@ -1453,6 +1454,113 @@ These metrics provide a comprehensive view of the model's performance, ensuring 
 \end{itemize}
 
 Overall, while both implementations provide comparable results, the scikit-learn implementation offers slightly better performance metrics in the Salary dataset and marginally higher train accuracy in the AVC dataset.
+
+\subsubsection{Confusion Matrices}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{Resources/logreg_manual_confusion_avc_test.jpeg}
+    \includegraphics[width=0.45\textwidth]{Resources/logreg_scikit_confusion_avc_test.jpeg}
+    \caption{Confusion Matrices for AVC Dataset - Test Set}
+    \label{fig:confusion_avc_test}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{Resources/logreg_manual_confusion_avc_train.jpeg}
+    \includegraphics[width=0.45\textwidth]{Resources/logreg_scikit_confusion_avc_train.jpeg}
+    \caption{Confusion Matrices for AVC Dataset - Train Set}
+    \label{fig:confusion_avc_train}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{Resources/logreg_manual_confusion_salary_test.jpeg}
+    \includegraphics[width=0.45\textwidth]{Resources/logreg_scikit_confusion_salary_test.jpeg}
+    \caption{Confusion Matrices for Salary Dataset - Test Set}
+    \label{fig:confusion_salary_test}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{Resources/logreg_manual_confusion_salary_train.jpeg}
+    \includegraphics[width=0.45\textwidth]{Resources/logreg_scikit_confusion_salary_train.jpeg}
+    \caption{Confusion Matrices for Salary Dataset - Train Set}
+    \label{fig:confusion_salary_train}
+\end{figure}
+
+\subsubsection{Comments on Confusion Matrices}
+
+\paragraph{AVC Dataset - Test Set}
+\begin{itemize}
+    \item \textbf{Manual Logistic Regression}:
+    \begin{itemize}
+        \item Correctly predicted majority of the negative class (946 out of 947).
+        \item Struggled with the positive class, only predicting 1 out of 75 correctly.
+        \item This results in high accuracy for the negative class but very low recall for the positive class, indicating the model's inability to correctly identify positive cases.
+    \end{itemize}
+    \item \textbf{Scikit-learn Logistic Regression}:
+    \begin{itemize}
+        \item Correctly predicted all negative cases (947 out of 947).
+        \item Failed to predict any positive cases (0 out of 75).
+        \item Similar to the manual implementation, this model has high precision and recall for the negative class but fails to identify any positive instances.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{AVC Dataset - Train Set}
+\begin{itemize}
+    \item \textbf{Manual Logistic Regression}:
+    \begin{itemize}
+        \item Correctly predicted almost all negative cases (3911 out of 3914).
+        \item Only a small number of positive cases predicted correctly (1 out of 174).
+        \item Shows overfitting to the negative class with high accuracy for the negative class and low performance for the positive class.
+    \end{itemize}
+    \item \textbf{Scikit-learn Logistic Regression}:
+    \begin{itemize}
+        \item Predicted all negative cases correctly (3914 out of 3914).
+        \item Like the manual implementation, failed to predict any positive cases (0 out of 174).
+        \item Indicates overfitting to the negative class, similar to the test set performance.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Salary Dataset - Test Set}
+\begin{itemize}
+    \item \textbf{Manual Logistic Regression}:
+    \begin{itemize}
+        \item Predicted majority of the negative class correctly (1403 out of 1513).
+        \item Managed to identify a significant portion of the positive class (260 out of 487).
+        \item Shows a better balance compared to the AVC dataset, with reasonable performance on both classes.
+    \end{itemize}
+    \item \textbf{Scikit-learn Logistic Regression}:
+    \begin{itemize}
+        \item Similar performance to the manual implementation for the negative class (1401 out of 1513).
+        \item Slightly better performance for the positive class (266 out of 487).
+        \item This indicates a well-balanced model for both classes, showing better generalization.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Salary Dataset - Train Set}
+\begin{itemize}
+    \item \textbf{Manual Logistic Regression}:
+    \begin{itemize}
+        \item Correctly predicted majority of the negative class (5608 out of 6078).
+        \item Identified a substantial number of positive cases (989 out of 1921).
+        \item This model shows good generalization with balanced performance across both classes.
+    \end{itemize}
+    \item \textbf{Scikit-learn Logistic Regression}:
+    \begin{itemize}
+        \item High accuracy for the negative class (5623 out of 6078).
+        \item Good performance for the positive class as well (1074 out of 1921).
+        \item Indicates the model's robustness and ability to generalize well to both classes.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Summary}
+\begin{itemize}
+    \item The confusion matrices for the AVC dataset show a significant bias towards the negative class, with both manual and scikit-learn logistic regression models struggling to predict positive cases.
+    \item For the Salary dataset, both models exhibit a more balanced performance, accurately predicting both negative and positive cases, though scikit-learn logistic regression performs slightly better on the test set.
+    \item This analysis highlights the importance of evaluating model performance across different classes and not solely relying on accuracy as a metric.
+\end{itemize}
 
 \subsubsection{Overall Accuracy}
 
@@ -1530,4 +1638,388 @@ The results are summarized as follows:
 \end{itemize}
 
 
+\subsection{Multi Layer Perceptron}
+
+\subsubsection{AVC Dataset Metrics}
+
+\begin{table}[h!]
+    \centering
+    \caption{Manual MLP - AVC MLP Train}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+    \hline
+    \textbf{Metric} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+    \hline
+    Class 0 & 0.957436 & 1.000000 & 0.978255 & 3914 \\
+    Class 1 & 0.000000 & 0.000000 & 0.000000 & 174 \\
+    Accuracy & 0.957436 & 0.957436 & 0.957436 & 0.957436 \\
+    Macro Avg & 0.478718 & 0.500000 & 0.489128 & 4088 \\
+    Weighted Avg & 0.916684 & 0.957436 & 0.936617 & 4088 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{Manual MLP - AVC MLP Test}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+    \hline
+    \textbf{Metric} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+    \hline
+    Class 0 & 0.926614 & 1.000000 & 0.961910 & 947 \\
+    Class 1 & 0.000000 & 0.000000 & 0.000000 & 75 \\
+    Accuracy & 0.926614 & 0.926614 & 0.926614 & 0.926614 \\
+    Macro Avg & 0.463307 & 0.500000 & 0.480955 & 1022 \\
+    Weighted Avg & 0.858614 & 0.926614 & 0.891319 & 1022 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{Scikit-learn MLP - AVC MLP Train}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+    \hline
+    \textbf{Metric} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+    \hline
+    Class 0 & 0.997195 & 0.998978 & 0.998086 & 3914 \\
+    Class 1 & 0.976048 & 0.936782 & 0.956012 & 174 \\
+    Accuracy & 0.996331 & 0.996331 & 0.996331 & 0.996331 \\
+    Macro Avg & 0.986621 & 0.967880 & 0.977049 & 4088 \\
+    Weighted Avg & 0.996295 & 0.996331 & 0.996295 & 4088 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{Scikit-learn MLP - AVC MLP Test}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+    \hline
+    \textbf{Metric} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+    \hline
+    Class 0 & 0.925926 & 0.976769 & 0.950668 & 947 \\
+    Class 1 & 0.043478 & 0.013333 & 0.020408 & 75 \\
+    Accuracy & 0.906067 & 0.906067 & 0.906067 & 0.906067 \\
+    Macro Avg & 0.484702 & 0.495051 & 0.485538 & 1022 \\
+    Weighted Avg & 0.861167 & 0.906067 & 0.882400 & 1022 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\newpage
+\subsubsection{Salary Dataset Metrics}
+
+\begin{table}[h!]
+    \centering
+    \caption{Manual MLP - Salary MLP Train}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+    \hline
+    \textbf{Metric} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+    \hline
+    Class 0 & 0.862637 & 0.929911 & 0.895012 & 6078 \\
+    Class 1 & 0.705598 & 0.531494 & 0.606295 & 1921 \\
+    Accuracy & 0.834229 & 0.834229 & 0.834229 & 0.834229 \\
+    Macro Avg & 0.784118 & 0.730703 & 0.750653 & 7999 \\
+    Weighted Avg & 0.824924 & 0.834229 & 0.825675 & 7999 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{Manual MLP - Salary MLP Test}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+    \hline
+    \textbf{Metric} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+    \hline
+    Class 0 & 0.858788 & 0.936550 & 0.895985 & 1513 \\
+    Class 1 & 0.725714 & 0.521561 & 0.606930 & 487 \\
+    Accuracy & 0.835500 & 0.835500 & 0.835500 & 0.835500 \\
+    Macro Avg & 0.792251 & 0.729055 & 0.751457 & 2000 \\
+    Weighted Avg & 0.826384 & 0.835500 & 0.825600 & 2000 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{Scikit-learn MLP - Salary MLP Train}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+    \hline
+    \textbf{Metric} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+    \hline
+    Class 0 & 0.978297 & 0.978940 & 0.978618 & 6078 \\
+    Class 1 & 0.933229 & 0.931286 & 0.932256 & 1921 \\
+    Accuracy & 0.967496 & 0.967496 & 0.967496 & 0.967496 \\
+    Macro Avg & 0.955763 & 0.955113 & 0.955437 & 7999 \\
+    Weighted Avg & 0.967473 & 0.967496 & 0.967484 & 7999 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{Scikit-learn MLP - Salary MLP Test}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+    \hline
+    \textbf{Metric} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+    \hline
+    Class 0 & 0.869479 & 0.871778 & 0.870627 & 1513 \\
+    Class 1 & 0.598344 & 0.593429 & 0.595876 & 487 \\
+    Accuracy & 0.804000 & 0.804000 & 0.804000 & 0.804000 \\
+    Macro Avg & 0.733911 & 0.732604 & 0.733252 & 2000 \\
+    Weighted Avg & 0.803458 & 0.804000 & 0.803725 & 2000 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\newpage
+\subsubsection{Observations}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} 
+    \begin{itemize}
+        \item Manual MLP: High precision and recall for Class 0 but poor performance for Class 1, indicating an inability to correctly identify positive cases.
+        \item Scikit-learn MLP: Excellent precision and recall for both classes in the training set but struggles with Class 1 in the test set, indicating potential overfitting.
+    \end{itemize}
+    \item \textbf{Salary Dataset:} 
+    \begin{itemize}
+        \item Manual MLP: Balanced performance across both classes with decent precision, recall, and F1-scores.
+        \item Scikit-learn MLP: Superior performance in the training set with high precision and recall for both classes, but slightly lower generalization in the test set.
+    \end{itemize}
+\end{itemize}
+
+Overall, while both implementations show good performance, the scikit-learn implementation tends to overfit in the training set but provides better precision and recall in the test set compared to the manual implementation.
+
+\subsubsection{Confusion Matrices}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{Resources/mlp_manual_confusion_avc_test.jpeg}
+    \includegraphics[width=0.45\textwidth]{Resources/mlp_scikit_confusion_avc_test.jpeg}
+    \caption{Confusion Matrices for AVC Dataset - Test Set}
+    \label{fig:mlp_confusion_avc_test}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{Resources/mlp_manual_confusion_avc_train.jpeg}
+    \includegraphics[width=0.45\textwidth]{Resources/mlp_scikit_confusion_avc_train.jpeg}
+    \caption{Confusion Matrices for AVC Dataset - Train Set}
+    \label{fig:mlp_confusion_avc_train}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{Resources/mlp_manual_confusion_salary_test.jpeg}
+    \includegraphics[width=0.45\textwidth]{Resources/mlp_scikit_confusion_salary_test.jpeg}
+    \caption{Confusion Matrices for Salary Dataset - Test Set}
+    \label{fig:mlp_confusion_salary_test}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{Resources/mlp_manual_confusion_salary_train.jpeg}
+    \includegraphics[width=0.45\textwidth]{Resources/mlp_scikit_confusion_salary_train.jpeg}
+    \caption{Confusion Matrices for Salary Dataset - Train Set}
+    \label{fig:mlp_confusion_salary_train}
+\end{figure}
+
+\subsubsection{Comments on Confusion Matrices}
+
+\paragraph{AVC Dataset - Test Set}
+\begin{itemize}
+    \item \textbf{Manual MLP}:
+    \begin{itemize}
+        \item Correctly predicted all negative class instances (947 out of 947).
+        \item Failed to predict any positive class instances (0 out of 75).
+        \item This results in high accuracy for the negative class but very low recall for the positive class, indicating the model's inability to correctly identify positive cases.
+    \end{itemize}
+    \item \textbf{Scikit-learn MLP}:
+    \begin{itemize}
+        \item Correctly predicted majority of the negative class instances (925 out of 947).
+        \item Failed to predict positive class instances accurately (1 out of 75).
+        \item Similar to the manual implementation, this model has high precision and recall for the negative class but fails to identify most positive instances.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{AVC Dataset - Train Set}
+\begin{itemize}
+    \item \textbf{Manual MLP}:
+    \begin{itemize}
+        \item Correctly predicted all negative class instances (3914 out of 3914).
+        \item Failed to predict any positive class instances (0 out of 174).
+        \item Shows overfitting to the negative class with high accuracy for the negative class and low performance for the positive class.
+    \end{itemize}
+    \item \textbf{Scikit-learn MLP}:
+    \begin{itemize}
+        \item Predicted all negative class instances correctly (3910 out of 3914).
+        \item Predicts positive class instances with some success (163 out of 174).
+        \item Indicates better generalization compared to manual MLP but still shows some overfitting to the negative class.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Salary Dataset - Test Set}
+\begin{itemize}
+    \item \textbf{Manual MLP}:
+    \begin{itemize}
+        \item Predicted majority of the negative class correctly (1417 out of 1513).
+        \item Managed to identify a significant portion of the positive class (254 out of 487).
+        \item Shows a better balance compared to the AVC dataset, with reasonable performance on both classes.
+    \end{itemize}
+    \item \textbf{Scikit-learn MLP}:
+    \begin{itemize}
+        \item Similar performance to the manual implementation for the negative class (1319 out of 1513).
+        \item Slightly better performance for the positive class (289 out of 487).
+        \item This indicates a well-balanced model for both classes, showing better generalization.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Salary Dataset - Train Set}
+\begin{itemize}
+    \item \textbf{Manual MLP}:
+    \begin{itemize}
+        \item Correctly predicted majority of the negative class (5652 out of 6078).
+        \item Identified a substantial number of positive cases (1021 out of 1921).
+        \item This model shows good generalization with balanced performance across both classes.
+    \end{itemize}
+    \item \textbf{Scikit-learn MLP}:
+    \begin{itemize}
+        \item High accuracy for the negative class (5950 out of 6078).
+        \item Good performance for the positive class as well (1789 out of 1921).
+        \item Indicates the model's robustness and ability to generalize well to both classes.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Summary}
+\begin{itemize}
+    \item The confusion matrices for the AVC dataset show a significant bias towards the negative class, with both manual and scikit-learn MLP models struggling to predict positive cases.
+    \item For the Salary dataset, both models exhibit a more balanced performance, accurately predicting both negative and positive cases, though scikit-learn MLP performs slightly better on the test set.
+    \item This analysis highlights the importance of evaluating model performance across different classes and not solely relying on accuracy as a metric.
+\end{itemize}
+
+\subsubsection{Overall Accuracy}
+
+The overall accuracy for the manual and scikit-learn implementations of MLP for both datasets (AVC and Salary) is presented below. The accuracy curves are also included to visualize the performance of the models over the epochs.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Resources/mlp_curve_avc.jpeg}
+    \caption{Accuracy Curve for Manual MLP - AVC Dataset}
+    \label{fig:mlp_curve_avc}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Resources/mlp_curve_salary.jpeg}
+    \caption{Accuracy Curve for Manual MLP - Salary Dataset}
+    \label{fig:mlp_curve_salary}
+\end{figure}
+
+The results are summarized as follows:
+
+\textbf{Manual MLP Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:}
+        \begin{itemize}
+            \item Train Accuracy: 0.957436
+            \item Test Accuracy: 0.926614
+        \end{itemize}
+    \item \textbf{Salary Dataset:}
+        \begin{itemize}
+            \item Train Accuracy: 0.834229
+            \item Test Accuracy: 0.8355
+        \end{itemize}
+\end{itemize}
+
+\textbf{Scikit-learn MLP Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:}
+        \begin{itemize}
+            \item Train Accuracy: 0.996331
+            \item Test Accuracy: 0.906067
+        \end{itemize}
+    \item \textbf{Salary Dataset:}
+        \begin{itemize}
+            \item Train Accuracy: 0.967496
+            \item Test Accuracy: 0.804
+        \end{itemize}
+\end{itemize}
+
+\subsubsection{Overfit Analysis}
+
+\textbf{Manual MLP - AVC Dataset:}
+\begin{itemize}
+    \item The train accuracy (0.957436) is slightly higher than the test accuracy (0.926614).
+    \item The difference between train and test accuracy is around 0.03, which is relatively small, indicating that there is no significant overfitting.
+\end{itemize}
+
+\newpage
+\textbf{Scikit-learn MLP - AVC Dataset:}
+\begin{itemize}
+    \item The train accuracy (0.996331) is significantly higher than the test accuracy (0.906067).
+    \item The difference between train and test accuracy is around 0.09, indicating potential overfitting in the training set.
+\end{itemize}
+
+\textbf{Manual MLP - Salary Dataset:}
+\begin{itemize}
+    \item The train accuracy (0.834229) is very close to the test accuracy (0.8355).
+    \item The minimal difference indicates that the model generalizes well to the test data, showing no signs of overfitting.
+\end{itemize}
+
+\textbf{Scikit-learn MLP - Salary Dataset:}
+\begin{itemize}
+    \item The train accuracy (0.967496) is higher than the test accuracy (0.804).
+    \item The difference is around 0.16, which is quite large, indicating significant overfitting.
+\end{itemize}
+
+
+\subsection{Comparison of Logistic Regression and Multi Layer Perceptron}
+
+\begin{table}[h!]
+    \centering
+    \caption{Comparative Table for AVC and Salary Datasets}
+    \begin{tabularx}{\textwidth}{|l|l|X|X|X|}
+    \hline
+    \textbf{Algorithm} & \textbf{Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+    \hline
+    Manual LogReg & Train (AVC) & 0.578911 & 0.504725 & 0.499608 \\
+    Manual LogReg & Test (AVC) & \textbf{0.7975} & \textbf{0.5128} & \textbf{0.5068} \\
+    Scikit-learn LogReg & Train (AVC) & 0.478718 & 0.500000 & 0.489128 \\
+    Scikit-learn LogReg & Test (AVC) & 0.463307 & 0.500000 & 0.480955 \\
+    Manual MLP & Train (AVC) & 0.478718 & 0.500000 & 0.489128 \\
+    Manual MLP & Test (AVC) & 0.463307 & 0.500000 & 0.480955 \\
+    Scikit-learn MLP & Train (AVC) & \textbf{0.9866} & \textbf{0.9679} & \textbf{0.9770} \\
+    Scikit-learn MLP & Test (AVC) & 0.484702 & 0.495051 & 0.485538 \\
+    \hline
+    Manual LogReg & Train (Salary) & 0.766143 & 0.719233 & 0.736963 \\
+    Manual LogReg & Test (Salary) & 0.766214 & 0.714232 & 0.733104 \\
+    Scikit-learn LogReg & Train (Salary) & \textbf{0.7858} & \textbf{0.7421} & \textbf{0.7594} \\
+    Scikit-learn LogReg & Test (Salary) & 0.783726 & 0.736088 & 0.754404 \\
+    Manual MLP & Train (Salary) & 0.784118 & 0.730703 & 0.750653 \\
+    Manual MLP & Test (Salary) & \textbf{0.792251} & 0.729055 & \textbf{0.751457} \\
+    Scikit-learn MLP & Train (Salary) & \textbf{0.9558} & \textbf{0.9551} & \textbf{0.9554} \\
+    Scikit-learn MLP & Test (Salary) & 0.733911 & 0.732604 & 0.733252 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Observations}
+
+\textbf{AVC Dataset:}
+\begin{itemize}
+    \item \textbf{Precision:} The highest precision is achieved by the Scikit-learn MLP model on the training set (0.9866). The Manual LogReg model has the highest precision on the test set (0.7975).
+    \item \textbf{Recall:} The highest recall is also observed for the Scikit-learn MLP model on the training set (0.9679). The Manual LogReg model has the highest recall on the test set (0.5128).
+    \item \textbf{F1-Score:} The highest F1-Score is achieved by the Scikit-learn MLP model on the training set (0.9770). The Manual LogReg model shows the highest F1-Score on the test set (0.5068).
+    \item \textbf{Overfitting:} The Scikit-learn MLP model shows signs of overfitting, with significantly better performance on the training set compared to the test set. The Manual LogReg model does not show signs of overfitting, as the performance is relatively balanced between training and test sets.
+\end{itemize}
+
+\textbf{Salary Dataset:}
+\begin{itemize}
+    \item \textbf{Precision:} The highest precision is achieved by the Scikit-learn MLP model on the training set (0.9558). The Manual MLP model has the highest precision on the test set (0.792251).
+    \item \textbf{Recall:} The highest recall is observed for the Scikit-learn MLP model on the training set (0.9551). The Scikit-learn LogReg model shows the highest recall on the test set (0.736088).
+    \item \textbf{F1-Score:} The highest F1-Score is achieved by the Scikit-learn MLP model on the training set (0.9554). The Manual MLP model shows the highest F1-Score on the test set (0.751457).
+    \item \textbf{Overfitting:} The Scikit-learn MLP model shows overfitting with high performance on the training set but lower performance on the test set. The Manual MLP and Scikit-learn LogReg models do not show significant overfitting, as they provide more balanced performance across training and test sets.
+\end{itemize}
+
+These observations highlight the differences in performance between the manual and scikit-learn implementations of Logistic Regression and MLP models. While the Scikit-learn MLP shows high performance on the training set, it often overfits, resulting in lower generalization on the test set. On the other hand, the manual implementations, particularly the Manual LogReg, show more consistent performance, indicating better generalization. These results emphasize the importance of choosing the right model and avoiding overfitting, particularly in imbalanced datasets like AVC and Salary. Future work should explore techniques like oversampling, undersampling, and regularization to improve model generalization.
 \end{document}

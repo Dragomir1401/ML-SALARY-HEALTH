@@ -466,26 +466,26 @@ def __main__():
     # print(f"Best hyperparameters for MLP on Salary dataset: {best_model_salary_mlp.get_params()}")
     
 
-    # Logistic Regression
-    return_tuple_avc_logreg, return_tuple_salary_logreg, return_tuple_sklearn_logreg = logistic_regression_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test)
+    # # Logistic Regression
+    # return_tuple_avc_logreg, return_tuple_salary_logreg, return_tuple_sklearn_logreg = logistic_regression_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test)
 
-    # First call for LogReg algorithm
-    process_and_generate_reports(
-        return_tuple_avc_logreg, return_tuple_salary_logreg, return_tuple_sklearn_logreg,
-        X_avc_train, T_avc_train, X_avc_test, T_avc_test, 
-        X_salary_train, T_salary_train, X_salary_test, T_salary_test, 
-        "LogReg"
-    )
-        
-    # # Define the MLP architecture and training parameters
-    # return_tuple_avc_mlp, return_tuple_salary_mlp, return_tuple_sklearn_mlp = mlp_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test)
-    
-    # # Second call for MLP algorithm
+    # # First call for LogReg algorithm
     # process_and_generate_reports(
-    #     return_tuple_avc_mlp, return_tuple_salary_mlp, return_tuple_sklearn_mlp,
+    #     return_tuple_avc_logreg, return_tuple_salary_logreg, return_tuple_sklearn_logreg,
     #     X_avc_train, T_avc_train, X_avc_test, T_avc_test, 
     #     X_salary_train, T_salary_train, X_salary_test, T_salary_test, 
-    #     "MLP"
+    #     "LogReg"
     # )
+        
+    # Define the MLP architecture and training parameters
+    return_tuple_avc_mlp, return_tuple_salary_mlp, return_tuple_sklearn_mlp = mlp_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test)
+    
+    # Second call for MLP algorithm
+    process_and_generate_reports(
+        return_tuple_avc_mlp, return_tuple_salary_mlp, return_tuple_sklearn_mlp,
+        X_avc_train, T_avc_train, X_avc_test, T_avc_test, 
+        X_salary_train, T_salary_train, X_salary_test, T_salary_test, 
+        "MLP"
+    )
 
 __main__()

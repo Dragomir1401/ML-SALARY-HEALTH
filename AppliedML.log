@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2024.5.25)  26 MAY 2024 00:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2024.5.25)  26 MAY 2024 01:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -556,58 +556,58 @@ Overfull \hbox (5.2843pt too wide) in paragraph at lines 205--205
  []
 
 [7] [8]
-<Resources/Boxplot_analysis_results.jpeg, id=393, 1002.74625pt x 602.25pt>
+<Resources/Boxplot_analysis_results.jpeg, id=453, 1002.74625pt x 602.25pt>
 File: Resources/Boxplot_analysis_results.jpeg Graphic file (type jpg)
 <use Resources/Boxplot_analysis_results.jpeg>
 Package pdftex.def Info: Resources/Boxplot_analysis_results.jpeg  used on input line 231.
 (pdftex.def)             Requested size: 203.83417pt x 122.42361pt.
-<Resources/Boxplot_biological_index.jpeg, id=394, 999.735pt x 606.265pt>
+<Resources/Boxplot_biological_index.jpeg, id=454, 999.735pt x 606.265pt>
 File: Resources/Boxplot_biological_index.jpeg Graphic file (type jpg)
 <use Resources/Boxplot_biological_index.jpeg>
 Package pdftex.def Info: Resources/Boxplot_biological_index.jpeg  used on input line 238.
 (pdftex.def)             Requested size: 203.83417pt x 123.60982pt.
-<Resources/Boxplot_blood_sugar_level.jpeg, id=395, 1000.73875pt x 602.25pt>
+<Resources/Boxplot_blood_sugar_level.jpeg, id=455, 1000.73875pt x 602.25pt>
 File: Resources/Boxplot_blood_sugar_level.jpeg Graphic file (type jpg)
 <use Resources/Boxplot_blood_sugar_level.jpeg>
 Package pdftex.def Info: Resources/Boxplot_blood_sugar_level.jpeg  used on input line 247.
 (pdftex.def)             Requested size: 203.83417pt x 122.66255pt.
-<Resources/Boxplot_body_mass_indicator.jpeg, id=396, 1000.73875pt x 600.2425pt>
+<Resources/Boxplot_body_mass_indicator.jpeg, id=456, 1000.73875pt x 600.2425pt>
 File: Resources/Boxplot_body_mass_indicator.jpeg Graphic file (type jpg)
 <use Resources/Boxplot_body_mass_indicator.jpeg>
 Package pdftex.def Info: Resources/Boxplot_body_mass_indicator.jpeg  used on input line 254.
 (pdftex.def)             Requested size: 203.83417pt x 122.25368pt.
-<Resources/Boxplot_years_old.jpeg, id=397, 1003.75pt x 601.24625pt>
+<Resources/Boxplot_years_old.jpeg, id=457, 1003.75pt x 601.24625pt>
 File: Resources/Boxplot_years_old.jpeg Graphic file (type jpg)
 <use Resources/Boxplot_years_old.jpeg>
 Package pdftex.def Info: Resources/Boxplot_years_old.jpeg  used on input line 263.
 (pdftex.def)             Requested size: 203.83417pt x 122.09114pt.
  [9 </home/student/Documents/IA/Tema2/Resources/Boxplot_analysis_results.jpeg> </home/student/Documents/IA/Tema2/Resources/Boxplot_biological_index.jpeg> </home/student/Documents/IA/Tema2/Resources/Boxplot_blood_sugar_level.jpeg> </home/student/Documents/IA/Tema2/Resources/Boxplot_body_mass_indicator.jpeg> </home/student/Documents/IA/Tema2/Resources/Boxplot_years_old.jpeg>]
-<Resources/Boxplot_fnl.jpeg, id=403, 997.7275pt x 603.25375pt>
+<Resources/Boxplot_fnl.jpeg, id=463, 997.7275pt x 603.25375pt>
 File: Resources/Boxplot_fnl.jpeg Graphic file (type jpg)
 <use Resources/Boxplot_fnl.jpeg>
 Package pdftex.def Info: Resources/Boxplot_fnl.jpeg  used on input line 278.
 (pdftex.def)             Requested size: 203.83417pt x 123.24438pt.
-<Resources/Boxplot_edu_int.jpeg, id=404, 1007.765pt x 604.2575pt>
+<Resources/Boxplot_edu_int.jpeg, id=464, 1007.765pt x 604.2575pt>
 File: Resources/Boxplot_edu_int.jpeg Graphic file (type jpg)
 <use Resources/Boxplot_edu_int.jpeg>
 Package pdftex.def Info: Resources/Boxplot_edu_int.jpeg  used on input line 285.
 (pdftex.def)             Requested size: 203.83417pt x 122.21394pt.
-<Resources/Boxplot_years.jpeg, id=405, 1006.76125pt x 603.25375pt>
+<Resources/Boxplot_years.jpeg, id=465, 1006.76125pt x 603.25375pt>
 File: Resources/Boxplot_years.jpeg Graphic file (type jpg)
 <use Resources/Boxplot_years.jpeg>
 Package pdftex.def Info: Resources/Boxplot_years.jpeg  used on input line 294.
 (pdftex.def)             Requested size: 203.83417pt x 122.1306pt.
-<Resources/Boxplot_gain.jpeg, id=406, 1004.75375pt x 604.2575pt>
+<Resources/Boxplot_gain.jpeg, id=466, 1004.75375pt x 604.2575pt>
 File: Resources/Boxplot_gain.jpeg Graphic file (type jpg)
 <use Resources/Boxplot_gain.jpeg>
 Package pdftex.def Info: Resources/Boxplot_gain.jpeg  used on input line 301.
 (pdftex.def)             Requested size: 203.83417pt x 122.58275pt.
-<Resources/Boxplot_loss.jpeg, id=407, 1004.75375pt x 606.265pt>
+<Resources/Boxplot_loss.jpeg, id=467, 1004.75375pt x 606.265pt>
 File: Resources/Boxplot_loss.jpeg Graphic file (type jpg)
 <use Resources/Boxplot_loss.jpeg>
 Package pdftex.def Info: Resources/Boxplot_loss.jpeg  used on input line 310.
 (pdftex.def)             Requested size: 203.83417pt x 122.99pt.
-<Resources/Boxplot_prod.jpeg, id=408, 1002.74625pt x 605.26125pt>
+<Resources/Boxplot_prod.jpeg, id=468, 1002.74625pt x 605.26125pt>
 File: Resources/Boxplot_prod.jpeg Graphic file (type jpg)
 <use Resources/Boxplot_prod.jpeg>
 Package pdftex.def Info: Resources/Boxplot_prod.jpeg  used on input line 317.
@@ -622,161 +622,161 @@ Overfull \hbox (10.48645pt too wide) in paragraph at lines 381--382
 \OT1/cmr/m/n/12 The health-care dataset in-cludes sev-eral cat-e-gor-i-cal at-tributes such as `car-dio-vas-cu-lar[]issues`,
  []
 
-<Resources/histogram_cardio_issues.jpeg, id=420, 803.0pt x 601.24625pt>
+<Resources/histogram_cardio_issues.jpeg, id=480, 803.0pt x 601.24625pt>
 File: Resources/histogram_cardio_issues.jpeg Graphic file (type jpg)
 <use Resources/histogram_cardio_issues.jpeg>
 Package pdftex.def Info: Resources/histogram_cardio_issues.jpeg  used on input line 390.
 (pdftex.def)             Requested size: 362.37569pt x 271.33812pt.
-<Resources/histogram_chaotic_sleep.jpeg, id=421, 800.9925pt x 604.2575pt>
+<Resources/histogram_chaotic_sleep.jpeg, id=481, 800.9925pt x 604.2575pt>
 File: Resources/histogram_chaotic_sleep.jpeg Graphic file (type jpg)
 <use Resources/histogram_chaotic_sleep.jpeg>
 Package pdftex.def Info: Resources/histogram_chaotic_sleep.jpeg  used on input line 396.
 (pdftex.def)             Requested size: 362.37569pt x 273.37015pt.
 [12 </home/student/Documents/IA/Tema2/Resources/histogram_cardio_issues.jpeg>]
-<Resources/histogram_high_blood_pressure.jpeg, id=427, 804.00375pt x 600.2425pt>
+<Resources/histogram_high_blood_pressure.jpeg, id=488, 804.00375pt x 600.2425pt>
 File: Resources/histogram_high_blood_pressure.jpeg Graphic file (type jpg)
 <use Resources/histogram_high_blood_pressure.jpeg>
 Package pdftex.def Info: Resources/histogram_high_blood_pressure.jpeg  used on input line 402.
 (pdftex.def)             Requested size: 362.37569pt x 270.5371pt.
-<Resources/histogram_job_cat.jpeg, id=428, 801.99625pt x 603.25375pt>
+<Resources/histogram_job_cat.jpeg, id=489, 801.99625pt x 603.25375pt>
 File: Resources/histogram_job_cat.jpeg Graphic file (type jpg)
 <use Resources/histogram_job_cat.jpeg>
 Package pdftex.def Info: Resources/histogram_job_cat.jpeg  used on input line 408.
 (pdftex.def)             Requested size: 362.37569pt x 272.57547pt.
  [13 </home/student/Documents/IA/Tema2/Resources/histogram_chaotic_sleep.jpeg> </home/student/Documents/IA/Tema2/Resources/histogram_high_blood_pressure.jpeg>]
-<Resources/histogram_living_area.jpeg, id=436, 800.9925pt x 603.25375pt>
+<Resources/histogram_living_area.jpeg, id=497, 800.9925pt x 603.25375pt>
 File: Resources/histogram_living_area.jpeg Graphic file (type jpg)
 <use Resources/histogram_living_area.jpeg>
 Package pdftex.def Info: Resources/histogram_living_area.jpeg  used on input line 414.
 (pdftex.def)             Requested size: 362.37569pt x 272.91605pt.
-<Resources/histogram_married.jpeg, id=437, 800.9925pt x 606.265pt>
+<Resources/histogram_married.jpeg, id=498, 800.9925pt x 606.265pt>
 File: Resources/histogram_married.jpeg Graphic file (type jpg)
 <use Resources/histogram_married.jpeg>
 Package pdftex.def Info: Resources/histogram_married.jpeg  used on input line 420.
 (pdftex.def)             Requested size: 362.37569pt x 274.27837pt.
  [14 </home/student/Documents/IA/Tema2/Resources/histogram_job_cat.jpeg> </home/student/Documents/IA/Tema2/Resources/histogram_living_area.jpeg>]
-<Resources/histogram_sex.jpeg, id=444, 801.99625pt x 608.2725pt>
+<Resources/histogram_sex.jpeg, id=505, 801.99625pt x 608.2725pt>
 File: Resources/histogram_sex.jpeg Graphic file (type jpg)
 <use Resources/histogram_sex.jpeg>
 Package pdftex.def Info: Resources/histogram_sex.jpeg  used on input line 426.
 (pdftex.def)             Requested size: 362.37569pt x 274.84315pt.
-<Resources/histogram_tobacco_usage.jpeg, id=445, 803.0pt x 604.2575pt>
+<Resources/histogram_tobacco_usage.jpeg, id=506, 803.0pt x 604.2575pt>
 File: Resources/histogram_tobacco_usage.jpeg Graphic file (type jpg)
 <use Resources/histogram_tobacco_usage.jpeg>
 Package pdftex.def Info: Resources/histogram_tobacco_usage.jpeg  used on input line 432.
 (pdftex.def)             Requested size: 362.37569pt x 272.69708pt.
  [15 </home/student/Documents/IA/Tema2/Resources/histogram_married.jpeg> </home/student/Documents/IA/Tema2/Resources/histogram_sex.jpeg>]
-<Resources/histogram_country.jpeg, id=452, 805.0075pt x 600.2425pt>
+<Resources/histogram_country.jpeg, id=513, 805.0075pt x 600.2425pt>
 File: Resources/histogram_country.jpeg Graphic file (type jpg)
 <use Resources/histogram_country.jpeg>
 Package pdftex.def Info: Resources/histogram_country.jpeg  used on input line 439.
 (pdftex.def)             Requested size: 362.37569pt x 270.19821pt.
-<Resources/histogram_edu.jpeg, id=453, 801.99625pt x 606.265pt>
+<Resources/histogram_edu.jpeg, id=514, 801.99625pt x 606.265pt>
 File: Resources/histogram_edu.jpeg Graphic file (type jpg)
 <use Resources/histogram_edu.jpeg>
 Package pdftex.def Info: Resources/histogram_edu.jpeg  used on input line 445.
 (pdftex.def)             Requested size: 362.37569pt x 273.93608pt.
  [16 </home/student/Documents/IA/Tema2/Resources/histogram_tobacco_usage.jpeg> </home/student/Documents/IA/Tema2/Resources/histogram_country.jpeg>]
-<Resources/histogram_gender.jpeg, id=460, 800.9925pt x 602.25pt>
+<Resources/histogram_gender.jpeg, id=521, 800.9925pt x 602.25pt>
 File: Resources/histogram_gender.jpeg Graphic file (type jpg)
 <use Resources/histogram_gender.jpeg>
 Package pdftex.def Info: Resources/histogram_gender.jpeg  used on input line 451.
 (pdftex.def)             Requested size: 362.37569pt x 272.46194pt.
-<Resources/histogram_gtype.jpeg, id=461, 803.0pt x 603.25375pt>
+<Resources/histogram_gtype.jpeg, id=522, 803.0pt x 603.25375pt>
 File: Resources/histogram_gtype.jpeg Graphic file (type jpg)
 <use Resources/histogram_gtype.jpeg>
 Package pdftex.def Info: Resources/histogram_gtype.jpeg  used on input line 457.
 (pdftex.def)             Requested size: 362.37569pt x 272.2441pt.
  [17 </home/student/Documents/IA/Tema2/Resources/histogram_edu.jpeg> </home/student/Documents/IA/Tema2/Resources/histogram_gender.jpeg>]
-<Resources/histogram_job.jpeg, id=468, 807.015pt x 599.23875pt>
+<Resources/histogram_job.jpeg, id=529, 807.015pt x 599.23875pt>
 File: Resources/histogram_job.jpeg Graphic file (type jpg)
 <use Resources/histogram_job.jpeg>
 Package pdftex.def Info: Resources/histogram_job.jpeg  used on input line 463.
 (pdftex.def)             Requested size: 362.37569pt x 269.07889pt.
-<Resources/histogram_partner.jpeg, id=469, 806.01125pt x 605.26125pt>
+<Resources/histogram_partner.jpeg, id=530, 806.01125pt x 605.26125pt>
 File: Resources/histogram_partner.jpeg Graphic file (type jpg)
 <use Resources/histogram_partner.jpeg>
 Package pdftex.def Info: Resources/histogram_partner.jpeg  used on input line 469.
 (pdftex.def)             Requested size: 362.37569pt x 272.11568pt.
  [18 </home/student/Documents/IA/Tema2/Resources/histogram_gtype.jpeg> </home/student/Documents/IA/Tema2/Resources/histogram_job.jpeg>]
-<Resources/histogram_race.jpeg, id=477, 804.00375pt x 604.2575pt>
+<Resources/histogram_race.jpeg, id=537, 804.00375pt x 604.2575pt>
 File: Resources/histogram_race.jpeg Graphic file (type jpg)
 <use Resources/histogram_race.jpeg>
 Package pdftex.def Info: Resources/histogram_race.jpeg  used on input line 475.
 (pdftex.def)             Requested size: 362.37569pt x 272.34671pt.
-<Resources/histogram_relation.jpeg, id=478, 800.9925pt x 605.26125pt>
+<Resources/histogram_relation.jpeg, id=538, 800.9925pt x 605.26125pt>
 File: Resources/histogram_relation.jpeg Graphic file (type jpg)
 <use Resources/histogram_relation.jpeg>
 Package pdftex.def Info: Resources/histogram_relation.jpeg  used on input line 481.
 (pdftex.def)             Requested size: 362.37569pt x 273.82425pt.
  [19 </home/student/Documents/IA/Tema2/Resources/histogram_partner.jpeg> </home/student/Documents/IA/Tema2/Resources/histogram_race.jpeg>]
-<Resources/histogram_work_type.jpeg, id=486, 801.99625pt x 603.25375pt>
+<Resources/histogram_work_type.jpeg, id=546, 801.99625pt x 603.25375pt>
 File: Resources/histogram_work_type.jpeg Graphic file (type jpg)
 <use Resources/histogram_work_type.jpeg>
 Package pdftex.def Info: Resources/histogram_work_type.jpeg  used on input line 487.
 (pdftex.def)             Requested size: 362.37569pt x 272.57547pt.
  [20 </home/student/Documents/IA/Tema2/Resources/histogram_relation.jpeg> </home/student/Documents/IA/Tema2/Resources/histogram_work_type.jpeg>]
-<Resources/class_balance_avc_test.jpeg, id=493, 1001.7425pt x 607.26875pt>
+<Resources/class_balance_avc_test.jpeg, id=553, 1001.7425pt x 607.26875pt>
 File: Resources/class_balance_avc_test.jpeg Graphic file (type jpg)
 <use Resources/class_balance_avc_test.jpeg>
 Package pdftex.def Info: Resources/class_balance_avc_test.jpeg  used on input line 499.
 (pdftex.def)             Requested size: 362.37569pt x 219.67293pt.
-<Resources/class_balance_avc_train.jpeg, id=494, 1002.74625pt x 605.26125pt>
+<Resources/class_balance_avc_train.jpeg, id=554, 1002.74625pt x 605.26125pt>
 File: Resources/class_balance_avc_train.jpeg Graphic file (type jpg)
 <use Resources/class_balance_avc_train.jpeg>
 Package pdftex.def Info: Resources/class_balance_avc_train.jpeg  used on input line 505.
 (pdftex.def)             Requested size: 362.37569pt x 218.7343pt.
  [21 </home/student/Documents/IA/Tema2/Resources/class_balance_avc_test.jpeg> </home/student/Documents/IA/Tema2/Resources/class_balance_avc_train.jpeg>]
-<Resources/class_balance_salary_test.jpeg, id=501, 999.735pt x 603.25375pt>
+<Resources/class_balance_salary_test.jpeg, id=561, 999.735pt x 603.25375pt>
 File: Resources/class_balance_salary_test.jpeg Graphic file (type jpg)
 <use Resources/class_balance_salary_test.jpeg>
 Package pdftex.def Info: Resources/class_balance_salary_test.jpeg  used on input line 515.
 (pdftex.def)             Requested size: 362.37569pt x 218.66237pt.
-<Resources/class_balance_salary_train.jpeg, id=502, 1003.75pt x 603.25375pt>
+<Resources/class_balance_salary_train.jpeg, id=562, 1003.75pt x 603.25375pt>
 File: Resources/class_balance_salary_train.jpeg Graphic file (type jpg)
 <use Resources/class_balance_salary_train.jpeg>
 Package pdftex.def Info: Resources/class_balance_salary_train.jpeg  used on input line 521.
 (pdftex.def)             Requested size: 362.37569pt x 217.7879pt.
  [22 </home/student/Documents/IA/Tema2/Resources/class_balance_salary_test.jpeg> </home/student/Documents/IA/Tema2/Resources/class_balance_salary_train.jpeg>] [23]
-<Resources/matrix_avc_train.jpeg, id=513, 722.7pt x 433.62pt>
+<Resources/matrix_avc_train.jpeg, id=573, 722.7pt x 433.62pt>
 File: Resources/matrix_avc_train.jpeg Graphic file (type jpg)
 <use Resources/matrix_avc_train.jpeg>
 Package pdftex.def Info: Resources/matrix_avc_train.jpeg  used on input line 547.
 (pdftex.def)             Requested size: 362.37569pt x 217.4248pt.
-<Resources/matrix_avc_test.png, id=514, 722.7pt x 433.62pt>
+<Resources/matrix_avc_test.png, id=574, 722.7pt x 433.62pt>
 File: Resources/matrix_avc_test.png Graphic file (type png)
 <use Resources/matrix_avc_test.png>
 Package pdftex.def Info: Resources/matrix_avc_test.png  used on input line 553.
 (pdftex.def)             Requested size: 362.37569pt x 217.4248pt.
  [24 </home/student/Documents/IA/Tema2/Resources/matrix_avc_train.jpeg> </home/student/Documents/IA/Tema2/Resources/matrix_avc_test.png>]
-<Resources/matrix_categorial_avc_train.png, id=523, 722.7pt x 433.62pt>
+<Resources/matrix_categorial_avc_train.png, id=583, 722.7pt x 433.62pt>
 File: Resources/matrix_categorial_avc_train.png Graphic file (type png)
 <use Resources/matrix_categorial_avc_train.png>
 Package pdftex.def Info: Resources/matrix_categorial_avc_train.png  used on input line 561.
 (pdftex.def)             Requested size: 362.37569pt x 217.4248pt.
-<Resources/matrix_categorial_avc_test.png, id=524, 722.7pt x 433.62pt>
+<Resources/matrix_categorial_avc_test.png, id=584, 722.7pt x 433.62pt>
 File: Resources/matrix_categorial_avc_test.png Graphic file (type png)
 <use Resources/matrix_categorial_avc_test.png>
 Package pdftex.def Info: Resources/matrix_categorial_avc_test.png  used on input line 567.
 (pdftex.def)             Requested size: 362.37569pt x 217.4248pt.
  [25 </home/student/Documents/IA/Tema2/Resources/matrix_categorial_avc_train.png> </home/student/Documents/IA/Tema2/Resources/matrix_categorial_avc_test.png>]
-<Resources/matrix_salary_train.jpeg, id=534, 722.7pt x 433.62pt>
+<Resources/matrix_salary_train.jpeg, id=594, 722.7pt x 433.62pt>
 File: Resources/matrix_salary_train.jpeg Graphic file (type jpg)
 <use Resources/matrix_salary_train.jpeg>
 Package pdftex.def Info: Resources/matrix_salary_train.jpeg  used on input line 576.
 (pdftex.def)             Requested size: 362.37569pt x 217.4248pt.
-<Resources/matrix_salary_test.png, id=535, 722.7pt x 433.62pt>
+<Resources/matrix_salary_test.png, id=595, 722.7pt x 433.62pt>
 File: Resources/matrix_salary_test.png Graphic file (type png)
 <use Resources/matrix_salary_test.png>
 Package pdftex.def Info: Resources/matrix_salary_test.png  used on input line 582.
 (pdftex.def)             Requested size: 362.37569pt x 217.4248pt.
  [26 </home/student/Documents/IA/Tema2/Resources/matrix_salary_train.jpeg> </home/student/Documents/IA/Tema2/Resources/matrix_salary_test.png>]
-<Resources/matrix_categorial_salary_train.png, id=543, 722.7pt x 433.62pt>
+<Resources/matrix_categorial_salary_train.png, id=603, 722.7pt x 433.62pt>
 File: Resources/matrix_categorial_salary_train.png Graphic file (type png)
 <use Resources/matrix_categorial_salary_train.png>
 Package pdftex.def Info: Resources/matrix_categorial_salary_train.png  used on input line 590.
 (pdftex.def)             Requested size: 362.37569pt x 217.4248pt.
-<Resources/matrix_categorial_salary_test.png, id=544, 722.7pt x 433.62pt>
+<Resources/matrix_categorial_salary_test.png, id=604, 722.7pt x 433.62pt>
 File: Resources/matrix_categorial_salary_test.png Graphic file (type png)
 <use Resources/matrix_categorial_salary_test.png>
 Package pdftex.def Info: Resources/matrix_categorial_salary_test.png  used on input line 596.
@@ -895,44 +895,155 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [46]
-Overfull \hbox (7.82315pt too wide) in paragraph at lines 1455--1456
+Overfull \hbox (7.82315pt too wide) in paragraph at lines 1456--1457
 \OT1/cmr/m/n/12 ple-men-ta-tion of-fers slightly bet-ter per-for-mance met-rics in the Salary dataset and marginally
  []
 
-<Resources/logreg_curve_avc.jpeg, id=656, 1404.24625pt x 598.235pt>
+<Resources/logreg_manual_confusion_avc_test.jpeg, id=716, 640.3925pt x 486.81876pt>
+File: Resources/logreg_manual_confusion_avc_test.jpeg Graphic file (type jpg)
+<use Resources/logreg_manual_confusion_avc_test.jpeg>
+Package pdftex.def Info: Resources/logreg_manual_confusion_avc_test.jpeg  used on input line 1462.
+(pdftex.def)             Requested size: 203.83417pt x 154.94579pt.
+<Resources/logreg_scikit_confusion_avc_test.jpeg.jpeg, id=717, 642.4pt x 482.80376pt>
+File: Resources/logreg_scikit_confusion_avc_test.jpeg.jpeg Graphic file (type jpg)
+<use Resources/logreg_scikit_confusion_avc_test.jpeg.jpeg>
+Package pdftex.def Info: Resources/logreg_scikit_confusion_avc_test.jpeg.jpeg  used on input line 1463.
+(pdftex.def)             Requested size: 203.83417pt x 153.18903pt.
+<Resources/logreg_manual_confusion_avc_train.jpeg, id=718, 640.3925pt x 483.8075pt>
+File: Resources/logreg_manual_confusion_avc_train.jpeg Graphic file (type jpg)
+<use Resources/logreg_manual_confusion_avc_train.jpeg>
+Package pdftex.def Info: Resources/logreg_manual_confusion_avc_train.jpeg  used on input line 1470.
+(pdftex.def)             Requested size: 203.83417pt x 153.98737pt.
+<Resources/logreg_scikit_confusion_avc_train.jpeg, id=719, 640.3925pt x 481.8pt>
+File: Resources/logreg_scikit_confusion_avc_train.jpeg Graphic file (type jpg)
+<use Resources/logreg_scikit_confusion_avc_train.jpeg>
+Package pdftex.def Info: Resources/logreg_scikit_confusion_avc_train.jpeg  used on input line 1471.
+(pdftex.def)             Requested size: 203.83417pt x 153.3484pt.
+[47 </home/student/Documents/IA/Tema2/Resources/logreg_manual_confusion_avc_test.jpeg> </home/student/Documents/IA/Tema2/Resources/logreg_scikit_confusion_avc_test.jpeg.jpeg>]
+<Resources/logreg_manual_confusion_salary_test.jpeg, id=727, 640.3925pt x 486.81876pt>
+File: Resources/logreg_manual_confusion_salary_test.jpeg Graphic file (type jpg)
+<use Resources/logreg_manual_confusion_salary_test.jpeg>
+Package pdftex.def Info: Resources/logreg_manual_confusion_salary_test.jpeg  used on input line 1478.
+(pdftex.def)             Requested size: 203.83417pt x 154.94579pt.
+<Resources/logreg_scikit_confusion_salary_test.jpeg, id=728, 641.39626pt x 483.8075pt>
+File: Resources/logreg_scikit_confusion_salary_test.jpeg Graphic file (type jpg)
+<use Resources/logreg_scikit_confusion_salary_test.jpeg>
+Package pdftex.def Info: Resources/logreg_scikit_confusion_salary_test.jpeg  used on input line 1479.
+(pdftex.def)             Requested size: 203.83417pt x 153.75113pt.
+<Resources/logreg_manual_confusion_salary_train.jpeg, id=729, 639.38875pt x 477.785pt>
+File: Resources/logreg_manual_confusion_salary_train.jpeg Graphic file (type jpg)
+<use Resources/logreg_manual_confusion_salary_train.jpeg>
+Package pdftex.def Info: Resources/logreg_manual_confusion_salary_train.jpeg  used on input line 1486.
+(pdftex.def)             Requested size: 203.83417pt x 152.31837pt.
+<Resources/logreg_scikit_confusion_salary_train.jpeg, id=730, 640.3925pt x 483.8075pt>
+File: Resources/logreg_scikit_confusion_salary_train.jpeg Graphic file (type jpg)
+<use Resources/logreg_scikit_confusion_salary_train.jpeg>
+Package pdftex.def Info: Resources/logreg_scikit_confusion_salary_train.jpeg  used on input line 1487.
+(pdftex.def)             Requested size: 203.83417pt x 153.98737pt.
+ [48 </home/student/Documents/IA/Tema2/Resources/logreg_manual_confusion_avc_train.jpeg> </home/student/Documents/IA/Tema2/Resources/logreg_scikit_confusion_avc_train.jpeg> </home/student/Documents/IA/Tema2/Resources/logreg_manual_confusion_salary_test.jpeg> </home/student/Documents/IA/Tema2/Resources/logreg_scikit_confusion_salary_test.jpeg> </home/student/Documents/IA/Tema2/Resources/logreg_manual_confusion_salary_train.jpeg> </home/student/Documents/IA/Tema2/Resources/logreg_scikit_confusion_salary_train.jpeg>] [49]
+<Resources/logreg_curve_avc.jpeg, id=746, 1404.24625pt x 598.235pt>
 File: Resources/logreg_curve_avc.jpeg Graphic file (type jpg)
 <use Resources/logreg_curve_avc.jpeg>
-Package pdftex.def Info: Resources/logreg_curve_avc.jpeg  used on input line 1463.
+Package pdftex.def Info: Resources/logreg_curve_avc.jpeg  used on input line 1571.
 (pdftex.def)             Requested size: 407.66833pt x 173.6754pt.
-<Resources/logreg_curve_salary.jpeg, id=657, 1405.25pt x 606.265pt>
+<Resources/logreg_curve_salary.jpeg, id=747, 1405.25pt x 606.265pt>
 File: Resources/logreg_curve_salary.jpeg Graphic file (type jpg)
 <use Resources/logreg_curve_salary.jpeg>
-Package pdftex.def Info: Resources/logreg_curve_salary.jpeg  used on input line 1470.
+Package pdftex.def Info: Resources/logreg_curve_salary.jpeg  used on input line 1578.
 (pdftex.def)             Requested size: 407.66833pt x 175.8771pt.
-[47 </home/student/Documents/IA/Tema2/Resources/logreg_curve_avc.jpeg>] [48 </home/student/Documents/IA/Tema2/Resources/logreg_curve_salary.jpeg>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1533.
- [49]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1533.
+ [50 </home/student/Documents/IA/Tema2/Resources/logreg_curve_avc.jpeg>] [51 </home/student/Documents/IA/Tema2/Resources/logreg_curve_salary.jpeg>]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[52]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[53]
+<Resources/mlp_manual_confusion_avc_test.jpeg, id=775, 642.4pt x 482.80376pt>
+File: Resources/mlp_manual_confusion_avc_test.jpeg Graphic file (type jpg)
+<use Resources/mlp_manual_confusion_avc_test.jpeg>
+Package pdftex.def Info: Resources/mlp_manual_confusion_avc_test.jpeg  used on input line 1797.
+(pdftex.def)             Requested size: 203.83417pt x 153.18903pt.
+<Resources/mlp_scikit_confusion_avc_test.jpeg, id=776, 639.38875pt x 478.78876pt>
+File: Resources/mlp_scikit_confusion_avc_test.jpeg Graphic file (type jpg)
+<use Resources/mlp_scikit_confusion_avc_test.jpeg>
+Package pdftex.def Info: Resources/mlp_scikit_confusion_avc_test.jpeg  used on input line 1798.
+(pdftex.def)             Requested size: 203.83417pt x 152.63837pt.
+<Resources/mlp_manual_confusion_avc_train.jpeg, id=777, 642.4pt x 479.7925pt>
+File: Resources/mlp_manual_confusion_avc_train.jpeg Graphic file (type jpg)
+<use Resources/mlp_manual_confusion_avc_train.jpeg>
+Package pdftex.def Info: Resources/mlp_manual_confusion_avc_train.jpeg  used on input line 1805.
+(pdftex.def)             Requested size: 203.83417pt x 152.23358pt.
+<Resources/mlp_scikit_confusion_avc_train.jpeg, id=778, 641.39626pt x 480.79625pt>
+File: Resources/mlp_scikit_confusion_avc_train.jpeg Graphic file (type jpg)
+<use Resources/mlp_scikit_confusion_avc_train.jpeg>
+Package pdftex.def Info: Resources/mlp_scikit_confusion_avc_train.jpeg  used on input line 1806.
+(pdftex.def)             Requested size: 203.83417pt x 152.79416pt.
+ [54 </home/student/Documents/IA/Tema2/Resources/mlp_manual_confusion_avc_test.jpeg> </home/student/Documents/IA/Tema2/Resources/mlp_scikit_confusion_avc_test.jpeg>]
+<Resources/mlp_manual_confusion_salary_test.jpeg, id=785, 644.4075pt x 481.8pt>
+File: Resources/mlp_manual_confusion_salary_test.jpeg Graphic file (type jpg)
+<use Resources/mlp_manual_confusion_salary_test.jpeg>
+Package pdftex.def Info: Resources/mlp_manual_confusion_salary_test.jpeg  used on input line 1813.
+(pdftex.def)             Requested size: 203.83417pt x 152.40004pt.
+<Resources/mlp_scikit_confusion_salary_test.jpeg, id=786, 642.4pt x 485.815pt>
+File: Resources/mlp_scikit_confusion_salary_test.jpeg Graphic file (type jpg)
+<use Resources/mlp_scikit_confusion_salary_test.jpeg>
+Package pdftex.def Info: Resources/mlp_scikit_confusion_salary_test.jpeg  used on input line 1814.
+(pdftex.def)             Requested size: 203.83417pt x 154.14447pt.
+<Resources/mlp_manual_confusion_salary_train.jpeg, id=787, 645.41125pt x 479.7925pt>
+File: Resources/mlp_manual_confusion_salary_train.jpeg Graphic file (type jpg)
+<use Resources/mlp_manual_confusion_salary_train.jpeg>
+Package pdftex.def Info: Resources/mlp_manual_confusion_salary_train.jpeg  used on input line 1821.
+(pdftex.def)             Requested size: 203.83417pt x 151.52344pt.
+<Resources/mlp_scikit_confusion_salary_train.jpeg, id=788, 640.3925pt x 478.78876pt>
+File: Resources/mlp_scikit_confusion_salary_train.jpeg Graphic file (type jpg)
+<use Resources/mlp_scikit_confusion_salary_train.jpeg>
+Package pdftex.def Info: Resources/mlp_scikit_confusion_salary_train.jpeg  used on input line 1822.
+(pdftex.def)             Requested size: 203.83417pt x 152.38998pt.
+ [55 </home/student/Documents/IA/Tema2/Resources/mlp_manual_confusion_avc_train.jpeg> </home/student/Documents/IA/Tema2/Resources/mlp_scikit_confusion_avc_train.jpeg> </home/student/Documents/IA/Tema2/Resources/mlp_manual_confusion_salary_test.jpeg> </home/student/Documents/IA/Tema2/Resources/mlp_scikit_confusion_salary_test.jpeg> </home/student/Documents/IA/Tema2/Resources/mlp_manual_confusion_salary_train.jpeg> </home/student/Documents/IA/Tema2/Resources/mlp_scikit_confusion_salary_train.jpeg>] [56]
+<Resources/mlp_curve_avc.jpeg, id=804, 1400.23125pt x 663.47874pt>
+File: Resources/mlp_curve_avc.jpeg Graphic file (type jpg)
+<use Resources/mlp_curve_avc.jpeg>
+Package pdftex.def Info: Resources/mlp_curve_avc.jpeg  used on input line 1906.
+(pdftex.def)             Requested size: 407.66833pt x 193.1632pt.
+<Resources/mlp_curve_salary.jpeg, id=805, 1407.2575pt x 671.50874pt>
+File: Resources/mlp_curve_salary.jpeg Graphic file (type jpg)
+<use Resources/mlp_curve_salary.jpeg>
+Package pdftex.def Info: Resources/mlp_curve_salary.jpeg  used on input line 1913.
+(pdftex.def)             Requested size: 407.66833pt x 194.52762pt.
+ [57 </home/student/Documents/IA/Tema2/Resources/mlp_curve_avc.jpeg>] [58 </home/student/Documents/IA/Tema2/Resources/mlp_curve_salary.jpeg>]
+Overfull \hbox (10.04257pt too wide) in paragraph at lines 1959--1960
+[]\OT1/cmr/m/n/12 The train ac-cu-racy (0.996331) is sig-nif-i-cantly higher than the test ac-cu-racy (0.906067). 
+ []
+
+[59]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2025.
+ [60]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 2025.
  (/home/student/Documents/IA/Tema2/AppliedML.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1533.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1533.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2025.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2025.
 Package rerunfilecheck Info: File `AppliedML.out' has not changed.
-(rerunfilecheck)             Checksum: 6875E240D3380BD635D216F486D00454;4803.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1533.
+(rerunfilecheck)             Checksum: D5FCA739317E3B74FB84EAE0D0D9E558;5818.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2025.
  ) 
 Here is how much of TeX's memory you used:
- 8661 strings out of 483183
- 136458 string characters out of 5966292
- 405431 words of memory out of 5000000
- 23316 multiletter control sequences out of 15000+600000
+ 8851 strings out of 483183
+ 143087 string characters out of 5966292
+ 406242 words of memory out of 5000000
+ 23433 multiletter control sequences out of 15000+600000
  543810 words of font info for 68 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  48i,10n,46p,845b,470s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/student/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on /home/student/Documents/IA/Tema2/AppliedML.pdf (49 pages, 2010206 bytes).
+Output written on /home/student/Documents/IA/Tema2/AppliedML.pdf (60 pages, 2607685 bytes).
 PDF statistics:
- 767 PDF objects out of 1000 (max. 8388607)
- 644 compressed objects within 7 object streams
- 175 named destinations out of 1000 (max. 500000)
- 755 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 932 PDF objects out of 1000 (max. 8388607)
+ 779 compressed objects within 8 object streams
+ 227 named destinations out of 1000 (max. 500000)
+ 941 words of extra memory for PDF output out of 10000 (max. 10000000)
 

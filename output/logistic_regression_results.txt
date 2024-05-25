@@ -1,6 +1,6 @@
 Manual Logistic Regression Results:
-AVC Dataset - Train Accuracy: 0.9559686888454012, Test Accuracy: 0.9285714285714286
-Salary Dataset - Train Accuracy: 0.8241030128766096, Test Accuracy: 0.8215
+AVC Dataset - Train Accuracy: 0.9569471624266145, Test Accuracy: 0.9266144814090019
+Salary Dataset - Train Accuracy: 0.8259782472809101, Test Accuracy: 0.8315
 
 Scikit-learn Logistic Regression Results:
 AVC Dataset - Train Accuracy: 0.9574363992172211, Test Accuracy: 0.9266144814090019

@@ -61,8 +61,20 @@
 \BOOKMARK [1][-]{section.15}{Comparison}{}% 61
 \BOOKMARK [2][-]{subsection.15.1}{Context}{section.15}% 62
 \BOOKMARK [2][-]{subsection.15.2}{Logistic Regression Performance}{section.15}% 63
-\BOOKMARK [3][-]{subsubsection.15.2.1}{AVC Dataset}{subsection.15.2}% 64
-\BOOKMARK [3][-]{subsubsection.15.2.2}{Salary Dataset}{subsection.15.2}% 65
+\BOOKMARK [3][-]{subsubsection.15.2.1}{AVC Dataset Metrics}{subsection.15.2}% 64
+\BOOKMARK [3][-]{subsubsection.15.2.2}{Salary Dataset Metrics}{subsection.15.2}% 65
 \BOOKMARK [3][-]{subsubsection.15.2.3}{Observations}{subsection.15.2}% 66
-\BOOKMARK [3][-]{subsubsection.15.2.4}{Overall Accuracy}{subsection.15.2}% 67
-\BOOKMARK [3][-]{subsubsection.15.2.5}{Overfit Analysis}{subsection.15.2}% 68
+\BOOKMARK [3][-]{subsubsection.15.2.4}{Confusion Matrices}{subsection.15.2}% 67
+\BOOKMARK [3][-]{subsubsection.15.2.5}{Comments on Confusion Matrices}{subsection.15.2}% 68
+\BOOKMARK [3][-]{subsubsection.15.2.6}{Overall Accuracy}{subsection.15.2}% 69
+\BOOKMARK [3][-]{subsubsection.15.2.7}{Overfit Analysis}{subsection.15.2}% 70
+\BOOKMARK [2][-]{subsection.15.3}{Multi Layer Perceptron}{section.15}% 71
+\BOOKMARK [3][-]{subsubsection.15.3.1}{AVC Dataset Metrics}{subsection.15.3}% 72
+\BOOKMARK [3][-]{subsubsection.15.3.2}{Salary Dataset Metrics}{subsection.15.3}% 73
+\BOOKMARK [3][-]{subsubsection.15.3.3}{Observations}{subsection.15.3}% 74
+\BOOKMARK [3][-]{subsubsection.15.3.4}{Confusion Matrices}{subsection.15.3}% 75
+\BOOKMARK [3][-]{subsubsection.15.3.5}{Comments on Confusion Matrices}{subsection.15.3}% 76
+\BOOKMARK [3][-]{subsubsection.15.3.6}{Overall Accuracy}{subsection.15.3}% 77
+\BOOKMARK [3][-]{subsubsection.15.3.7}{Overfit Analysis}{subsection.15.3}% 78
+\BOOKMARK [2][-]{subsection.15.4}{Comparison of Logistic Regression and Multi Layer Perceptron}{section.15}% 79
+\BOOKMARK [3][-]{subsubsection.15.4.1}{Observations}{subsection.15.4}% 80

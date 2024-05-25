@@ -69,8 +69,30 @@
 \contentsline {section}{\numberline {15}Comparison}{44}{section.15}%
 \contentsline {subsection}{\numberline {15.1}Context}{44}{subsection.15.1}%
 \contentsline {subsection}{\numberline {15.2}Logistic Regression Performance}{45}{subsection.15.2}%
-\contentsline {subsubsection}{\numberline {15.2.1}AVC Dataset}{45}{subsubsection.15.2.1}%
-\contentsline {subsubsection}{\numberline {15.2.2}Salary Dataset}{46}{subsubsection.15.2.2}%
+\contentsline {subsubsection}{\numberline {15.2.1}AVC Dataset Metrics}{45}{subsubsection.15.2.1}%
+\contentsline {subsubsection}{\numberline {15.2.2}Salary Dataset Metrics}{46}{subsubsection.15.2.2}%
 \contentsline {subsubsection}{\numberline {15.2.3}Observations}{47}{subsubsection.15.2.3}%
-\contentsline {subsubsection}{\numberline {15.2.4}Overall Accuracy}{47}{subsubsection.15.2.4}%
-\contentsline {subsubsection}{\numberline {15.2.5}Overfit Analysis}{48}{subsubsection.15.2.5}%
+\contentsline {subsubsection}{\numberline {15.2.4}Confusion Matrices}{47}{subsubsection.15.2.4}%
+\contentsline {subsubsection}{\numberline {15.2.5}Comments on Confusion Matrices}{48}{subsubsection.15.2.5}%
+\contentsline {paragraph}{AVC Dataset - Test Set}{48}{section*.60}%
+\contentsline {paragraph}{AVC Dataset - Train Set}{49}{section*.61}%
+\contentsline {paragraph}{Salary Dataset - Test Set}{49}{section*.62}%
+\contentsline {paragraph}{Salary Dataset - Train Set}{50}{section*.63}%
+\contentsline {paragraph}{Summary}{50}{section*.64}%
+\contentsline {subsubsection}{\numberline {15.2.6}Overall Accuracy}{50}{subsubsection.15.2.6}%
+\contentsline {subsubsection}{\numberline {15.2.7}Overfit Analysis}{51}{subsubsection.15.2.7}%
+\contentsline {subsection}{\numberline {15.3}Multi Layer Perceptron}{52}{subsection.15.3}%
+\contentsline {subsubsection}{\numberline {15.3.1}AVC Dataset Metrics}{52}{subsubsection.15.3.1}%
+\contentsline {subsubsection}{\numberline {15.3.2}Salary Dataset Metrics}{53}{subsubsection.15.3.2}%
+\contentsline {subsubsection}{\numberline {15.3.3}Observations}{54}{subsubsection.15.3.3}%
+\contentsline {subsubsection}{\numberline {15.3.4}Confusion Matrices}{54}{subsubsection.15.3.4}%
+\contentsline {subsubsection}{\numberline {15.3.5}Comments on Confusion Matrices}{55}{subsubsection.15.3.5}%
+\contentsline {paragraph}{AVC Dataset - Test Set}{55}{section*.79}%
+\contentsline {paragraph}{AVC Dataset - Train Set}{56}{section*.80}%
+\contentsline {paragraph}{Salary Dataset - Test Set}{56}{section*.81}%
+\contentsline {paragraph}{Salary Dataset - Train Set}{57}{section*.82}%
+\contentsline {paragraph}{Summary}{57}{section*.83}%
+\contentsline {subsubsection}{\numberline {15.3.6}Overall Accuracy}{57}{subsubsection.15.3.6}%
+\contentsline {subsubsection}{\numberline {15.3.7}Overfit Analysis}{58}{subsubsection.15.3.7}%
+\contentsline {subsection}{\numberline {15.4}Comparison of Logistic Regression and Multi Layer Perceptron}{59}{subsection.15.4}%
+\contentsline {subsubsection}{\numberline {15.4.1}Observations}{59}{subsubsection.15.4.1}%
