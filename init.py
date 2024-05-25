@@ -405,10 +405,10 @@ def __main__():
     # class_balance_wrapper()
     
     # Correlation matrices for numerical attributes
-    # correlation_matrix_wrapper()
+    correlation_matrix_wrapper()
     
-    # # # Correlation matrices for categorical attributes
-    # categorial_correlation_matrix_wrapper()
+    # Correlation matrices for categorical attributes
+    categorial_correlation_matrix_wrapper()
 
     # Preprocess data
     return_tuple_avc, return_tuple_salary = preprocess_data_wrapper()

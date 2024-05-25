@@ -1,0 +1,37 @@
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
+\contentsline {section}{\numberline {2}Medical and Lifestyle Information Dataset}{3}{section.2}%
+\contentsline {section}{\numberline {3}Employee Information Dataset}{4}{section.3}%
+\contentsline {section}{\numberline {4}Attribute Type Identification}{4}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Continuous Numerical Attributes}{4}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Discrete Attributes}{5}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Numeric Attributes Analysis}{6}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Healthcare Dataset}{6}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Employee Dataset}{7}{subsection.5.2}%
+\contentsline {section}{\numberline {6}Numeric Ranges for Attributes}{8}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Healthcare Dataset}{8}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Employee Dataset}{9}{subsection.6.2}%
+\contentsline {section}{\numberline {7}Categorical Attributes Analysis}{10}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Healthcare Dataset}{10}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Employee Dataset}{10}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Comments}{11}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Categorical Distribution for Attributes}{11}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Healthcare Dataset}{11}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Salary Dataset}{15}{subsection.8.2}%
+\contentsline {section}{\numberline {9}Class Balance}{20}{section.9}%
+\contentsline {subsection}{\numberline {9.1}AVC Dataset}{20}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Salary Dataset}{21}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Comments}{21}{subsection.9.3}%
+\contentsline {section}{\numberline {10}Attribute Correlation}{23}{section.10}%
+\contentsline {subsection}{\numberline {10.1}AVC Dataset}{23}{subsection.10.1}%
+\contentsline {subsubsection}{\numberline {10.1.1}Numerical Attributes}{23}{subsubsection.10.1.1}%
+\contentsline {subsubsection}{\numberline {10.1.2}Categorical Attributes}{24}{subsubsection.10.1.2}%
+\contentsline {subsection}{\numberline {10.2}Salary Dataset}{25}{subsection.10.2}%
+\contentsline {subsubsection}{\numberline {10.2.1}Numerical Attributes}{25}{subsubsection.10.2.1}%
+\contentsline {subsubsection}{\numberline {10.2.2}Categorical Attributes}{26}{subsubsection.10.2.2}%
+\contentsline {subsection}{\numberline {10.3}Comments}{27}{subsection.10.3}%
+\contentsline {subsubsection}{\numberline {10.3.1}AVC Dataset}{27}{subsubsection.10.3.1}%
+\contentsline {paragraph}{Numerical Attributes}{27}{section*.40}%
+\contentsline {paragraph}{Categorical Attributes}{27}{section*.41}%
+\contentsline {subsubsection}{\numberline {10.3.2}Salary Dataset}{27}{subsubsection.10.3.2}%
+\contentsline {paragraph}{Numerical Attributes}{27}{section*.42}%
+\contentsline {paragraph}{Categorical Attributes}{27}{section*.43}%

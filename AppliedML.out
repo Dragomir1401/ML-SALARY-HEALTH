@@ -1,0 +1,33 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Medical and Lifestyle Information Dataset}{}% 2
+\BOOKMARK [1][-]{section.3}{Employee Information Dataset}{}% 3
+\BOOKMARK [1][-]{section.4}{Attribute Type Identification}{}% 4
+\BOOKMARK [2][-]{subsection.4.1}{Continuous Numerical Attributes}{section.4}% 5
+\BOOKMARK [2][-]{subsection.4.2}{Discrete Attributes}{section.4}% 6
+\BOOKMARK [1][-]{section.5}{Numeric Attributes Analysis}{}% 7
+\BOOKMARK [2][-]{subsection.5.1}{Healthcare Dataset}{section.5}% 8
+\BOOKMARK [2][-]{subsection.5.2}{Employee Dataset}{section.5}% 9
+\BOOKMARK [1][-]{section.6}{Numeric Ranges for Attributes}{}% 10
+\BOOKMARK [2][-]{subsection.6.1}{Healthcare Dataset}{section.6}% 11
+\BOOKMARK [2][-]{subsection.6.2}{Employee Dataset}{section.6}% 12
+\BOOKMARK [1][-]{section.7}{Categorical Attributes Analysis}{}% 13
+\BOOKMARK [2][-]{subsection.7.1}{Healthcare Dataset}{section.7}% 14
+\BOOKMARK [2][-]{subsection.7.2}{Employee Dataset}{section.7}% 15
+\BOOKMARK [2][-]{subsection.7.3}{Comments}{section.7}% 16
+\BOOKMARK [1][-]{section.8}{Categorical Distribution for Attributes}{}% 17
+\BOOKMARK [2][-]{subsection.8.1}{Healthcare Dataset}{section.8}% 18
+\BOOKMARK [2][-]{subsection.8.2}{Salary Dataset}{section.8}% 19
+\BOOKMARK [1][-]{section.9}{Class Balance}{}% 20
+\BOOKMARK [2][-]{subsection.9.1}{AVC Dataset}{section.9}% 21
+\BOOKMARK [2][-]{subsection.9.2}{Salary Dataset}{section.9}% 22
+\BOOKMARK [2][-]{subsection.9.3}{Comments}{section.9}% 23
+\BOOKMARK [1][-]{section.10}{Attribute Correlation}{}% 24
+\BOOKMARK [2][-]{subsection.10.1}{AVC Dataset}{section.10}% 25
+\BOOKMARK [3][-]{subsubsection.10.1.1}{Numerical Attributes}{subsection.10.1}% 26
+\BOOKMARK [3][-]{subsubsection.10.1.2}{Categorical Attributes}{subsection.10.1}% 27
+\BOOKMARK [2][-]{subsection.10.2}{Salary Dataset}{section.10}% 28
+\BOOKMARK [3][-]{subsubsection.10.2.1}{Numerical Attributes}{subsection.10.2}% 29
+\BOOKMARK [3][-]{subsubsection.10.2.2}{Categorical Attributes}{subsection.10.2}% 30
+\BOOKMARK [2][-]{subsection.10.3}{Comments}{section.10}% 31
+\BOOKMARK [3][-]{subsubsection.10.3.1}{AVC Dataset}{subsection.10.3}% 32
+\BOOKMARK [3][-]{subsubsection.10.3.2}{Salary Dataset}{subsection.10.3}% 33

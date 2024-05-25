@@ -73,18 +73,17 @@ def categorical_statistics(df, categorical_columns):
 # Function to plot histograms for categorical columns
 def plot_histograms(df, categorical_columns, title):
     """Plot histograms for categorical columns in a DataFrame."""
-    plt.figure(figsize=(20, 15))
-    num_columns = 3  # Number of columns in the subplot grid
-    num_rows = len(categorical_columns) // num_columns + (len(categorical_columns) % num_columns > 0)  # Calculate the number of rows
-    
-    for i, column in enumerate(categorical_columns, 1):
-        plt.subplot(num_rows, num_columns, i)
+    for column in categorical_columns:
+        plt.figure(figsize=(8, 6))
         df[column].value_counts().plot(kind='bar')
-        plt.title(column, fontsize=12)
-    
-    plt.suptitle(title, y=0.92, fontsize=20)  # Set the main title and adjust its position
-    plt.subplots_adjust(hspace=0.5, top=0.85)  # Adjust space between rows and distance from the top
-    plt.show()
+        plt.title(f'{title} - {column}', fontsize=13)
+        plt.xlabel(column, fontsize=12)
+        plt.ylabel('Frequency', fontsize=12)
+        plt.xticks(fontsize=10)
+        plt.yticks(fontsize=10)
+        plt.tight_layout()
+        plt.show()
+
 
 # Function to plot class balance
 def plot_class_balance(df, class_column, title):
