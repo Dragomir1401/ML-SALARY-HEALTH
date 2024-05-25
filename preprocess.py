@@ -8,7 +8,9 @@ def impute_missing_values(df, numeric_columns, categorical_columns, fit=True, im
     """Impute missing values for numeric and categorical columns."""
     df_numeric = df[numeric_columns]  # Select numeric columns
     df_categorical = df[categorical_columns]  # Select categorical columns
-
+    # Replace '?' with NaN
+    df.replace('?', np.nan, inplace=True)
+    
     if fit:
         # Create and fit imputer for numeric columns
         numeric_imputer = SimpleImputer(strategy='mean')
@@ -18,7 +20,7 @@ def impute_missing_values(df, numeric_columns, categorical_columns, fit=True, im
         categorical_imputer = SimpleImputer(strategy='most_frequent')
         df_categorical_imputed = pd.DataFrame(categorical_imputer.fit_transform(df_categorical), columns=categorical_columns)
         
-        # Store imputers for future use
+        # Store imputers for train use
         imputers = {'numeric': numeric_imputer, 'categorical': categorical_imputer}
     else:
         # Transform numeric and categorical columns using provided imputers

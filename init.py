@@ -226,9 +226,9 @@ def preprocess_data_wrapper():
 def logistic_regression_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test):
     # Manual Logistic Regression
     w_avc, train_nll_avc, test_nll_avc, train_acc_avc, test_acc_avc = train_and_eval_logistic(
-        X_avc_train, T_avc_train, X_avc_test, T_avc_test, lr=0.1, epochs_no=500)
+        X_avc_train, T_avc_train, X_avc_test, T_avc_test, lr=0.1, epochs_no=1000)
     w_salary, train_nll_salary, test_nll_salary, train_acc_salary, test_acc_salary = train_and_eval_logistic(
-        X_salary_train, T_salary_train, X_salary_test, T_salary_test, lr=0.1, epochs_no=500)
+        X_salary_train, T_salary_train, X_salary_test, T_salary_test, lr=0.1, epochs_no=1000)
 
     # Logistic Regression using scikit-learn
     model_avc, train_nll_avc_sklearn, test_nll_avc_sklearn, train_acc_avc_sklearn, test_acc_avc_sklearn = train_and_eval_sklearn_logistic(
@@ -285,7 +285,7 @@ def mlp_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train
     )
 
     # Scikit-learn MLP Training and Evaluation for Salary dataset
-    hidden_layer_sizes = (hidden_size_salary,)  # Single hidden layer example
+    hidden_layer_sizes = (100, 50)  # Single hidden layer example
 
     train_acc_salary_sklearn, test_acc_salary_sklearn, model_salary_sklearn = train_and_evaluate_sklearn_mlp(
         X_salary_train, T_salary_train, X_salary_test, T_salary_test, hidden_layer_sizes, max_iter, learning_rate_init, alpha
@@ -405,10 +405,10 @@ def __main__():
     # class_balance_wrapper()
     
     # Correlation matrices for numerical attributes
-    correlation_matrix_wrapper()
+    # correlation_matrix_wrapper()
     
-    # Correlation matrices for categorical attributes
-    categorial_correlation_matrix_wrapper()
+    # # Correlation matrices for categorical attributes
+    # categorial_correlation_matrix_wrapper()
 
     # Preprocess data
     return_tuple_avc, return_tuple_salary = preprocess_data_wrapper()

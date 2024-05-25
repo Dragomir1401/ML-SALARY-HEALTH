@@ -31,3 +31,27 @@
 \BOOKMARK [2][-]{subsection.10.3}{Comments}{section.10}% 31
 \BOOKMARK [3][-]{subsubsection.10.3.1}{AVC Dataset}{subsection.10.3}% 32
 \BOOKMARK [3][-]{subsubsection.10.3.2}{Salary Dataset}{subsection.10.3}% 33
+\BOOKMARK [1][-]{section.11}{Preprocess of Data}{}% 34
+\BOOKMARK [2][-]{subsection.11.1}{Imputing Missing Values}{section.11}% 35
+\BOOKMARK [2][-]{subsection.11.2}{Handling Extreme Values}{section.11}% 36
+\BOOKMARK [2][-]{subsection.11.3}{Removing Highly Correlated Attributes}{section.11}% 37
+\BOOKMARK [2][-]{subsection.11.4}{Standardizing Numerical Attributes}{section.11}% 38
+\BOOKMARK [2][-]{subsection.11.5}{Encoding Categorical Variables}{section.11}% 39
+\BOOKMARK [2][-]{subsection.11.6}{Wrapper Function for Preprocessing}{section.11}% 40
+\BOOKMARK [1][-]{section.12}{Logistic Regression}{}% 41
+\BOOKMARK [2][-]{subsection.12.1}{Manual Implementation}{section.12}% 42
+\BOOKMARK [2][-]{subsection.12.2}{Scikit-learn Implementation}{section.12}% 43
+\BOOKMARK [2][-]{subsection.12.3}{Particularities}{section.12}% 44
+\BOOKMARK [3][-]{subsubsection.12.3.1}{Categorical Attribute Encoding}{subsection.12.3}% 45
+\BOOKMARK [3][-]{subsubsection.12.3.2}{Optimization Algorithm Settings}{subsection.12.3}% 46
+\BOOKMARK [1][-]{section.13}{MLP Implementation}{}% 47
+\BOOKMARK [2][-]{subsection.13.1}{Activation Functions}{section.13}% 48
+\BOOKMARK [2][-]{subsection.13.2}{Manual Implementation}{section.13}% 49
+\BOOKMARK [2][-]{subsection.13.3}{Scikit-learn Implementation}{section.13}% 50
+\BOOKMARK [2][-]{subsection.13.4}{Optimizer Usage}{section.13}% 51
+\BOOKMARK [3][-]{subsubsection.13.4.1}{SGD Optimizer}{subsection.13.4}% 52
+\BOOKMARK [3][-]{subsubsection.13.4.2}{Adam Optimizer}{subsection.13.4}% 53
+\BOOKMARK [2][-]{subsection.13.5}{Particularities}{section.13}% 54
+\BOOKMARK [3][-]{subsubsection.13.5.1}{Architecture}{subsection.13.5}% 55
+\BOOKMARK [3][-]{subsubsection.13.5.2}{Optimizer Configuration}{subsection.13.5}% 56
+\BOOKMARK [3][-]{subsubsection.13.5.3}{Regularization Methods}{subsection.13.5}% 57

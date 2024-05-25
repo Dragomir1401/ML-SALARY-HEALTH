@@ -266,13 +266,6 @@ class AdamOptimizer:
             # Update biases
             layer.bias -= self.learning_rate * m_hat_bias / (np.sqrt(v_hat_bias) + self.epsilon)
 
-# Function to apply SMOTEENN
-def apply_smote_enn(X_train, T_train):
-    """Apply SMOTEENN to balance the training data."""
-    smote_enn = SMOTEENN()
-    X_train_resampled, T_train_resampled = smote_enn.fit_resample(X_train, T_train)
-    return X_train_resampled, T_train_resampled
-
 # Training and Evaluating the Manual MLP
 def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, hidden_size, output_size, epochs, learning_rate, l2_reg=0.0, batch_size=32):
     """Train and evaluate a manual MLP model."""

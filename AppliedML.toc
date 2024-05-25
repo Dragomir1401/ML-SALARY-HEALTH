@@ -1,37 +1,61 @@
-\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
-\contentsline {section}{\numberline {2}Medical and Lifestyle Information Dataset}{3}{section.2}%
-\contentsline {section}{\numberline {3}Employee Information Dataset}{4}{section.3}%
-\contentsline {section}{\numberline {4}Attribute Type Identification}{4}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Continuous Numerical Attributes}{4}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Discrete Attributes}{5}{subsection.4.2}%
-\contentsline {section}{\numberline {5}Numeric Attributes Analysis}{6}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Healthcare Dataset}{6}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Employee Dataset}{7}{subsection.5.2}%
-\contentsline {section}{\numberline {6}Numeric Ranges for Attributes}{8}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Healthcare Dataset}{8}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Employee Dataset}{9}{subsection.6.2}%
-\contentsline {section}{\numberline {7}Categorical Attributes Analysis}{10}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Healthcare Dataset}{10}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Employee Dataset}{10}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Comments}{11}{subsection.7.3}%
-\contentsline {section}{\numberline {8}Categorical Distribution for Attributes}{11}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Healthcare Dataset}{11}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Salary Dataset}{15}{subsection.8.2}%
-\contentsline {section}{\numberline {9}Class Balance}{20}{section.9}%
-\contentsline {subsection}{\numberline {9.1}AVC Dataset}{20}{subsection.9.1}%
-\contentsline {subsection}{\numberline {9.2}Salary Dataset}{21}{subsection.9.2}%
-\contentsline {subsection}{\numberline {9.3}Comments}{21}{subsection.9.3}%
-\contentsline {section}{\numberline {10}Attribute Correlation}{23}{section.10}%
-\contentsline {subsection}{\numberline {10.1}AVC Dataset}{23}{subsection.10.1}%
-\contentsline {subsubsection}{\numberline {10.1.1}Numerical Attributes}{23}{subsubsection.10.1.1}%
-\contentsline {subsubsection}{\numberline {10.1.2}Categorical Attributes}{24}{subsubsection.10.1.2}%
-\contentsline {subsection}{\numberline {10.2}Salary Dataset}{25}{subsection.10.2}%
-\contentsline {subsubsection}{\numberline {10.2.1}Numerical Attributes}{25}{subsubsection.10.2.1}%
-\contentsline {subsubsection}{\numberline {10.2.2}Categorical Attributes}{26}{subsubsection.10.2.2}%
-\contentsline {subsection}{\numberline {10.3}Comments}{27}{subsection.10.3}%
-\contentsline {subsubsection}{\numberline {10.3.1}AVC Dataset}{27}{subsubsection.10.3.1}%
-\contentsline {paragraph}{Numerical Attributes}{27}{section*.40}%
-\contentsline {paragraph}{Categorical Attributes}{27}{section*.41}%
-\contentsline {subsubsection}{\numberline {10.3.2}Salary Dataset}{27}{subsubsection.10.3.2}%
-\contentsline {paragraph}{Numerical Attributes}{27}{section*.42}%
-\contentsline {paragraph}{Categorical Attributes}{27}{section*.43}%
+\contentsline {section}{\numberline {1}Introduction}{4}{section.1}%
+\contentsline {section}{\numberline {2}Medical and Lifestyle Information Dataset}{4}{section.2}%
+\contentsline {section}{\numberline {3}Employee Information Dataset}{5}{section.3}%
+\contentsline {section}{\numberline {4}Attribute Type Identification}{5}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Continuous Numerical Attributes}{5}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Discrete Attributes}{6}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Numeric Attributes Analysis}{7}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Healthcare Dataset}{7}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Employee Dataset}{8}{subsection.5.2}%
+\contentsline {section}{\numberline {6}Numeric Ranges for Attributes}{9}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Healthcare Dataset}{9}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Employee Dataset}{10}{subsection.6.2}%
+\contentsline {section}{\numberline {7}Categorical Attributes Analysis}{11}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Healthcare Dataset}{11}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Employee Dataset}{11}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Comments}{12}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Categorical Distribution for Attributes}{12}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Healthcare Dataset}{12}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Salary Dataset}{16}{subsection.8.2}%
+\contentsline {section}{\numberline {9}Class Balance}{21}{section.9}%
+\contentsline {subsection}{\numberline {9.1}AVC Dataset}{21}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Salary Dataset}{22}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Comments}{22}{subsection.9.3}%
+\contentsline {section}{\numberline {10}Attribute Correlation}{24}{section.10}%
+\contentsline {subsection}{\numberline {10.1}AVC Dataset}{24}{subsection.10.1}%
+\contentsline {subsubsection}{\numberline {10.1.1}Numerical Attributes}{24}{subsubsection.10.1.1}%
+\contentsline {subsubsection}{\numberline {10.1.2}Categorical Attributes}{25}{subsubsection.10.1.2}%
+\contentsline {subsection}{\numberline {10.2}Salary Dataset}{26}{subsection.10.2}%
+\contentsline {subsubsection}{\numberline {10.2.1}Numerical Attributes}{26}{subsubsection.10.2.1}%
+\contentsline {subsubsection}{\numberline {10.2.2}Categorical Attributes}{27}{subsubsection.10.2.2}%
+\contentsline {subsection}{\numberline {10.3}Comments}{28}{subsection.10.3}%
+\contentsline {subsubsection}{\numberline {10.3.1}AVC Dataset}{28}{subsubsection.10.3.1}%
+\contentsline {paragraph}{Numerical Attributes}{28}{section*.40}%
+\contentsline {paragraph}{Categorical Attributes}{28}{section*.41}%
+\contentsline {subsubsection}{\numberline {10.3.2}Salary Dataset}{28}{subsubsection.10.3.2}%
+\contentsline {paragraph}{Numerical Attributes}{28}{section*.42}%
+\contentsline {paragraph}{Categorical Attributes}{28}{section*.43}%
+\contentsline {section}{\numberline {11}Preprocess of Data}{29}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Imputing Missing Values}{29}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Handling Extreme Values}{30}{subsection.11.2}%
+\contentsline {subsection}{\numberline {11.3}Removing Highly Correlated Attributes}{30}{subsection.11.3}%
+\contentsline {subsection}{\numberline {11.4}Standardizing Numerical Attributes}{31}{subsection.11.4}%
+\contentsline {subsection}{\numberline {11.5}Encoding Categorical Variables}{31}{subsection.11.5}%
+\contentsline {subsection}{\numberline {11.6}Wrapper Function for Preprocessing}{32}{subsection.11.6}%
+\contentsline {section}{\numberline {12}Logistic Regression}{33}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Manual Implementation}{33}{subsection.12.1}%
+\contentsline {subsection}{\numberline {12.2}Scikit-learn Implementation}{34}{subsection.12.2}%
+\contentsline {subsection}{\numberline {12.3}Particularities}{35}{subsection.12.3}%
+\contentsline {subsubsection}{\numberline {12.3.1}Categorical Attribute Encoding}{35}{subsubsection.12.3.1}%
+\contentsline {subsubsection}{\numberline {12.3.2}Optimization Algorithm Settings}{35}{subsubsection.12.3.2}%
+\contentsline {section}{\numberline {13}MLP Implementation}{36}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Activation Functions}{36}{subsection.13.1}%
+\contentsline {subsection}{\numberline {13.2}Manual Implementation}{36}{subsection.13.2}%
+\contentsline {subsection}{\numberline {13.3}Scikit-learn Implementation}{37}{subsection.13.3}%
+\contentsline {subsection}{\numberline {13.4}Optimizer Usage}{38}{subsection.13.4}%
+\contentsline {subsubsection}{\numberline {13.4.1}SGD Optimizer}{38}{subsubsection.13.4.1}%
+\contentsline {subsubsection}{\numberline {13.4.2}Adam Optimizer}{39}{subsubsection.13.4.2}%
+\contentsline {subsection}{\numberline {13.5}Particularities}{39}{subsection.13.5}%
+\contentsline {subsubsection}{\numberline {13.5.1}Architecture}{39}{subsubsection.13.5.1}%
+\contentsline {subsubsection}{\numberline {13.5.2}Optimizer Configuration}{40}{subsubsection.13.5.2}%
+\contentsline {subsubsection}{\numberline {13.5.3}Regularization Methods}{40}{subsubsection.13.5.3}%

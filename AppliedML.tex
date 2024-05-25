@@ -536,6 +536,7 @@ Class imbalance can have a substantial impact on model performance and evaluatio
 By prioritizing these metrics, we can better assess and compare the performance of different algorithms on these imbalanced datasets.
 
 \newpage
+
 \section{Attribute Correlation}
 This section presents the correlation matrices for both the AVC and Salary datasets. The correlation matrices are split into numerical and categorical attributes for both train and test sets.
 
@@ -635,4 +636,531 @@ In the categorical correlation matrices for the Salary dataset:
 Overall, these correlation matrices help in understanding the interdependencies between attributes, which can be useful in feature selection and in improving the performance of machine learning models.
 
 Eliminating specific variables such as \textit{analysis\_results} and \textit{biological\_age\_index} from the AVC dataset, and prod from the Salary dataset, can enhance the efficiency and performance of our machine learning models. These variables were identified as candidates for elimination due to their high correlation with other attributes, which makes them redundant, and their minimal impact on predictive accuracy. By removing these redundant or less impactful features, we reduce noise, prevent overfitting, and simplify the model, leading to improved generalization and more robust predictive performance. This streamlined approach allows the model to focus on the most significant attributes, enhancing both computational efficiency and model interpretability.
+
+\section{Preprocess of Data}
+
+Preprocessing data is a crucial step in machine learning. It involves cleaning, transforming, and encoding data to make it suitable for modeling. Below are the steps and functions used in our preprocessing pipeline.
+
+\subsection{Imputing Missing Values}
+Missing values are imputed using the mean for numeric columns and the most frequent value for categorical columns.
+
+\begin{verbatim}
+def impute_missing_values(df, nmr_cols, cat_cols, fit, imp):
+    df_nmr = df[nmr_cols]
+    df_cat = df[cat_cols]
+    df.replace('?', np.nan, inplace=True)
+    if fit:
+        # Fit imputer if on training data
+        imp = SimpleImputer(strategy='mean')
+        df_nmr_imputed = pd.DataFrame(imp.fit_transform(df_nmr), cols=nmr_cols)
+        imp = SimpleImputer(strategy='most_frequent')
+        df_cat_imputed = pd.DataFrame(imp.fit_transform(df_cat), cols=cat_cols)
+    else:
+        # Use the fitted imputer from training data 
+        df_nmr_imputed = pd.DataFrame(imp['nmr'].transform(df_nmr), cols=nmr_cols)
+        df_cat_imputed = pd.DataFrame(imp['cat'].transform(df_cat), cols=cat_cols)
+
+    df_imputed = pd.concat([df_nmr_imputed, df_cat_imputed], axis=1)
+    return df_imputed, imputers
+\end{verbatim}
+
+\newpage
+\subsection{Handling Extreme Values}
+Extreme values are handled using the Interquartile Range (IQR) method and then imputed.
+
+\begin{verbatim}
+def handle_extreme_values(df, nmr_cols):
+    # Handling extreme values using IQR method
+    Q1 = df[nmr_cols].quantile(0.25)
+    Q3 = df[nmr_cols].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+
+    # Replace extreme values with NaN
+    for col in nmr_cols:
+        df[col] = np.where((df[col] < lower_bound[col]) | 
+                            (df[col] > upper_bound[col]), 
+                            np.nan, df[col])
+    
+    # Impute missing values for the added NaNs
+    imputer = SimpleImputer(strategy='mean')
+    df[nmr_cols] = imputer.fit_transform(df[nmr_cols])
+    return df
+\end{verbatim}
+
+\subsection{Removing Highly Correlated Attributes}
+Attributes with high or medium high correlation (above 0.5) are removed to prevent multicollinearity.
+Correlation classes:
+\newline
+-0 to 0.3: low correlation
+\newline
+-0.3 to 0.7: medium correlation
+\newline
+-0.7 to 1: high correlation
+\newline
+
+This resulted in the following eliminations: \textbf{analysis\_results} and \textbf{biological\_age\_index} from the AVC dataset, and \textbf{prod} from the Salary dataset.
+\begin{verbatim}
+def remove_redundant_attributes(df, nmr_cols, threshold=0.9):
+    numeric_df = df[nmr_cols]
+
+    # Get upper triangle of correlation matrix
+    corr_mat = numeric_df.corr().abs()
+    upper = corr_mat.where(np.triu(np.ones(corr_mat.shape), k=1).astype(bool))
+
+    # Drop everything higher than threshold
+    to_drop = [col for col in upper.cols if any(upper[col] > threshold)]
+    df_reduced = df.drop(cols=to_drop)
+    return df_reduced, to_drop
+\end{verbatim}
+
+
+\newpage
+\subsection{Standardizing Numerical Attributes}
+Standardizing ensures that the numerical attributes have a mean of 0 and a standard deviation of 1.
+
+\begin{verbatim}
+def standardize_data(df, nmr_cols, method='standard', fit=True, scaler=None):
+    if fit:
+        if method == 'standard':
+            scaler = StandardScaler()
+        elif method == 'minmax':
+            scaler = MinMaxScaler()
+        elif method == 'robust':
+            scaler = RobustScaler()
+        df[nmr_cols] = scaler.fit_transform(df[nmr_cols])
+        return df, scaler
+    else:
+        df[nmr_cols] = scaler.transform(df[nmr_cols])
+        return df
+\end{verbatim}
+
+\subsection{Encoding Categorical Variables}
+Categorical variables are encoded using OneHotEncoder, and the target variable is encoded using LabelEncoder.
+
+\begin{verbatim}
+def encode_categorical(df, trg_col, enc=None):
+    df = df.copy()
+    cat_cols = df.select_dtypes(include=['object']).cols.tolist()
+
+    # Remove target column from categorical columns
+    if trg_col in categorical_cols:
+        cat_cols.remove(trg_col)
+    
+    # Encode target column
+    label_enc = LabelEncoder()
+    df[trg_col] = label_enc.fit_transform(df[trg_col])
+    
+    # Encode categorical columns
+    enc = OneHotEncoder(sparse_output=False, drop='first', handle_unknown='ignore')
+    df_onehot = pd.DataFrame(enc.fit_transform(df[categorical_cols]), 
+                             cols=enc.get_feature_names_out(categorical_cols))
+    
+    df = pd.concat([df, df_onehot], axis=1)
+    df.drop(categorical_cols, axis=1, inplace=True)
+    
+    return df, label_enc, enc
+\end{verbatim}
+
+\newpage
+\subsection{Wrapper Function for Preprocessing}
+The wrapper function applies the above steps to each dataset (training and test) and saves the processed data.
+
+\begin{verbatim}
+def preprocess_data_wrapper():
+    for name, df in datasets.items():
+        if 'train' in name:
+            df_reduced, dropped_cols = rm_redundant(..., threshold=0.5)
+            nmr_cols_after_drop = [col for col in nmr_cols if col not in dropped]
+
+            df_imputed, imputer = inpute_missing(...)
+            fitted_imputers[name] = imputer
+
+            df_outliers_handled = handle_extreme_values(...)
+
+            df_standardized, scaler = standardize_data(...)
+            fitted_scalers[name] = scaler
+
+            df_encoded, label_enc, onehot_enc = encode_categorical(...)
+            fitted_encs[name] = (label_enc, onehot_enc)
+
+            processed_datasets[name] = df_encoded
+        else:
+            dropped = [col for col in nmr_cols if col not in proc_df.cols]
+            nmr_cols_after_drop = [col for col in nmr_cols if col not in dropped]
+
+            imputer = fitted_imputers[train_name]
+            scaler = fitted_scalers[train_name]
+
+            df_imputed, _ = impute_missing_values(...)
+            df_outliers_handled = handle_extreme_values(...)
+            df_outliers_imputed, _ = impute_missing_values(...)
+            df_standardized = standardize_data(...)
+            df_encoded, _, _ = encode_categorical(...)
+
+            train_cols = processed_datasets[train_name].cols
+            for col in train_cols:
+                if col not in df_encoded.cols:
+                    df_encoded[col] = 0
+            df_encoded = df_encoded[train_cols]
+
+            processed_datasets[name] = df_encoded
+
+    X_avc_train, T_avc_train, _, _ = preprocess_data(...)
+    X_avc_test, T_avc_test, _, _ = preprocess_data(...)
+    X_salary_train, T_salary_train, _, _ = preprocess_data(...)
+    X_salary_test, T_salary_test, _, _ = preprocess_data(...)
+    return return_tuple_avc, return_tuple_salary
+
+    def preprocess_data(df, target_column, enc=None):
+        # Preprocess the data by encoding cat variables and separating features
+        df_enc, label_enc, enc = encode_categorical(df, target_column, enc)
+        # Separate features
+        X = df_enc.drop(columns=[target_column]).values
+        # Separate target
+        T = df_enc[target_column].values
+        return X, T, label_enc, enc
+\end{verbatim}
+
+\section{Logistic Regression}
+
+\subsection{Manual Implementation}
+In this section, we implement logistic regression from scratch. The steps involved are as follows:
+
+\begin{itemize}
+    \item \textbf{Logistic Function}: Apply the logistic (sigmoid) function to transform input values into probabilities.
+    \item \textbf{Negative Log-Likelihood (NLL)}: Compute the NLL, which measures how well the predicted probabilities match the true labels.
+    \item \textbf{Accuracy}: Calculate the accuracy of the predictions by comparing them to the true labels.
+    \item \textbf{Prediction}: Make predictions using the logistic regression model.
+    \item \textbf{Training and Evaluation}: Train the logistic regression model using gradient descent and evaluate its performance.
+\end{itemize}
+
+\begin{verbatim}
+function logistic(x):
+    # Sigmoid function
+    return 1 / (1 + exp(-x))
+
+function nll(Y, T):
+    # Negative Log-Likelihood
+    N = number of samples
+    return -sum(T * log(Y) + (1 - T) * log(1 - Y)) / N
+
+
+
+
+
+
+
+
+
+
+
+function accuracy(Y, T):
+    # Accuracy calculation
+    N = number of samples
+    acc = 0
+
+    # Compare predictions to true labels
+    for i in range(N):
+        if (Y[i] >= 0.5 and T[i] == 1) or (Y[i] < 0.5 and T[i] == 0):
+            acc += 1
+    return acc / N
+
+function predict_logistic(X, w):
+    # Make predictions using logistic regression model
+    return logistic(dot(X, w))
+
+function train_and_eval_logistic(X_train, T_train, X_test, T_test, lr, epochs_no):
+    N, D = shape of X_train
+    w = random weights
+    train_acc, test_acc = []
+    train_nll, test_nll = []
+
+    for epoch in range(epochs_no):
+        # Make predictions
+        Y_train = predict_logistic(X_train, w)
+        Y_test = predict_logistic(X_test, w)
+
+        # Calculate metrics
+        train_acc.append(accuracy(Y_train, T_train))
+        test_acc.append(accuracy(Y_test, T_test))
+        train_nll.append(nll(Y_train, T_train))
+        test_nll.append(nll(Y_test, T_test))
+
+        # Update weights using gradient descent
+        w = w - lr * dot(transpose(X_train), (Y_train - T_train)) / N
+
+    return w, train_nll, test_nll, train_acc, test_acc
+\end{verbatim}
+
+\subsection{Scikit-learn Implementation}
+In this section, we use the \texttt{scikit-learn} library to implement logistic regression. The steps involved are:
+
+\begin{itemize}
+    \item \textbf{Model Initialization}: Initialize the logistic regression model with a maximum of 1000 iterations.
+    \item \textbf{Model Fitting}: Fit the model to the training data.
+    \item \textbf{Prediction}: Make predictions on the training and test sets.
+    \item \textbf{Evaluation}: Calculate accuracy and NLL for the training and test sets.
+\end{itemize}
+
+
+\begin{verbatim}
+function train_and_eval_sklearn_logistic(X_train, T_train, X_test, T_test):
+    # Initialize logistic regression model
+    model = LogisticRegression(max_iter=1000)
+
+    # Fit the model
+    model.fit(X_train, T_train)
+
+    # Make predictions
+    Y_train = model.predict_proba(X_train)[:, 1]
+    Y_test = model.predict_proba(X_test)[:, 1]
+
+    # Calculate metrics
+    train_acc = accuracy_score(T_train, (Y_train >= 0.5).astype(int))
+    test_acc = accuracy_score(T_test, (Y_test >= 0.5).astype(int))
+    train_nll = log_loss(T_train, Y_train)
+    test_nll = log_loss(T_test, Y_test)
+
+    return model, train_nll, test_nll, train_acc, test_acc
+\end{verbatim}
+
+\subsection{Particularities}
+
+In this section, we document the specific approach and settings used for our logistic regression algorithm.
+
+\subsubsection{Categorical Attribute Encoding}
+For encoding categorical attributes, we employed the following approach:
+\begin{itemize}
+    \item \textbf{Label Encoding}: The target variable was encoded using Label Encoding, which converts categorical labels into numerical values.
+    \item \textbf{One-Hot Encoding}: Other categorical attributes were encoded using One-Hot Encoding. This method creates binary columns for each category, representing the presence or absence of a specific category in the data.
+\end{itemize}
+
+\subsubsection{Optimization Algorithm Settings}
+We utilized gradient descent as the optimization algorithm with the following settings:
+\begin{itemize}
+    \item \textbf{Learning Rate}: A learning rate of 0.1 was chosen to control the step size during the update of the weights. This value was selected based on preliminary experiments to balance convergence speed and stability.
+    \item \textbf{Epochs}: The number of epochs was set to 1000 to allow the model to converge to an optimal solution. This value was chosen based on the convergence behavior observed during training.
+\end{itemize}
+\newpage
+
+\section{MLP Implementation}
+
+\subsection{Activation Functions}
+The following activation functions are used in our MLP implementation:
+
+\begin{itemize}
+    \item \textbf{Sigmoid}: \( \sigma(x) = \frac{1}{1 + e^{-x}} \)
+    \item \textbf{ReLU (Rectified Linear Unit)}: \( \text{ReLU}(x) = \max(0, x) \)
+    \item \textbf{Tanh}: \( \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}} \)
+    \item \textbf{Leaky ReLU}: \( \text{Leaky ReLU}(x) = \max(\alpha x, x) \)
+    \item \textbf{ELU (Exponential Linear Unit)}: \( \text{ELU}(x) = x \) if \( x > 0 \), \( \alpha (e^x - 1) \) if \( x \leq 0 \)
+\end{itemize}
+
+\subsection{Manual Implementation}
+In this section, we manually implement an MLP with the following components:
+
+\begin{itemize}
+    \item \textbf{Activation Functions}: Sigmoid, ReLU, Tanh, Leaky ReLU, and ELU
+    \item \textbf{Layers}: Linear layer and Dropout layer
+    \item \textbf{Loss Function}: Cross-entropy loss
+    \item \textbf{Optimizer}: SGD and Adam optimizers
+\end{itemize}
+
+\begin{verbatim}
+class Linear:
+    def __init__(input_dim, output_dim, l2_reg=0.01):
+        Initialize weights and biases
+
+    def forward(x):
+        return dot(x, weight) + bias
+    def backward(x, dldy):
+        Compute gradients for weights and biases
+
+    def update(lr):
+        Update weights and biases using gradients
+
+class Dropout:
+    def __init__(rate=0.5):
+        Set dropout rate
+
+    def forward(x, train=True):
+        Apply dropout during training
+
+    def backward(x, dldy):
+        Return dldy * mask
+
+
+class FeedForwardNetwork:
+    def __init__(layers):
+        Initialize network with layers
+
+    def forward(x, train=True):
+        Forward pass through all layers
+    def backward(dldy):
+        Backward pass through all layers
+
+    def update(*args):
+        Update parameters for all layers
+
+function train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, 
+                                       input_size, hidden_size, output_size,
+                                       epochs, learning_rate, l2_reg, batch_size):
+    Initialize MLP with Linear, Activation, Dropout layers
+    Initialize CrossEntropy loss and SGD optimizer
+    for epoch in range(epochs):
+        Shuffle and batch data
+        for each batch:
+            Forward pass
+            Compute loss
+            Backward pass
+            Update parameters
+        Evaluate on training and test sets
+    return mlp, train_acc_list, test_acc_list, train_loss_list, test_loss_list
+\end{verbatim}
+
+\subsection{Scikit-learn Implementation}
+In this section, we use the \texttt{scikit-learn} library to implement an MLP. The steps involved are:
+
+\begin{itemize}
+    \item \textbf{Model Initialization}: Initialize the MLP classifier with specified parameters.
+    \item \textbf{Model Fitting}: Fit the model to the training data.
+    \item \textbf{Prediction}: Make predictions on the training and test sets.
+    \item \textbf{Evaluation}: Calculate accuracy for the training and test sets.
+\end{itemize}
+
+\newpage
+\begin{verbatim}
+function train_and_evaluate_sklearn_mlp(X_train, T_train, X_test, T_test,
+                                        hidden_layer_sizes, max_iter,
+                                        learning_rate_init, alpha):
+    # Initialize the MLP classifier with the specified parameters
+    mlp = MLPClassifier(hidden_layer_sizes=hidden_layer_sizes,
+                        max_iter=max_iter, learning_rate_init=learning_rate_init,
+                        alpha=alpha, random_state=1)
+
+    # Fit the MLP classifier to the training data
+    mlp.fit(X_train, T_train)
+    
+    # Make predictions on the training and test sets
+    train_predictions = mlp.predict(X_train)
+    test_predictions = mlp.predict(X_test)
+    
+    # Compute accuracy for training and test sets
+    train_accuracy = accuracy_score(T_train, train_predictions)
+    test_accuracy = accuracy_score(T_test, test_predictions)
+    
+    return train_accuracy, test_accuracy, mlp
+\end{verbatim}
+
+Using \texttt{scikit-learn}, we leverage pre-built functions for model training and evaluation, simplifying the implementation process while maintaining performance.
+
+\subsection{Optimizer Usage}
+In our MLP implementation, we utilized two different optimizers to update the weights and biases of the network during training: Stochastic Gradient Descent (SGD) and Adaptive Moment Estimation. After extensive testing, we found that the SGD optimizer resulted in better overall performance.
+
+\subsubsection{SGD Optimizer}
+The SGD optimizer updates the weights and biases of the linear layers using the gradient of the loss function with respect to each parameter.
+
+\begin{verbatim}
+class SGDOptimizer:
+    def __init__(self, layers, learning_rate=0.001):
+        Initialize learning rate and select linear layers
+
+    def update():
+        for each linear layer:
+            Update weight using gradient descent
+            Update bias using gradient descent
+\end{verbatim}
+
+The SGD optimizer provided better results in our experiments, possibly due to its simplicity and effectiveness in handling the specific characteristics of our datasets.
+
+\subsubsection{Adam Optimizer}
+The Adam optimizer is an advanced optimization technique that combines the advantages of both the AdaGrad and RMSProp algorithms. It uses adaptive learning rates for each parameter and maintains running averages of the first and second moments of the gradients. The pseudocode for the Adam optimizer is as follows:
+
+\begin{verbatim}
+class AdamOptimizer:
+    def __init__(self, layers, learning_rate, beta1, beta2, epsilon):
+        Initialize parameters and select linear layers
+
+    def update():
+        Increment timestep
+        for each linear layer:
+            Update first moment estimate (m)
+            Update second moment estimate (v)
+            Compute bias-corrected first moment estimate (m_hat)
+            Compute bias-corrected second moment estimate (v_hat)
+            Update weight using Adam update rule
+            Update bias using Adam update rule
+\end{verbatim}
+
+Although the Adam optimizer is generally known for its robust performance across various tasks, in our specific case, the SGD optimizer provided better results. This may be due to the nature of our data and the specific architecture of our MLP, where the more straightforward approach of SGD was more effective.
+
+
+\subsection{Particularities}
+
+In this section, we document the hyperparameterization and specific configurations used for the Multi-Layer Perceptron (MLP) neural network.
+
+\subsubsection{Architecture}
+For the architecture of the MLP, the following configurations were used:
+\begin{itemize}
+    \item \textbf{Number and Size of Layers}:
+    \begin{itemize}
+        \item \textbf{AVC Dataset (Manual Implementation)}: 
+        \begin{itemize}
+            \item Input Layer: Size equal to the number of features in the AVC training set.
+            \item Hidden Layer: 128 neurons or two layers with 100/50 neurons.
+            \item Output Layer: 2 neurons (binary classification).
+        \end{itemize}
+        \item \textbf{Salary Dataset (Manual Implementation)}: 
+        \begin{itemize}
+            \item Input Layer: Size equal to the number of features in the Salary training set.
+            \item Hidden Layer: 128 neurons or two layers with 100/50 neurons.
+            \item Output Layer: 2 neurons (binary classification).
+        \end{itemize}
+        \newpage
+        \item \textbf{Scikit-learn Implementation}: 
+        \begin{itemize}
+            \item Hidden Layers: (100, 50) neurons for each dataset.
+        \end{itemize}
+    \end{itemize}
+    \item \textbf{Activation Functions}:
+    \begin{itemize}
+        \item ELU (Exponential Linear Unit) was used in the manual implementation proven to be effective in our experiments.
+        \item Scikit-learn MLP uses ReLU (Rectified Linear Unit) by default.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Optimizer Configuration}
+The optimizer settings were as follows:
+\begin{itemize}
+    \item \textbf{Type of Optimizer}:
+    \begin{itemize}
+        \item Manual Implementation: Stochastic Gradient Descent (SGD) optimizer was used.
+        \item Scikit-learn Implementation: The default optimizer in scikit-learn MLPClassifier.
+    \end{itemize}
+    \item \textbf{Learning Rate}:
+    \begin{itemize}
+        \item Manual Implementation: 0.00002
+        \item Scikit-learn Implementation: 0.01
+    \end{itemize}
+    \item \textbf{Number of Epochs}: 1000 epochs were used for training.
+    \item \textbf{Batch Size}: A batch size of 16/32/64 was used for training.
+\end{itemize}
+
+\subsubsection{Regularization Methods}
+To prevent overfitting and ensure the model generalizes well, the following regularization methods were applied:
+\begin{itemize}
+    \item \textbf{Early Stopping}: Tested and proven to result in unpredictable loss variation.
+    \item \textbf{L2 Regularization}:
+    \begin{itemize}
+        \item Manual Implementation: A regularization coefficient (l2\_reg) of 0.001 was used. 
+        Weight is set as random.randn(input\_dim, output\_dim) * sqrt(2 / input\_dim)
+        \item Scikit-learn Implementation: An alpha value of 0.0001 for L2 regularization was used.
+    \end{itemize}
+    \item \textbf{Dropout}: A dropout rate of 0.5 was applied in the manual implementation to prevent overfitting.
+\end{itemize}
+
+These configurations were selected to balance model complexity, training efficiency, and generalization performance.
+
 \end{document}
