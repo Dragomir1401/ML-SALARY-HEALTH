@@ -44,7 +44,7 @@
 \BOOKMARK [2][-]{subsection.12.3}{Particularities}{section.12}% 44
 \BOOKMARK [3][-]{subsubsection.12.3.1}{Categorical Attribute Encoding}{subsection.12.3}% 45
 \BOOKMARK [3][-]{subsubsection.12.3.2}{Optimization Algorithm Settings}{subsection.12.3}% 46
-\BOOKMARK [1][-]{section.13}{MLP Implementation}{}% 47
+\BOOKMARK [1][-]{section.13}{MLP}{}% 47
 \BOOKMARK [2][-]{subsection.13.1}{Activation Functions}{section.13}% 48
 \BOOKMARK [2][-]{subsection.13.2}{Manual Implementation}{section.13}% 49
 \BOOKMARK [2][-]{subsection.13.3}{Scikit-learn Implementation}{section.13}% 50
@@ -55,3 +55,14 @@
 \BOOKMARK [3][-]{subsubsection.13.5.1}{Architecture}{subsection.13.5}% 55
 \BOOKMARK [3][-]{subsubsection.13.5.2}{Optimizer Configuration}{subsection.13.5}% 56
 \BOOKMARK [3][-]{subsubsection.13.5.3}{Regularization Methods}{subsection.13.5}% 57
+\BOOKMARK [1][-]{section.14}{Finding Best Hyperparameters}{}% 58
+\BOOKMARK [2][-]{subsection.14.1}{Logistic Regression}{section.14}% 59
+\BOOKMARK [2][-]{subsection.14.2}{Multi-Layer Perceptron \(MLP\)}{section.14}% 60
+\BOOKMARK [1][-]{section.15}{Comparison}{}% 61
+\BOOKMARK [2][-]{subsection.15.1}{Context}{section.15}% 62
+\BOOKMARK [2][-]{subsection.15.2}{Logistic Regression Performance}{section.15}% 63
+\BOOKMARK [3][-]{subsubsection.15.2.1}{AVC Dataset}{subsection.15.2}% 64
+\BOOKMARK [3][-]{subsubsection.15.2.2}{Salary Dataset}{subsection.15.2}% 65
+\BOOKMARK [3][-]{subsubsection.15.2.3}{Observations}{subsection.15.2}% 66
+\BOOKMARK [3][-]{subsubsection.15.2.4}{Overall Accuracy}{subsection.15.2}% 67
+\BOOKMARK [3][-]{subsubsection.15.2.5}{Overfit Analysis}{subsection.15.2}% 68

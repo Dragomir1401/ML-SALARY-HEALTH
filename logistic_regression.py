@@ -52,9 +52,9 @@ def train_and_eval_logistic(X_train, T_train, X_test, T_test, lr=0.01, epochs_no
         
     return w, train_nll, test_nll, train_acc, test_acc  # Return final weights and performance metrics
 
-def train_and_eval_sklearn_logistic(X_train, T_train, X_test, T_test):
+def train_and_eval_sklearn_logistic(X_train, T_train, X_test, T_test, penalty='l2', C=1.0, solver='liblinear'):
     """Train and evaluate a logistic regression model using scikit-learn."""
-    model = LogisticRegression(max_iter=1000)  # Initialize logistic regression model
+    model = LogisticRegression(penalty=penalty, C=C, solver=solver, max_iter=1000)  # Initialize logistic regression model
     model.fit(X_train, T_train)  # Fit the model to the training data
     
     # Get predicted probabilities for the training and test sets
@@ -69,3 +69,4 @@ def train_and_eval_sklearn_logistic(X_train, T_train, X_test, T_test):
     test_nll = log_loss(T_test, Y_test)
     
     return model, train_nll, test_nll, train_acc, test_acc  # Return the model and performance metrics
+

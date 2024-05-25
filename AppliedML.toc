@@ -48,7 +48,7 @@
 \contentsline {subsection}{\numberline {12.3}Particularities}{35}{subsection.12.3}%
 \contentsline {subsubsection}{\numberline {12.3.1}Categorical Attribute Encoding}{35}{subsubsection.12.3.1}%
 \contentsline {subsubsection}{\numberline {12.3.2}Optimization Algorithm Settings}{35}{subsubsection.12.3.2}%
-\contentsline {section}{\numberline {13}MLP Implementation}{36}{section.13}%
+\contentsline {section}{\numberline {13}MLP}{36}{section.13}%
 \contentsline {subsection}{\numberline {13.1}Activation Functions}{36}{subsection.13.1}%
 \contentsline {subsection}{\numberline {13.2}Manual Implementation}{36}{subsection.13.2}%
 \contentsline {subsection}{\numberline {13.3}Scikit-learn Implementation}{37}{subsection.13.3}%
@@ -59,3 +59,18 @@
 \contentsline {subsubsection}{\numberline {13.5.1}Architecture}{39}{subsubsection.13.5.1}%
 \contentsline {subsubsection}{\numberline {13.5.2}Optimizer Configuration}{40}{subsubsection.13.5.2}%
 \contentsline {subsubsection}{\numberline {13.5.3}Regularization Methods}{40}{subsubsection.13.5.3}%
+\contentsline {section}{\numberline {14}Finding Best Hyperparameters}{41}{section.14}%
+\contentsline {subsection}{\numberline {14.1}Logistic Regression}{41}{subsection.14.1}%
+\contentsline {paragraph}{AVC Dataset}{41}{section*.44}%
+\contentsline {paragraph}{Salary Dataset}{41}{section*.45}%
+\contentsline {subsection}{\numberline {14.2}Multi-Layer Perceptron (MLP)}{42}{subsection.14.2}%
+\contentsline {paragraph}{AVC Dataset}{42}{section*.46}%
+\contentsline {paragraph}{Salary Dataset}{43}{section*.47}%
+\contentsline {section}{\numberline {15}Comparison}{44}{section.15}%
+\contentsline {subsection}{\numberline {15.1}Context}{44}{subsection.15.1}%
+\contentsline {subsection}{\numberline {15.2}Logistic Regression Performance}{45}{subsection.15.2}%
+\contentsline {subsubsection}{\numberline {15.2.1}AVC Dataset}{45}{subsubsection.15.2.1}%
+\contentsline {subsubsection}{\numberline {15.2.2}Salary Dataset}{46}{subsubsection.15.2.2}%
+\contentsline {subsubsection}{\numberline {15.2.3}Observations}{47}{subsubsection.15.2.3}%
+\contentsline {subsubsection}{\numberline {15.2.4}Overall Accuracy}{47}{subsubsection.15.2.4}%
+\contentsline {subsubsection}{\numberline {15.2.5}Overfit Analysis}{48}{subsubsection.15.2.5}%

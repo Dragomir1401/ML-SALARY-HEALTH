@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from sklearn.model_selection import GridSearchCV
 from sklearn.linear_model import LogisticRegression
+from sklearn.neural_network import MLPClassifier
 from imblearn.over_sampling import SMOTE, ADASYN, SMOTEN, BorderlineSMOTE, SVMSMOTE
 from imblearn.under_sampling import TomekLinks
 from mlp import train_and_evaluate_manual_mlp, train_and_evaluate_sklearn_mlp
@@ -226,15 +227,15 @@ def preprocess_data_wrapper():
 def logistic_regression_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test):
     # Manual Logistic Regression
     w_avc, train_nll_avc, test_nll_avc, train_acc_avc, test_acc_avc = train_and_eval_logistic(
-        X_avc_train, T_avc_train, X_avc_test, T_avc_test, lr=0.1, epochs_no=1000)
+        X_avc_train, T_avc_train, X_avc_test, T_avc_test, lr=0.3, epochs_no=1000)
     w_salary, train_nll_salary, test_nll_salary, train_acc_salary, test_acc_salary = train_and_eval_logistic(
-        X_salary_train, T_salary_train, X_salary_test, T_salary_test, lr=0.1, epochs_no=1000)
+        X_salary_train, T_salary_train, X_salary_test, T_salary_test, lr=0.3, epochs_no=1000)
 
     # Logistic Regression using scikit-learn
-    model_avc, train_nll_avc_sklearn, test_nll_avc_sklearn, train_acc_avc_sklearn, test_acc_avc_sklearn = train_and_eval_sklearn_logistic(
-        X_avc_train, T_avc_train, X_avc_test, T_avc_test)
-    model_salary, train_nll_salary_sklearn, test_nll_salary_sklearn, train_acc_salary_sklearn, test_acc_salary_sklearn = train_and_eval_sklearn_logistic(
-        X_salary_train, T_salary_train, X_salary_test, T_salary_test)
+    model_avc, _, _, train_acc_avc_sklearn, test_acc_avc_sklearn = train_and_eval_sklearn_logistic(
+        X_avc_train, T_avc_train, X_avc_test, T_avc_test, penalty='l1', C=0.01, solver='liblinear')
+    model_salary, _, _, train_acc_salary_sklearn, test_acc_salary_sklearn = train_and_eval_sklearn_logistic(
+        X_salary_train, T_salary_train, X_salary_test, T_salary_test, penalty='l2', C=10, solver='liblinear')
 
     # Save logistic regression results
     with open('output/logistic_regression_results.txt', 'w') as f:
@@ -253,42 +254,45 @@ def logistic_regression_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test
     return return_tuple_avc, return_tuple_salary, return_tuple_sklearn
         
 def mlp_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test):
-    # Define the MLP architecture and training parameters
+    # Define the MLP architecture and training parameters for the manual MLP
     input_size_avc = X_avc_train.shape[1]
     input_size_salary = X_salary_train.shape[1]
     output_size = 2  # Binary classification
-    hidden_size_avc = 128
-    hidden_size_salary = 128
-    epochs = 1000
-    learning_rate = 0.00002
-    l2_reg = 0.001
-    batch_size = 16
+
+    # Hyperparameters for AVC dataset found by GridSearchCV
+    hidden_layer_sizes_avc = (100, 50, 25)
+    learning_rate_avc = 0.0001
+    l2_reg_avc = 0.0001
+    epochs_avc = 2000
+    batch_size_avc = 32
+    optimizer_avc = 'SGD'
+    
+    # Hyperparameters for Salary dataset found by GridSearchCV
+    hidden_layer_sizes_salary = (100, 50, 25)
+    learning_rate_salary = 0.001
+    l2_reg_salary = 0.01
+    epochs_salary = 1500
+    batch_size_salary = 32
+    optimizer_salary = 'Adam'
 
     # Manual MLP Training and Evaluation for AVC dataset
     mlp_manual_avc, train_acc_avc_manual, test_acc_avc_manual, train_loss_avc_manual, test_loss_avc_manual = train_and_evaluate_manual_mlp(
-        X_avc_train, T_avc_train, X_avc_test, T_avc_test, input_size_avc, hidden_size_avc, output_size, epochs, learning_rate, l2_reg, batch_size
+        X_avc_train, T_avc_train, X_avc_test, T_avc_test, input_size_avc, hidden_layer_sizes_avc[0], output_size, epochs_avc, learning_rate_avc, l2_reg_avc, batch_size_avc, optimizer_avc
     )
     
     # Manual MLP Training and Evaluation for Salary dataset
     mlp_manual_salary, train_acc_salary_manual, test_acc_salary_manual, train_loss_salary_manual, test_loss_salary_manual = train_and_evaluate_manual_mlp(
-        X_salary_train, T_salary_train, X_salary_test, T_salary_test, input_size_salary, hidden_size_salary, output_size, epochs, learning_rate, l2_reg, batch_size
+        X_salary_train, T_salary_train, X_salary_test, T_salary_test, input_size_salary, hidden_layer_sizes_salary[0], output_size, epochs_salary, learning_rate_salary, l2_reg_salary, batch_size_salary, optimizer_salary
     )
 
     # Scikit-learn MLP Training and Evaluation for AVC dataset
-    hidden_layer_sizes = (100, 50)
-    max_iter = 500
-    learning_rate_init = 0.01
-    alpha = 0.0001  # L2 regularization term
-
     train_acc_avc_sklearn, test_acc_avc_sklearn, model_avc_sklearn = train_and_evaluate_sklearn_mlp(
-        X_avc_train, T_avc_train, X_avc_test, T_avc_test, hidden_layer_sizes, max_iter, learning_rate_init, alpha
+        X_avc_train, T_avc_train, X_avc_test, T_avc_test, hidden_layer_sizes_avc, epochs_avc, learning_rate_avc, l2_reg_avc
     )
 
     # Scikit-learn MLP Training and Evaluation for Salary dataset
-    hidden_layer_sizes = (100, 50)  # Single hidden layer example
-
     train_acc_salary_sklearn, test_acc_salary_sklearn, model_salary_sklearn = train_and_evaluate_sklearn_mlp(
-        X_salary_train, T_salary_train, X_salary_test, T_salary_test, hidden_layer_sizes, max_iter, learning_rate_init, alpha
+        X_salary_train, T_salary_train, X_salary_test, T_salary_test, hidden_layer_sizes_salary, epochs_salary, learning_rate_salary, l2_reg_salary
     )
 
     # Save results
@@ -381,6 +385,32 @@ def find_best_logreg_hyperparams(X_train, T_train):
     # Return the best model and the report
     return best_model
 
+def find_best_mlp_hyperparams(X_train, T_train):
+    # Define the parameter grid
+    param_grid = {
+        'hidden_layer_sizes': [(100,), (100, 50), (100, 50, 25)],
+        'max_iter': [1000, 1500, 2000],  # Increase the number of iterations
+        'learning_rate_init': [0.01, 0.001, 0.0001],
+        'alpha': [0.0001, 0.001, 0.01],
+        'solver': ['adam', 'sgd'],  # Try different solvers
+        'early_stopping': [True]  # Enable early stopping
+    }
+
+    # Initialize the MLP model
+    mlp = MLPClassifier()
+
+    # Initialize GridSearchCV
+    grid_search = GridSearchCV(estimator=mlp, param_grid=param_grid, cv=5, scoring='f1', verbose=1, n_jobs=-1)
+
+    # Fit GridSearchCV on the training data
+    grid_search.fit(X_train, T_train)
+
+    # Get the best model
+    best_model = grid_search.best_estimator_
+
+    # Return the best model and the report
+    return best_model
+
 def __main__():
     # Create output directory
     if not os.path.exists('output'):
@@ -420,12 +450,20 @@ def __main__():
     X_salary_train, T_salary_train, X_salary_test, T_salary_test = return_tuple_salary
     
     # # Find best hyperparameters for logistic regression
-    # best_model_avc = find_best_logreg_hyperparams(X_avc_train, T_avc_train, X_avc_test, T_avc_test)
-    # best_model_salary = find_best_logreg_hyperparams(X_salary_train, T_salary_train, X_salary_test, T_salary_test)
+    # best_model_avc = find_best_logreg_hyperparams(X_avc_train, T_avc_train)
+    # best_model_salary = find_best_logreg_hyperparams(X_salary_train, T_salary_train)
     
     # # Print best hyperparameters
     # print(f"Best hyperparameters for AVC dataset: {best_model_avc.get_params()}")
     # print(f"Best hyperparameters for Salary dataset: {best_model_salary.get_params()}")
+    
+    # # Find best hyperparameters for MLP
+    # best_model_avc_mlp = find_best_mlp_hyperparams(X_avc_train, T_avc_train)
+    # best_model_salary_mlp = find_best_mlp_hyperparams(X_salary_train, T_salary_train)
+    
+    # # Print best hyperparameters
+    # print(f"Best hyperparameters for MLP on AVC dataset: {best_model_avc_mlp.get_params()}")
+    # print(f"Best hyperparameters for MLP on Salary dataset: {best_model_salary_mlp.get_params()}")
     
 
     # Logistic Regression

@@ -267,13 +267,13 @@ class AdamOptimizer:
             layer.bias -= self.learning_rate * m_hat_bias / (np.sqrt(v_hat_bias) + self.epsilon)
 
 # Training and Evaluating the Manual MLP
-def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, hidden_size, output_size, epochs, learning_rate, l2_reg=0.0, batch_size=32):
+def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, hidden_size, output_size, epochs, learning_rate, l2_reg=0.0, batch_size=32, optimiser = 'SGD'):
     """Train and evaluate a manual MLP model."""
     
     # Define the layers of the MLP
     layers = [
         Linear(input_size, hidden_size, l2_reg=l2_reg),
-        ELU(),
+        ReLu(),
         Dropout(rate=0.5),
         Linear(hidden_size, output_size, l2_reg=l2_reg)
     ]
@@ -283,7 +283,10 @@ def train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, input_size, 
     # Initialize the cross-entropy loss
     ce_loss = CrossEntropy()
     # Initialize the SGD optimizer
-    optimizer = SGDOptimizer(mlp.layers, learning_rate=learning_rate)
+    if optimiser == 'SGD':
+        optimizer = SGDOptimizer(mlp.layers, learning_rate=learning_rate)
+    elif optimiser == 'Adam':
+        optimizer = AdamOptimizer(mlp.layers, learning_rate=learning_rate)
 
     # Lists to store training and test accuracy and loss
     train_acc_list = []

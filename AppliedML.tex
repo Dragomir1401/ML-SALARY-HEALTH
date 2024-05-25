@@ -906,9 +906,9 @@ In this section, we use the \texttt{scikit-learn} library to implement logistic 
 
 
 \begin{verbatim}
-function train_and_eval_sklearn_logistic(X_train, T_train, X_test, T_test):
+function train_and_eval_sklearn_logistic(X_train, T_train, X_test, T_test, C, solver):
     # Initialize logistic regression model
-    model = LogisticRegression(max_iter=1000)
+    model = LogisticRegression(penalty=penalty, C=C, solver=solver, max_iter=1000)
 
     # Fit the model
     model.fit(X_train, T_train)
@@ -940,12 +940,12 @@ For encoding categorical attributes, we employed the following approach:
 \subsubsection{Optimization Algorithm Settings}
 We utilized gradient descent as the optimization algorithm with the following settings:
 \begin{itemize}
-    \item \textbf{Learning Rate}: A learning rate of 0.1 was chosen to control the step size during the update of the weights. This value was selected based on preliminary experiments to balance convergence speed and stability.
+    \item \textbf{Learning Rate}: A learning rate of 0.3 was chosen to control the step size during the update of the weights. This value was selected based on preliminary experiments to balance convergence speed and stability.
     \item \textbf{Epochs}: The number of epochs was set to 1000 to allow the model to converge to an optimal solution. This value was chosen based on the convergence behavior observed during training.
 \end{itemize}
 \newpage
 
-\section{MLP Implementation}
+\section{MLP}
 
 \subsection{Activation Functions}
 The following activation functions are used in our MLP implementation:
@@ -1006,9 +1006,10 @@ class FeedForwardNetwork:
 
 function train_and_evaluate_manual_mlp(X_train, T_train, X_test, T_test, 
                                        input_size, hidden_size, output_size,
-                                       epochs, learning_rate, l2_reg, batch_size):
+                                       epochs, learning_rate, l2_reg,
+                                       batch_size, optimiser):
     Initialize MLP with Linear, Activation, Dropout layers
-    Initialize CrossEntropy loss and SGD optimizer
+    Initialize CrossEntropy loss and optimizer
     for epoch in range(epochs):
         Shuffle and batch data
         for each batch:
@@ -1109,19 +1110,19 @@ For the architecture of the MLP, the following configurations were used:
         \item \textbf{AVC Dataset (Manual Implementation)}: 
         \begin{itemize}
             \item Input Layer: Size equal to the number of features in the AVC training set.
-            \item Hidden Layer: 128 neurons or two layers with 100/50 neurons.
+            \item Hidden Layer: 100 neurons.
             \item Output Layer: 2 neurons (binary classification).
         \end{itemize}
         \item \textbf{Salary Dataset (Manual Implementation)}: 
         \begin{itemize}
             \item Input Layer: Size equal to the number of features in the Salary training set.
-            \item Hidden Layer: 128 neurons or two layers with 100/50 neurons.
+            \item Hidden Layer: 100 neurons.
             \item Output Layer: 2 neurons (binary classification).
         \end{itemize}
         \newpage
         \item \textbf{Scikit-learn Implementation}: 
         \begin{itemize}
-            \item Hidden Layers: (100, 50) neurons for each dataset.
+            \item Hidden Layers: 100, 50, 25 neurons for each dataset.
         \end{itemize}
     \end{itemize}
     \item \textbf{Activation Functions}:
@@ -1136,15 +1137,15 @@ The optimizer settings were as follows:
 \begin{itemize}
     \item \textbf{Type of Optimizer}:
     \begin{itemize}
-        \item Manual Implementation: Stochastic Gradient Descent (SGD) optimizer was used.
+        \item Manual Implementation: Stochastic Gradient Descent (SGD) for avc, Adaptive Moment Estimation (Adam) for salary.
         \item Scikit-learn Implementation: The default optimizer in scikit-learn MLPClassifier.
     \end{itemize}
     \item \textbf{Learning Rate}:
     \begin{itemize}
-        \item Manual Implementation: 0.00002
-        \item Scikit-learn Implementation: 0.01
+        \item Manual Implementation: 0.0001 avc, 0.01 salary.
+        \item Scikit-learn Implementation: 0.0001 avc, 0.01 salary.
     \end{itemize}
-    \item \textbf{Number of Epochs}: 1000 epochs were used for training.
+    \item \textbf{Number of Epochs}: 2000 avc, 1500 salary epochs were used for training.
     \item \textbf{Batch Size}: A batch size of 16/32/64 was used for training.
 \end{itemize}
 
@@ -1158,9 +1159,375 @@ To prevent overfitting and ensure the model generalizes well, the following regu
         Weight is set as random.randn(input\_dim, output\_dim) * sqrt(2 / input\_dim)
         \item Scikit-learn Implementation: An alpha value of 0.0001 for L2 regularization was used.
     \end{itemize}
-    \item \textbf{Dropout}: A dropout rate of 0.5 was applied in the manual implementation to prevent overfitting.
+    \item \textbf{Dropout}: A common dropout rate of 0.5 was applied in the manual implementation to prevent overfitting.
 \end{itemize}
 
 These configurations were selected to balance model complexity, training efficiency, and generalization performance.
+
+\section{Finding Best Hyperparameters}
+In order to achieve optimal performance for the logistic regression and multi-layer perceptron (MLP) models, hyperparameter tuning was performed using GridSearchCV. The following are the best hyperparameters found for each model and dataset.
+
+\subsection{Logistic Regression}
+For the logistic regression models, the hyperparameters tuned included the regularization strength (C), the penalty type (L1 or L2), and the solver. The best hyperparameters for the AVC and Salary datasets are as follows:
+
+\paragraph{AVC Dataset}
+\begin{itemize}
+    \item \textbf{C}: 0.01
+    \item \textbf{Class Weight}: None
+    \item \textbf{Dual}: False
+    \item \textbf{Fit Intercept}: True
+    \item \textbf{Intercept Scaling}: 1
+    \item \textbf{L1 Ratio}: None
+    \item \textbf{Max Iterations}: 100
+    \item \textbf{Multi Class}: Auto
+    \item \textbf{Penalty}: L1
+    \item \textbf{Solver}: Liblinear
+    \item \textbf{Tolerance}: 0.0001
+    \item \textbf{Warm Start}: False
+\end{itemize}
+
+\paragraph{Salary Dataset}
+\begin{itemize}
+    \item \textbf{C}: 10
+    \item \textbf{Class Weight}: None
+    \item \textbf{Dual}: False
+    \item \textbf{Fit Intercept}: True
+    \item \textbf{Intercept Scaling}: 1
+    \item \textbf{L1 Ratio}: None
+    \item \textbf{Max Iterations}: 100
+    \item \textbf{Multi Class}: Auto
+    \item \textbf{Penalty}: L2
+    \item \textbf{Solver}: Liblinear
+    \item \textbf{Tolerance}: 0.0001
+    \item \textbf{Warm Start}: False
+\end{itemize}
+
+\subsection{Multi-Layer Perceptron (MLP)}
+For the MLP models, the hyperparameters tuned included the activation function, alpha (L2 penalty), batch size, learning rate initialization, and the solver among others. The best hyperparameters for the AVC and Salary datasets are as follows:
+
+\paragraph{AVC Dataset}
+\begin{itemize}
+    \item \textbf{Activation}: ReLU
+    \item \textbf{Alpha}: 0.0001
+    \item \textbf{Batch Size}: Auto
+    \item \textbf{Beta\_1}: 0.9
+    \item \textbf{Beta\_2}: 0.999
+    \item \textbf{Early Stopping}: True
+    \item \textbf{Epsilon}: 1e-08
+    \item \textbf{Hidden Layer Sizes}: (100, 50, 25)
+    \item \textbf{Learning Rate}: Constant
+    \item \textbf{Learning Rate Init}: 0.0001
+    \item \textbf{Max Fun}: 15000
+    \item \textbf{Max Iterations}: 2000
+    \item \textbf{Momentum}: 0.9
+    \item \textbf{N\_Iter\_No\_Change}: 10
+    \item \textbf{Nesterovs Momentum}: True
+    \item \textbf{Power\_T}: 0.5
+    \item \textbf{Shuffle}: True
+    \item \textbf{Solver}: SGD
+    \item \textbf{Tolerance}: 0.0001
+    \item \textbf{Validation Fraction}: 0.1
+    \item \textbf{Verbose}: False
+    \item \textbf{Warm Start}: False
+\end{itemize}
+
+\paragraph{Salary Dataset}
+\begin{itemize}
+    \item \textbf{Activation}: ReLU
+    \item \textbf{Alpha}: 0.01
+    \item \textbf{Batch Size}: Auto
+    \item \textbf{Beta\_1}: 0.9
+    \item \textbf{Beta\_2}: 0.999
+    \item \textbf{Early Stopping}: True
+    \item \textbf{Epsilon}: 1e-08
+    \item \textbf{Hidden Layer Sizes}: (100, 50, 25)
+    \item \textbf{Learning Rate}: Constant
+    \item \textbf{Learning Rate Init}: 0.001
+    \item \textbf{Max Fun}: 15000
+    \item \textbf{Max Iterations}: 1500
+    \item \textbf{Momentum}: 0.9
+    \item \textbf{N\_Iter\_No\_Change}: 10
+    \item \textbf{Nesterovs Momentum}: True
+    \item \textbf{Power\_T}: 0.5
+    \item \textbf{Shuffle}: True
+    \item \textbf{Solver}: Adam
+    \item \textbf{Tolerance}: 0.0001
+    \item \textbf{Validation Fraction}: 0.1
+    \item \textbf{Verbose}: False
+    \item \textbf{Warm Start}: False
+\end{itemize}
+
+\newpage
+
+\section{Comparison}
+
+\subsection{Context}
+When comparing different models, it's crucial to consider various evaluation metrics to understand their performance. For binary classification tasks, commonly used metrics include precision, recall, and F1 score. These metrics are defined as follows:
+
+\begin{itemize}
+    \item \textbf{Accuracy}: This measures the proportion of true results (both true positives and true negatives) among the total number of cases examined. It is a common metric for evaluating classification models.
+    \[
+    \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+    \]
+    where \( TP \) is the number of true positives, \( TN \) is the number of true negatives, \( FP \) is the number of false positives, and \( FN \) is the number of false negatives.
+
+    \item \textbf{Macro Average (Macro Avg)}: This is the average of the precision, recall, and F1-score calculated for each class separately. It treats all classes equally, regardless of their support (number of samples).
+    \[
+    \text{Macro Precision} = \frac{\text{Precision}_0 + \text{Precision}_1}{2}
+    \]
+    \[
+    \text{Macro Recall} = \frac{\text{Recall}_0 + \text{Recall}_1}{2}
+    \]
+    \[
+    \text{Macro F1} = \frac{\text{F1 Score}_0 + \text{F1 Score}_1}{2}
+    \]
+
+    \item \textbf{Weighted Average (Weighted Avg)}: This is the average of the precision, recall, and F1-score calculated for each class, weighted by the number of true instances for each class. It accounts for class imbalance by giving more weight to classes with more instances.
+    \[
+    \text{Weighted Precision} = \frac{\text{Precision}_0 \times \text{Support}_0 + \text{Precision}_1 \times \text{Support}_1}{\text{Support}_0 + \text{Support}_1}
+    \]
+    \[
+    \text{Weighted Recall} = \frac{\text{Recall}_0 \times \text{Support}_0 + \text{Recall}_1 \times \text{Support}_1}{\text{Support}_0 + \text{Support}_1}
+    \]
+    \[
+    \text{Weighted F1} = \frac{\text{F1 Score}_0 \times \text{Support}_0 + \text{F1 Score}_1 \times \text{Support}_1}{\text{Support}_0 + \text{Support}_1}
+    \]
+
+    \item \textbf{Precision}: The ratio of true positive predictions to the total number of positive predictions made by the model. It indicates the accuracy of the positive predictions.
+    \[
+    \text{Precision} = \frac{TP}{TP + FP}
+    \]
+
+    \item \textbf{Recall}: The ratio of true positive predictions to the total number of actual positive instances. It measures the model's ability to capture all positive instances.
+    \[
+    \text{Recall} = \frac{TP}{TP + FN}
+    \]
+
+    \item \textbf{F1 Score}: The harmonic mean of precision and recall. It provides a balance between precision and recall and is especially useful when the class distribution is imbalanced.
+    \[
+    \text{F1 Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
+    \]
+\end{itemize}
+
+These metrics provide a comprehensive view of the model's performance, ensuring that both the accuracy of positive predictions and the ability to capture all positive instances are considered. When dealing with imbalanced datasets, the F1 score becomes particularly important as it balances the trade-off between precision and recall.
+
+\subsection{Logistic Regression Performance}
+
+\subsubsection{AVC Dataset}
+
+\begin{table}[h!]
+    \centering
+    \caption{Manual LogReg - AVC LogReg Train}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+    \hline
+    \textbf{Metric} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+    \hline
+    Class 0 & 0.957608 & 0.998467 & 0.977611 & 3914 \\
+    Class 1 & 0.142857 & 0.005747 & 0.011050 & 174 \\
+    Accuracy & 0.956213 & 0.956213 & 0.956213 & 0.956213 \\
+    Macro Avg & 0.550233 & 0.502107 & 0.494330 & 4088 \\
+    Weighted Avg & 0.922930 & 0.956213 & 0.936471 & 4088 \\
+    \hline
+    \end{tabularx}
+    \end{table}
+    
+    \begin{table}[h!]
+    \centering
+    \caption{Manual LogReg - AVC LogReg Test}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+    \hline
+    \textbf{Metric} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+    \hline
+    Class 0 & 0.928361 & 0.998944 & 0.962360 & 947 \\
+    Class 1 & 0.666667 & 0.026667 & 0.051282 & 75 \\
+    Accuracy & 0.927593 & 0.927593 & 0.927593 & 0.927593 \\
+    Macro Avg & 0.797514 & 0.512805 & 0.506821 & 1022 \\
+    Weighted Avg & 0.909157 & 0.927593 & 0.895500 & 1022 \\
+    \hline
+    \end{tabularx}
+    \end{table}
+    
+    \begin{table}[h!]
+    \centering
+    \caption{Scikit-learn LogReg - AVC LogReg Train}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+    \hline
+    \textbf{Metric} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+    \hline
+    Class 0 & 0.957436 & 1.000000 & 0.978255 & 3914 \\
+    Class 1 & 0.000000 & 0.000000 & 0.000000 & 174 \\
+    Accuracy & 0.957436 & 0.957436 & 0.957436 & 0.957436 \\
+    Macro Avg & 0.478718 & 0.500000 & 0.489128 & 4088 \\
+    Weighted Avg & 0.916684 & 0.957436 & 0.936617 & 4088 \\
+    \hline
+    \end{tabularx}
+    \end{table}
+    
+    \begin{table}[h!]
+    \centering
+    \caption{Scikit-learn LogReg - AVC LogReg Test}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+    \hline
+    \textbf{Metric} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+    \hline
+    Class 0 & 0.926614 & 1.000000 & 0.961910 & 947 \\
+    Class 1 & 0.000000 & 0.000000 & 0.000000 & 75 \\
+    Accuracy & 0.926614 & 0.926614 & 0.926614 & 0.926614 \\
+    Macro Avg & 0.463307 & 0.500000 & 0.480955 & 1022 \\
+    Weighted Avg & 0.858614 & 0.926614 & 0.891319 & 1022 \\
+    \hline
+    \end{tabularx}
+    \end{table}
+    
+    \newpage
+    \subsubsection{Salary Dataset}
+    
+    \begin{table}[h!]
+    \centering
+    \caption{Manual LogReg - Salary LogReg Train}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+    \hline
+    \textbf{Metric} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+    \hline
+    Class 0 & 0.858587 & 0.922014 & 0.889171 & 6078 \\
+    Class 1 & 0.677989 & 0.519521 & 0.588270 & 1921 \\
+    Accuracy & 0.825353 & 0.825353 & 0.825353 & 0.825353 \\
+    Macro Avg & 0.768288 & 0.720767 & 0.738720 & 7999 \\
+    Weighted Avg & 0.815216 & 0.825353 & 0.816908 & 7999 \\
+    \hline
+    \end{tabularx}
+    \end{table}
+    
+    \begin{table}[h!]
+    \centering
+    \caption{Manual LogReg - Salary LogReg Test}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+    \hline
+    \textbf{Metric} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+    \hline
+    Class 0 & 0.854957 & 0.923331 & 0.887830 & 1513 \\
+    Class 1 & 0.683060 & 0.513347 & 0.586166 & 487 \\
+    Accuracy & 0.823500 & 0.823500 & 0.823500 & 0.823500 \\
+    Macro Avg & 0.769009 & 0.718339 & 0.736998 & 2000 \\
+    Weighted Avg & 0.813100 & 0.823500 & 0.814375 & 2000 \\
+    \hline
+    \end{tabularx}
+    \end{table}
+    
+    \begin{table}[h!]
+    \centering
+    \caption{Scikit-learn LogReg - Salary LogReg Train}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+    \hline
+    \textbf{Metric} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+    \hline
+    Class 0 & 0.869088 & 0.925140 & 0.896238 & 6078 \\
+    Class 1 & 0.702420 & 0.559084 & 0.622609 & 1921 \\
+    Accuracy & 0.837230 & 0.837230 & 0.837230 & 0.837230 \\
+    Macro Avg & 0.785754 & 0.742112 & 0.759424 & 7999 \\
+    Weighted Avg & 0.829062 & 0.837230 & 0.830525 & 7999 \\
+    \hline
+    \end{tabularx}
+    \end{table}
+    
+    \begin{table}[h!]
+    \centering
+    \caption{Scikit-learn LogReg - Salary LogReg Test}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+    \hline
+    \textbf{Metric} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+    \hline
+    Class 0 & 0.863748 & 0.925975 & 0.893780 & 1513 \\
+    Class 1 & 0.703704 & 0.546201 & 0.615029 & 487 \\
+    Accuracy & 0.833500 & 0.833500 & 0.833500 & 0.833500 \\
+    Macro Avg & 0.783726 & 0.736088 & 0.754404 & 2000 \\
+    Weighted Avg & 0.824778 & 0.833500 & 0.825904 & 2000 \\
+    \hline
+    \end{tabularx}
+    \end{table}
+\newpage
+\subsubsection{Observations}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Both manual and scikit-learn logistic regression models perform similarly in terms of precision, recall, and F1-score for Class 0. However, the manual implementation shows slightly higher test accuracy.
+    \item \textbf{Salary Dataset:} The scikit-learn implementation shows a marginal improvement in both train and test accuracy compared to the manual implementation. Precision, recall, and F1-score for Class 0 are also slightly higher in the scikit-learn implementation.
+\end{itemize}
+
+Overall, while both implementations provide comparable results, the scikit-learn implementation offers slightly better performance metrics in the Salary dataset and marginally higher train accuracy in the AVC dataset.
+
+\subsubsection{Overall Accuracy}
+
+The overall accuracy for the manual and scikit-learn implementations of logistic regression for both datasets (AVC and Salary) is presented below. The accuracy curves are also included to visualize the performance of the models over the epochs.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Resources/logreg_curve_avc.jpeg}
+    \caption{Accuracy Curve for Manual Logistic Regression - AVC Dataset}
+    \label{fig:logreg_curve_avc}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Resources/logreg_curve_salary.jpeg}
+    \caption{Accuracy Curve for Manual Logistic Regression - Salary Dataset}
+    \label{fig:logreg_curve_salary}
+\end{figure}
+
+The results are summarized as follows:
+
+\textbf{Manual Logistic Regression Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:}
+        \begin{itemize}
+            \item Train Accuracy: 0.9559686888454012
+            \item Test Accuracy: 0.9285714285714286
+        \end{itemize}
+    \item \textbf{Salary Dataset:}
+        \begin{itemize}
+            \item Train Accuracy: 0.8241030128766096
+            \item Test Accuracy: 0.8215
+        \end{itemize}
+\end{itemize}
+
+\textbf{Scikit-learn Logistic Regression Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:}
+        \begin{itemize}
+            \item Train Accuracy: 0.9574363992172211
+            \item Test Accuracy: 0.9266144814090019
+        \end{itemize}
+    \item \textbf{Salary Dataset:}
+        \begin{itemize}
+            \item Train Accuracy: 0.8372296537067133
+            \item Test Accuracy: 0.8335
+        \end{itemize}
+\end{itemize}
+
+\subsubsection{Overfit Analysis}
+
+\textbf{Manual Logistic Regression - AVC Dataset:}
+\begin{itemize}
+    \item The train accuracy (0.9559686888454012) is slightly higher than the test accuracy (0.9285714285714286).
+    \item The difference between train and test accuracy is around 0.03, which is relatively small, indicating that there is no significant overfitting.
+\end{itemize}
+
+\newpage
+\textbf{Scikit-learn Logistic Regression - AVC Dataset:}
+\begin{itemize}
+    \item The train accuracy (0.9574363992172211) is slightly higher than the test accuracy (0.9266144814090019).
+    \item The difference between train and test accuracy is around 0.03, similar to the manual implementation, suggesting no significant overfitting.
+\end{itemize}
+
+\textbf{Manual Logistic Regression - Salary Dataset:}
+\begin{itemize}
+    \item The train accuracy (0.8241030128766096) is very close to the test accuracy (0.8215).
+    \item The minimal difference indicates that the model generalizes well to the test data, showing no signs of overfitting.
+\end{itemize}
+
+\textbf{Scikit-learn Logistic Regression - Salary Dataset:}
+\begin{itemize}
+    \item The train accuracy (0.8372296537067133) is slightly higher than the test accuracy (0.8335).
+    \item The difference is around 0.004, which is very small, indicating no significant overfitting.
+\end{itemize}
+
 
 \end{document}
