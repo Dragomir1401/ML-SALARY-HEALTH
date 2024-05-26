@@ -1,98 +1,115 @@
-\contentsline {section}{\numberline {1}Introduction}{4}{section.1}%
-\contentsline {section}{\numberline {2}Medical and Lifestyle Information Dataset}{4}{section.2}%
-\contentsline {section}{\numberline {3}Employee Information Dataset}{5}{section.3}%
-\contentsline {section}{\numberline {4}Attribute Type Identification}{5}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Continuous Numerical Attributes}{5}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Discrete Attributes}{6}{subsection.4.2}%
-\contentsline {section}{\numberline {5}Numeric Attributes Analysis}{7}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Healthcare Dataset}{7}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Employee Dataset}{8}{subsection.5.2}%
-\contentsline {section}{\numberline {6}Numeric Ranges for Attributes}{9}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Healthcare Dataset}{9}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Employee Dataset}{10}{subsection.6.2}%
-\contentsline {section}{\numberline {7}Categorical Attributes Analysis}{11}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Healthcare Dataset}{11}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Employee Dataset}{11}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Comments}{12}{subsection.7.3}%
-\contentsline {section}{\numberline {8}Categorical Distribution for Attributes}{12}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Healthcare Dataset}{12}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Salary Dataset}{16}{subsection.8.2}%
-\contentsline {section}{\numberline {9}Class Balance}{21}{section.9}%
-\contentsline {subsection}{\numberline {9.1}AVC Dataset}{21}{subsection.9.1}%
-\contentsline {subsection}{\numberline {9.2}Salary Dataset}{22}{subsection.9.2}%
-\contentsline {subsection}{\numberline {9.3}Comments}{22}{subsection.9.3}%
-\contentsline {section}{\numberline {10}Attribute Correlation}{24}{section.10}%
-\contentsline {subsection}{\numberline {10.1}AVC Dataset}{24}{subsection.10.1}%
-\contentsline {subsubsection}{\numberline {10.1.1}Numerical Attributes}{24}{subsubsection.10.1.1}%
-\contentsline {subsubsection}{\numberline {10.1.2}Categorical Attributes}{25}{subsubsection.10.1.2}%
-\contentsline {subsection}{\numberline {10.2}Salary Dataset}{26}{subsection.10.2}%
-\contentsline {subsubsection}{\numberline {10.2.1}Numerical Attributes}{26}{subsubsection.10.2.1}%
-\contentsline {subsubsection}{\numberline {10.2.2}Categorical Attributes}{27}{subsubsection.10.2.2}%
-\contentsline {subsection}{\numberline {10.3}Comments}{28}{subsection.10.3}%
-\contentsline {subsubsection}{\numberline {10.3.1}AVC Dataset}{28}{subsubsection.10.3.1}%
-\contentsline {paragraph}{Numerical Attributes}{28}{section*.40}%
-\contentsline {paragraph}{Categorical Attributes}{28}{section*.41}%
-\contentsline {subsubsection}{\numberline {10.3.2}Salary Dataset}{28}{subsubsection.10.3.2}%
-\contentsline {paragraph}{Numerical Attributes}{28}{section*.42}%
-\contentsline {paragraph}{Categorical Attributes}{28}{section*.43}%
-\contentsline {section}{\numberline {11}Preprocess of Data}{29}{section.11}%
-\contentsline {subsection}{\numberline {11.1}Imputing Missing Values}{29}{subsection.11.1}%
-\contentsline {subsection}{\numberline {11.2}Handling Extreme Values}{30}{subsection.11.2}%
-\contentsline {subsection}{\numberline {11.3}Removing Highly Correlated Attributes}{30}{subsection.11.3}%
-\contentsline {subsection}{\numberline {11.4}Standardizing Numerical Attributes}{31}{subsection.11.4}%
-\contentsline {subsection}{\numberline {11.5}Encoding Categorical Variables}{31}{subsection.11.5}%
-\contentsline {subsection}{\numberline {11.6}Wrapper Function for Preprocessing}{32}{subsection.11.6}%
-\contentsline {section}{\numberline {12}Logistic Regression}{33}{section.12}%
-\contentsline {subsection}{\numberline {12.1}Manual Implementation}{33}{subsection.12.1}%
-\contentsline {subsection}{\numberline {12.2}Scikit-learn Implementation}{34}{subsection.12.2}%
-\contentsline {subsection}{\numberline {12.3}Particularities}{35}{subsection.12.3}%
-\contentsline {subsubsection}{\numberline {12.3.1}Categorical Attribute Encoding}{35}{subsubsection.12.3.1}%
-\contentsline {subsubsection}{\numberline {12.3.2}Optimization Algorithm Settings}{35}{subsubsection.12.3.2}%
-\contentsline {section}{\numberline {13}MLP}{36}{section.13}%
-\contentsline {subsection}{\numberline {13.1}Activation Functions}{36}{subsection.13.1}%
-\contentsline {subsection}{\numberline {13.2}Manual Implementation}{36}{subsection.13.2}%
-\contentsline {subsection}{\numberline {13.3}Scikit-learn Implementation}{37}{subsection.13.3}%
-\contentsline {subsection}{\numberline {13.4}Optimizer Usage}{38}{subsection.13.4}%
-\contentsline {subsubsection}{\numberline {13.4.1}SGD Optimizer}{38}{subsubsection.13.4.1}%
-\contentsline {subsubsection}{\numberline {13.4.2}Adam Optimizer}{39}{subsubsection.13.4.2}%
-\contentsline {subsection}{\numberline {13.5}Particularities}{39}{subsection.13.5}%
-\contentsline {subsubsection}{\numberline {13.5.1}Architecture}{39}{subsubsection.13.5.1}%
-\contentsline {subsubsection}{\numberline {13.5.2}Optimizer Configuration}{40}{subsubsection.13.5.2}%
-\contentsline {subsubsection}{\numberline {13.5.3}Regularization Methods}{40}{subsubsection.13.5.3}%
-\contentsline {section}{\numberline {14}Finding Best Hyperparameters}{41}{section.14}%
-\contentsline {subsection}{\numberline {14.1}Logistic Regression}{41}{subsection.14.1}%
-\contentsline {paragraph}{AVC Dataset}{41}{section*.44}%
-\contentsline {paragraph}{Salary Dataset}{41}{section*.45}%
-\contentsline {subsection}{\numberline {14.2}Multi-Layer Perceptron (MLP)}{42}{subsection.14.2}%
-\contentsline {paragraph}{AVC Dataset}{42}{section*.46}%
-\contentsline {paragraph}{Salary Dataset}{43}{section*.47}%
-\contentsline {section}{\numberline {15}Comparison}{44}{section.15}%
-\contentsline {subsection}{\numberline {15.1}Context}{44}{subsection.15.1}%
-\contentsline {subsection}{\numberline {15.2}Logistic Regression Performance}{45}{subsection.15.2}%
-\contentsline {subsubsection}{\numberline {15.2.1}AVC Dataset Metrics}{45}{subsubsection.15.2.1}%
-\contentsline {subsubsection}{\numberline {15.2.2}Salary Dataset Metrics}{46}{subsubsection.15.2.2}%
-\contentsline {subsubsection}{\numberline {15.2.3}Observations}{47}{subsubsection.15.2.3}%
-\contentsline {subsubsection}{\numberline {15.2.4}Confusion Matrices}{47}{subsubsection.15.2.4}%
-\contentsline {subsubsection}{\numberline {15.2.5}Comments on Confusion Matrices}{48}{subsubsection.15.2.5}%
-\contentsline {paragraph}{AVC Dataset - Test Set}{48}{section*.60}%
-\contentsline {paragraph}{AVC Dataset - Train Set}{49}{section*.61}%
-\contentsline {paragraph}{Salary Dataset - Test Set}{49}{section*.62}%
-\contentsline {paragraph}{Salary Dataset - Train Set}{50}{section*.63}%
-\contentsline {paragraph}{Summary}{50}{section*.64}%
-\contentsline {subsubsection}{\numberline {15.2.6}Overall Accuracy}{50}{subsubsection.15.2.6}%
-\contentsline {subsubsection}{\numberline {15.2.7}Overfit Analysis}{51}{subsubsection.15.2.7}%
-\contentsline {subsection}{\numberline {15.3}Multi Layer Perceptron}{52}{subsection.15.3}%
-\contentsline {subsubsection}{\numberline {15.3.1}AVC Dataset Metrics}{52}{subsubsection.15.3.1}%
-\contentsline {subsubsection}{\numberline {15.3.2}Salary Dataset Metrics}{53}{subsubsection.15.3.2}%
-\contentsline {subsubsection}{\numberline {15.3.3}Observations}{54}{subsubsection.15.3.3}%
-\contentsline {subsubsection}{\numberline {15.3.4}Confusion Matrices}{54}{subsubsection.15.3.4}%
-\contentsline {subsubsection}{\numberline {15.3.5}Comments on Confusion Matrices}{55}{subsubsection.15.3.5}%
-\contentsline {paragraph}{AVC Dataset - Test Set}{55}{section*.79}%
-\contentsline {paragraph}{AVC Dataset - Train Set}{56}{section*.80}%
-\contentsline {paragraph}{Salary Dataset - Test Set}{56}{section*.81}%
-\contentsline {paragraph}{Salary Dataset - Train Set}{57}{section*.82}%
-\contentsline {paragraph}{Summary}{57}{section*.83}%
-\contentsline {subsubsection}{\numberline {15.3.6}Overall Accuracy}{57}{subsubsection.15.3.6}%
-\contentsline {subsubsection}{\numberline {15.3.7}Overfit Analysis}{58}{subsubsection.15.3.7}%
-\contentsline {subsection}{\numberline {15.4}Comparison of Logistic Regression and Multi Layer Perceptron}{59}{subsection.15.4}%
-\contentsline {subsubsection}{\numberline {15.4.1}Observations}{59}{subsubsection.15.4.1}%
+\contentsline {section}{\numberline {1}Introduction}{5}{section.1}%
+\contentsline {section}{\numberline {2}Medical and Lifestyle Information Dataset}{5}{section.2}%
+\contentsline {section}{\numberline {3}Employee Information Dataset}{6}{section.3}%
+\contentsline {section}{\numberline {4}Attribute Type Identification}{6}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Continuous Numerical Attributes}{6}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Discrete Attributes}{7}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Numeric Attributes Analysis}{8}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Healthcare Dataset}{8}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Employee Dataset}{9}{subsection.5.2}%
+\contentsline {section}{\numberline {6}Numeric Ranges for Attributes}{10}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Healthcare Dataset}{10}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Employee Dataset}{11}{subsection.6.2}%
+\contentsline {section}{\numberline {7}Categorical Attributes Analysis}{12}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Healthcare Dataset}{12}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Employee Dataset}{12}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Comments}{13}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Categorical Distribution for Attributes}{13}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Healthcare Dataset}{13}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Salary Dataset}{17}{subsection.8.2}%
+\contentsline {section}{\numberline {9}Class Balance}{22}{section.9}%
+\contentsline {subsection}{\numberline {9.1}AVC Dataset}{22}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Salary Dataset}{23}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Comments}{23}{subsection.9.3}%
+\contentsline {section}{\numberline {10}Attribute Correlation}{25}{section.10}%
+\contentsline {subsection}{\numberline {10.1}AVC Dataset}{25}{subsection.10.1}%
+\contentsline {subsubsection}{\numberline {10.1.1}Numerical Attributes}{25}{subsubsection.10.1.1}%
+\contentsline {subsubsection}{\numberline {10.1.2}Categorical Attributes}{26}{subsubsection.10.1.2}%
+\contentsline {subsection}{\numberline {10.2}Salary Dataset}{27}{subsection.10.2}%
+\contentsline {subsubsection}{\numberline {10.2.1}Numerical Attributes}{27}{subsubsection.10.2.1}%
+\contentsline {subsubsection}{\numberline {10.2.2}Categorical Attributes}{28}{subsubsection.10.2.2}%
+\contentsline {subsection}{\numberline {10.3}Comments}{29}{subsection.10.3}%
+\contentsline {subsubsection}{\numberline {10.3.1}AVC Dataset}{29}{subsubsection.10.3.1}%
+\contentsline {paragraph}{Numerical Attributes}{29}{section*.40}%
+\contentsline {paragraph}{Categorical Attributes}{29}{section*.41}%
+\contentsline {subsubsection}{\numberline {10.3.2}Salary Dataset}{29}{subsubsection.10.3.2}%
+\contentsline {paragraph}{Numerical Attributes}{29}{section*.42}%
+\contentsline {paragraph}{Categorical Attributes}{29}{section*.43}%
+\contentsline {section}{\numberline {11}Preprocess of Data}{30}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Imputing Missing Values}{30}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Handling Extreme Values}{31}{subsection.11.2}%
+\contentsline {subsection}{\numberline {11.3}Removing Highly Correlated Attributes}{31}{subsection.11.3}%
+\contentsline {subsection}{\numberline {11.4}Standardizing Numerical Attributes}{32}{subsection.11.4}%
+\contentsline {subsection}{\numberline {11.5}Encoding Categorical Variables}{32}{subsection.11.5}%
+\contentsline {subsection}{\numberline {11.6}Wrapper Function for Preprocessing}{33}{subsection.11.6}%
+\contentsline {section}{\numberline {12}Logistic Regression}{34}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Manual Implementation}{34}{subsection.12.1}%
+\contentsline {subsection}{\numberline {12.2}Scikit-learn Implementation}{35}{subsection.12.2}%
+\contentsline {subsection}{\numberline {12.3}Particularities}{36}{subsection.12.3}%
+\contentsline {subsubsection}{\numberline {12.3.1}Categorical Attribute Encoding}{36}{subsubsection.12.3.1}%
+\contentsline {subsubsection}{\numberline {12.3.2}Optimization Algorithm Settings}{36}{subsubsection.12.3.2}%
+\contentsline {section}{\numberline {13}MLP}{37}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Activation Functions}{37}{subsection.13.1}%
+\contentsline {subsection}{\numberline {13.2}Manual Implementation}{37}{subsection.13.2}%
+\contentsline {subsection}{\numberline {13.3}Scikit-learn Implementation}{38}{subsection.13.3}%
+\contentsline {subsection}{\numberline {13.4}Optimizer Usage}{39}{subsection.13.4}%
+\contentsline {subsubsection}{\numberline {13.4.1}SGD Optimizer}{39}{subsubsection.13.4.1}%
+\contentsline {subsubsection}{\numberline {13.4.2}Adam Optimizer}{40}{subsubsection.13.4.2}%
+\contentsline {subsection}{\numberline {13.5}Particularities}{40}{subsection.13.5}%
+\contentsline {subsubsection}{\numberline {13.5.1}Architecture}{40}{subsubsection.13.5.1}%
+\contentsline {subsubsection}{\numberline {13.5.2}Optimizer Configuration}{41}{subsubsection.13.5.2}%
+\contentsline {subsubsection}{\numberline {13.5.3}Regularization Methods}{41}{subsubsection.13.5.3}%
+\contentsline {section}{\numberline {14}Finding Best Hyperparameters}{42}{section.14}%
+\contentsline {subsection}{\numberline {14.1}Logistic Regression}{42}{subsection.14.1}%
+\contentsline {paragraph}{AVC Dataset}{42}{section*.44}%
+\contentsline {paragraph}{Salary Dataset}{42}{section*.45}%
+\contentsline {subsection}{\numberline {14.2}Multi-Layer Perceptron (MLP)}{43}{subsection.14.2}%
+\contentsline {paragraph}{AVC Dataset}{43}{section*.46}%
+\contentsline {paragraph}{Salary Dataset}{44}{section*.47}%
+\contentsline {section}{\numberline {15}Comparison}{45}{section.15}%
+\contentsline {subsection}{\numberline {15.1}Context}{45}{subsection.15.1}%
+\contentsline {subsection}{\numberline {15.2}Logistic Regression Performance}{46}{subsection.15.2}%
+\contentsline {subsubsection}{\numberline {15.2.1}AVC Dataset Metrics}{46}{subsubsection.15.2.1}%
+\contentsline {subsubsection}{\numberline {15.2.2}Salary Dataset Metrics}{47}{subsubsection.15.2.2}%
+\contentsline {subsubsection}{\numberline {15.2.3}Observations}{48}{subsubsection.15.2.3}%
+\contentsline {subsubsection}{\numberline {15.2.4}Confusion Matrices}{48}{subsubsection.15.2.4}%
+\contentsline {subsubsection}{\numberline {15.2.5}Comments on Confusion Matrices}{49}{subsubsection.15.2.5}%
+\contentsline {paragraph}{AVC Dataset - Test Set}{49}{section*.60}%
+\contentsline {paragraph}{AVC Dataset - Train Set}{50}{section*.61}%
+\contentsline {paragraph}{Salary Dataset - Test Set}{50}{section*.62}%
+\contentsline {paragraph}{Salary Dataset - Train Set}{51}{section*.63}%
+\contentsline {paragraph}{Summary}{51}{section*.64}%
+\contentsline {subsubsection}{\numberline {15.2.6}Overall Accuracy}{51}{subsubsection.15.2.6}%
+\contentsline {subsubsection}{\numberline {15.2.7}Overfit Analysis}{52}{subsubsection.15.2.7}%
+\contentsline {subsection}{\numberline {15.3}Multi Layer Perceptron}{53}{subsection.15.3}%
+\contentsline {subsubsection}{\numberline {15.3.1}AVC Dataset Metrics}{53}{subsubsection.15.3.1}%
+\contentsline {subsubsection}{\numberline {15.3.2}Salary Dataset Metrics}{54}{subsubsection.15.3.2}%
+\contentsline {subsubsection}{\numberline {15.3.3}Observations}{55}{subsubsection.15.3.3}%
+\contentsline {subsubsection}{\numberline {15.3.4}Confusion Matrices}{55}{subsubsection.15.3.4}%
+\contentsline {subsubsection}{\numberline {15.3.5}Comments on Confusion Matrices}{56}{subsubsection.15.3.5}%
+\contentsline {paragraph}{AVC Dataset - Test Set}{56}{section*.79}%
+\contentsline {paragraph}{AVC Dataset - Train Set}{57}{section*.80}%
+\contentsline {paragraph}{Salary Dataset - Test Set}{57}{section*.81}%
+\contentsline {paragraph}{Salary Dataset - Train Set}{58}{section*.82}%
+\contentsline {paragraph}{Summary}{58}{section*.83}%
+\contentsline {subsubsection}{\numberline {15.3.6}Overall Accuracy}{58}{subsubsection.15.3.6}%
+\contentsline {subsubsection}{\numberline {15.3.7}Overfit Analysis}{59}{subsubsection.15.3.7}%
+\contentsline {subsection}{\numberline {15.4}Comparison of Logistic Regression and Multi Layer Perceptron}{60}{subsection.15.4}%
+\contentsline {subsubsection}{\numberline {15.4.1}Observations}{60}{subsubsection.15.4.1}%
+\contentsline {section}{\numberline {16}Dataset Optimizations}{61}{section.16}%
+\contentsline {subsection}{\numberline {16.1}SMOTE (Synthetic Minority Over-sampling Technique)}{62}{subsection.16.1}%
+\contentsline {subsubsection}{\numberline {16.1.1}Overall Accuracy}{62}{subsubsection.16.1.1}%
+\contentsline {subsection}{\numberline {16.2}SMOTEN}{63}{subsection.16.2}%
+\contentsline {subsubsection}{\numberline {16.2.1}Overall Accuracy}{63}{subsubsection.16.2.1}%
+\contentsline {subsection}{\numberline {16.3}SVMSMOTE}{64}{subsection.16.3}%
+\contentsline {subsubsection}{\numberline {16.3.1}Overall Accuracy}{64}{subsubsection.16.3.1}%
+\contentsline {subsection}{\numberline {16.4}BorderlineSMOTE}{65}{subsection.16.4}%
+\contentsline {subsubsection}{\numberline {16.4.1}Overall Accuracy}{65}{subsubsection.16.4.1}%
+\contentsline {subsection}{\numberline {16.5}ADASYN}{66}{subsection.16.5}%
+\contentsline {subsubsection}{\numberline {16.5.1}Overall Accuracy}{67}{subsubsection.16.5.1}%
+\contentsline {subsection}{\numberline {16.6}Tomek Links}{68}{subsection.16.6}%
+\contentsline {subsubsection}{\numberline {16.6.1}Overall Accuracy}{68}{subsubsection.16.6.1}%
+\contentsline {section}{\numberline {17}Final Conclusions}{70}{section.17}%
+\contentsline {subsection}{\numberline {17.1}Overview}{70}{subsection.17.1}%
+\contentsline {subsection}{\numberline {17.2}Overall Algorithm Comparison}{70}{subsection.17.2}%
+\contentsline {subsection}{\numberline {17.3}Summary of Resampling Techniques}{71}{subsection.17.3}%

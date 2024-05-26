@@ -8,9 +8,15 @@ def impute_missing_values(df, numeric_columns, categorical_columns, fit=True, im
     """Impute missing values for numeric and categorical columns."""
     df_numeric = df[numeric_columns]  # Select numeric columns
     df_categorical = df[categorical_columns]  # Select categorical columns
+
     # Replace '?' with NaN
     df.replace('?', np.nan, inplace=True)
-    
+
+    # Explicitly control downcasting behavior
+    pd.set_option('future.no_silent_downcasting', True)
+    df.replace('not_defined', np.nan, inplace=True)
+    pd.set_option('future.no_silent_downcasting', False)
+
     if fit:
         # Create and fit imputer for numeric columns
         numeric_imputer = SimpleImputer(strategy='mean')

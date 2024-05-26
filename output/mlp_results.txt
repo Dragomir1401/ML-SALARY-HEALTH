@@ -1,7 +1,7 @@
 Manual MLP Results:
-AVC Dataset - Train Accuracy: 0.9574363992172211, Test Accuracy: 0.9266144814090019
-Salary Dataset - Train Accuracy: 0.8342292786598324, Test Accuracy: 0.8355
+AVC Dataset - Train Accuracy: 0.8705927439959121, Test Accuracy: 0.8062622309197651
+Salary Dataset - Train Accuracy: 0.7807666995722277, Test Accuracy: 0.7815
 
 Scikit-learn MLP Results:
-AVC Dataset - Train Accuracy: 0.9963307240704501, Test Accuracy: 0.9060665362035225
-Salary Dataset - Train Accuracy: 0.967495936992124, Test Accuracy: 0.804
+AVC Dataset - Train Accuracy: 0.9957843638221768, Test Accuracy: 0.8894324853228963
+Salary Dataset - Train Accuracy: 0.9708785784797631, Test Accuracy: 0.799

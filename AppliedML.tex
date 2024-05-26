@@ -649,6 +649,7 @@ def impute_missing_values(df, nmr_cols, cat_cols, fit, imp):
     df_nmr = df[nmr_cols]
     df_cat = df[cat_cols]
     df.replace('?', np.nan, inplace=True)
+    df.replace('not_defined', np.nan, inplace=True)
     if fit:
         # Fit imputer if on training data
         imp = SimpleImputer(strategy='mean')
@@ -795,7 +796,6 @@ def preprocess_data_wrapper():
 
             df_imputed, _ = impute_missing_values(...)
             df_outliers_handled = handle_extreme_values(...)
-            df_outliers_imputed, _ = impute_missing_values(...)
             df_standardized = standardize_data(...)
             df_encoded, _, _ = encode_categorical(...)
 
@@ -845,16 +845,6 @@ function nll(Y, T):
     # Negative Log-Likelihood
     N = number of samples
     return -sum(T * log(Y) + (1 - T) * log(1 - Y)) / N
-
-
-
-
-
-
-
-
-
-
 
 function accuracy(Y, T):
     # Accuracy calculation
@@ -1982,23 +1972,23 @@ The results are summarized as follows:
     \hline
     \textbf{Algorithm} & \textbf{Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
     \hline
-    Manual LogReg & Train (AVC) & 0.578911 & 0.504725 & 0.499608 \\
-    Manual LogReg & Test (AVC) & \textbf{0.7975} & \textbf{0.5128} & \textbf{0.5068} \\
-    Scikit-learn LogReg & Train (AVC) & 0.478718 & 0.500000 & 0.489128 \\
-    Scikit-learn LogReg & Test (AVC) & 0.463307 & 0.500000 & 0.480955 \\
-    Manual MLP & Train (AVC) & 0.478718 & 0.500000 & 0.489128 \\
-    Manual MLP & Test (AVC) & 0.463307 & 0.500000 & 0.480955 \\
+    Manual LogReg & Train (AVC) & \textbf{0.5788} & \textbf{0.5024} & \textbf{0.4945} \\
+    Manual LogReg & Test (AVC) & 0.4633 & 0.4995 & 0.4807 \\
+    Scikit-learn LogReg & Train (AVC) & 0.4787 & 0.5000 & 0.4891 \\
+    Scikit-learn LogReg & Test (AVC) & 0.4633 & 0.5000 & 0.4810 \\
+    Manual MLP & Train (AVC) & 0.4787 & 0.5000 & 0.4891 \\
+    Manual MLP & Test (AVC) & 0.4633 & 0.5000 & 0.4810 \\
     Scikit-learn MLP & Train (AVC) & \textbf{0.9866} & \textbf{0.9679} & \textbf{0.9770} \\
-    Scikit-learn MLP & Test (AVC) & 0.484702 & 0.495051 & 0.485538 \\
+    Scikit-learn MLP & Test (AVC) & 0.4847 & 0.4951 & 0.4855 \\
     \hline
-    Manual LogReg & Train (Salary) & 0.766143 & 0.719233 & 0.736963 \\
-    Manual LogReg & Test (Salary) & 0.766214 & 0.714232 & 0.733104 \\
+    Manual LogReg & Train (Salary) & 0.7704 & 0.7267 & 0.7437 \\
+    Manual LogReg & Test (Salary) & \textbf{0.7795} & \textbf{0.7330} & \textbf{0.7509} \\
     Scikit-learn LogReg & Train (Salary) & \textbf{0.7858} & \textbf{0.7421} & \textbf{0.7594} \\
-    Scikit-learn LogReg & Test (Salary) & 0.783726 & 0.736088 & 0.754404 \\
-    Manual MLP & Train (Salary) & 0.784118 & 0.730703 & 0.750653 \\
-    Manual MLP & Test (Salary) & \textbf{0.792251} & 0.729055 & \textbf{0.751457} \\
+    Scikit-learn LogReg & Test (Salary) & 0.7837 & 0.7361 & 0.7544 \\
+    Manual MLP & Train (Salary) & 0.7793 & 0.7518 & 0.7637 \\
+    Manual MLP & Test (Salary) & 0.7799 & 0.7490 & 0.7620 \\
     Scikit-learn MLP & Train (Salary) & \textbf{0.9558} & \textbf{0.9551} & \textbf{0.9554} \\
-    Scikit-learn MLP & Test (Salary) & 0.733911 & 0.732604 & 0.733252 \\
+    Scikit-learn MLP & Test (Salary) & 0.7339 & 0.7326 & 0.7333 \\
     \hline
     \end{tabularx}
 \end{table}
@@ -2007,19 +1997,585 @@ The results are summarized as follows:
 
 \textbf{AVC Dataset:}
 \begin{itemize}
-    \item \textbf{Precision:} The highest precision is achieved by the Scikit-learn MLP model on the training set (0.9866). The Manual LogReg model has the highest precision on the test set (0.7975).
-    \item \textbf{Recall:} The highest recall is also observed for the Scikit-learn MLP model on the training set (0.9679). The Manual LogReg model has the highest recall on the test set (0.5128).
-    \item \textbf{F1-Score:} The highest F1-Score is achieved by the Scikit-learn MLP model on the training set (0.9770). The Manual LogReg model shows the highest F1-Score on the test set (0.5068).
-    \item \textbf{Overfitting:} The Scikit-learn MLP model shows signs of overfitting, with significantly better performance on the training set compared to the test set. The Manual LogReg model does not show signs of overfitting, as the performance is relatively balanced between training and test sets.
+    \item \textbf{Precision:} The highest precision is achieved by the Scikit-learn MLP model on the training set (0.9866). The Manual LogReg model has the highest precision on the test set (0.4633).
+    \item \textbf{Recall:} The highest recall is also observed for the Scikit-learn MLP model on the training set (0.9679). The Manual LogReg model has the highest recall on the test set (0.4995).
+    \item \textbf{F1-Score:} The highest F1-Score is achieved by the Scikit-learn MLP model on the training set (0.9770). The Manual LogReg model shows the highest F1-Score on the test set (0.4807).
+    \item \textbf{Overfitting:} The Scikit-learn MLP model shows signs of overfitting, with significantly better performance on the training set compared to the test set. Both the Manual LogReg and Scikit-learn LogReg models do not show significant overfitting, as the performance is relatively balanced between training and test sets.
 \end{itemize}
 
 \textbf{Salary Dataset:}
 \begin{itemize}
-    \item \textbf{Precision:} The highest precision is achieved by the Scikit-learn MLP model on the training set (0.9558). The Manual MLP model has the highest precision on the test set (0.792251).
-    \item \textbf{Recall:} The highest recall is observed for the Scikit-learn MLP model on the training set (0.9551). The Scikit-learn LogReg model shows the highest recall on the test set (0.736088).
-    \item \textbf{F1-Score:} The highest F1-Score is achieved by the Scikit-learn MLP model on the training set (0.9554). The Manual MLP model shows the highest F1-Score on the test set (0.751457).
-    \item \textbf{Overfitting:} The Scikit-learn MLP model shows overfitting with high performance on the training set but lower performance on the test set. The Manual MLP and Scikit-learn LogReg models do not show significant overfitting, as they provide more balanced performance across training and test sets.
+    \item \textbf{Precision:} The highest precision is achieved by the Scikit-learn MLP model on the training set (0.9558). The Manual MLP model has the highest precision on the test set (0.7799).
+    \item \textbf{Recall:} The highest recall is observed for the Scikit-learn MLP model on the training set (0.9551). The Scikit-learn LogReg model shows the highest recall on the test set (0.7361).
+    \item \textbf{F1-Score:} The highest F1-Score is achieved by the Scikit-learn MLP model on the training set (0.9554). The Manual MLP model shows the highest F1-Score on the test set (0.7620).
+    \item \textbf{Overfitting:} The Scikit-learn MLP model shows overfitting with high performance on the training set but lower performance on the test set. The Manual MLP and Scikit-learn LogReg models show more balanced performance across training and test sets, indicating better generalization and less overfitting.
 \end{itemize}
 
 These observations highlight the differences in performance between the manual and scikit-learn implementations of Logistic Regression and MLP models. While the Scikit-learn MLP shows high performance on the training set, it often overfits, resulting in lower generalization on the test set. On the other hand, the manual implementations, particularly the Manual LogReg, show more consistent performance, indicating better generalization. These results emphasize the importance of choosing the right model and avoiding overfitting, particularly in imbalanced datasets like AVC and Salary. Future work should explore techniques like oversampling, undersampling, and regularization to improve model generalization.
+
+\section{Dataset Optimizations}
+
+This section explores the impact of various oversampling and undersampling techniques on the performance of Logistic Regression and Multi-Layer Perceptron (MLP) models. The techniques investigated include SMOTE, SMOTEN, SVMSMOTE, BorderlineSMOTE, ADASYN, and Tomek Links. Each technique is applied to the AVC and Salary datasets, and the results are compared against baseline results to determine the effectiveness and any signs of overfitting.
+
+\subsection{SMOTE (Synthetic Minority Over-sampling Technique)}
+
+SMOTE is an oversampling technique that creates synthetic samples for the minority class by interpolating between existing samples. This helps to balance the class distribution and improve model performance on imbalanced datasets.
+
+\begin{table}[h!]
+    \centering
+    \caption{Comparative Table for SMOTE - AVC Dataset}
+    \begin{tabularx}{\textwidth}{|l|l|X|X|X|}
+    \hline
+    \textbf{Algorithm} & \textbf{Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+    \hline
+    Manual LogReg & Train (AVC) & \textbf{0.7893} & \textbf{0.7846} & \textbf{0.7838} \\
+    Manual LogReg & Test (AVC) & 0.570333 & 0.71817 & 0.554286 \\
+    Scikit-learn LogReg & Train (AVC) & 0.78293 & 0.775294 & 0.773767 \\
+    Scikit-learn LogReg & Test (AVC) & 0.567004 & 0.717775 & 0.540971 \\
+    Manual MLP & Train (AVC) & 0.822198 & 0.808125 & 0.806006 \\
+    Manual MLP & Test (AVC) & 0.567427 & 0.709919 & 0.549673 \\
+    Scikit-learn MLP & Train (AVC) & \textbf{0.9942} & \textbf{0.9941} & \textbf{0.9941} \\
+    Scikit-learn MLP & Test (AVC) & 0.487831 & 0.49327 & 0.48862 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{Comparative Table for SMOTE - Salary Dataset}
+    \begin{tabularx}{\textwidth}{|l|l|X|X|X|}
+    \hline
+    \textbf{Algorithm} & \textbf{Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+    \hline
+    Manual LogReg & Train (Salary) & 0.807765 & 0.804952 & 0.804506 \\
+    Manual LogReg & Test (Salary) & 0.736929 & 0.799309 & 0.750429 \\
+    Scikit-learn LogReg & Train (Salary) & \textbf{0.8185} & \textbf{0.8161} & \textbf{0.8157} \\
+    Scikit-learn LogReg & Test (Salary) & 0.739044 & 0.800596 & 0.753053 \\
+    Manual MLP & Train (Salary) & 0.822011 & 0.815153 & 0.814164 \\
+    Manual MLP & Test (Salary) & 0.739038 & 0.808136 & 0.750639 \\
+    Scikit-learn MLP & Train (Salary) & \textbf{0.9607} & \textbf{0.9603} & \textbf{0.9603} \\
+    Scikit-learn MLP & Test (Salary) & 0.737289 & 0.709558 & 0.720982 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Overall Accuracy}
+
+\textbf{Manual Logistic Regression Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.7846, Test Accuracy: 0.7280
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.8050, Test Accuracy: 0.7880
+\end{itemize}
+
+\textbf{Scikit-learn Logistic Regression Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.7753, Test Accuracy: 0.7045
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.8161, Test Accuracy: 0.7910
+\end{itemize}
+
+\textbf{Manual MLP Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.8081, Test Accuracy: 0.7241
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.8152, Test Accuracy: 0.7845
+\end{itemize}
+
+\textbf{Scikit-learn MLP Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.9941, Test Accuracy: 0.8914
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.9603, Test Accuracy: 0.8060
+\end{itemize}
+
+\textbf{Observations:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} SMOTE improved the training performance of all models but did not significantly improve test performance. The Scikit-learn MLP model showed signs of overfitting.
+    \item \textbf{Salary Dataset:} SMOTE led to better generalization in both Logistic Regression and MLP models, with the Scikit-learn MLP model showing overfitting.
+\end{itemize}
+
+\subsection{SMOTEN}
+
+SMOTEN is an oversampling technique specifically designed for nominal features. It generates synthetic samples for the minority class by interpolating between existing samples.
+
+\begin{table}[h!]
+    \centering
+    \caption{Comparative Table for SMOTEN - AVC Dataset}
+    \begin{tabularx}{\textwidth}{|l|l|X|X|X|}
+    \hline
+    \textbf{Algorithm} & \textbf{Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+    \hline
+    Manual LogReg & Train (AVC) & \textbf{0.9088} & \textbf{0.9087} & \textbf{0.9087} \\
+    Manual LogReg & Test (AVC) & 0.569561 & 0.603703 & 0.580375 \\
+    Scikit-learn LogReg & Train (AVC) & 0.882809 & 0.881707 & 0.881621 \\
+    Scikit-learn LogReg & Test (AVC) & 0.551233 & 0.601 & 0.557749 \\
+    Manual MLP & Train (AVC) & 0.92743 & 0.927312 & 0.927307 \\
+    Manual MLP & Test (AVC) & 0.581605 & 0.596375 & 0.58795 \\
+    Scikit-learn MLP & Train (AVC) & \textbf{0.9939} & \textbf{0.9939} & \textbf{0.9939} \\
+    Scikit-learn MLP & Test (AVC) & 0.479368 & 0.491355 & 0.482964 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{Comparative Table for SMOTEN - Salary Dataset}
+    \begin{tabularx}{\textwidth}{|l|l|X|X|X|}
+    \hline
+    \textbf{Algorithm} & \textbf{Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+    \hline
+    Manual LogReg & Train (Salary) & 0.835357 & 0.834238 & 0.8341 \\
+    Manual LogReg & Test (Salary) & 0.713052 & 0.745617 & 0.724609 \\
+    Scikit-learn LogReg & Train (Salary) & \textbf{0.8590} & \textbf{0.8576} & \textbf{0.8575} \\
+    Scikit-learn LogReg & Test (Salary) & 0.728306 & 0.756227 & 0.739238 \\
+    Manual MLP & Train (Salary) & 0.848353 & 0.843863 & 0.843358 \\
+    Manual MLP & Test (Salary) & 0.721262 & 0.765371 & 0.734612 \\
+    Scikit-learn MLP & Train (Salary) & \textbf{0.9676} & \textbf{0.9673} & \textbf{0.9673} \\
+    Scikit-learn MLP & Test (Salary) & 0.71281 & 0.691324 & 0.700339 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Overall Accuracy}
+
+\textbf{Manual Logistic Regression Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.9087, Test Accuracy: 0.8571
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.8342, Test Accuracy: 0.7805
+\end{itemize}
+
+\textbf{Scikit-learn Logistic Regression Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.8817, Test Accuracy: 0.8180
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.8576, Test Accuracy: 0.7955
+\end{itemize}
+
+\textbf{Manual MLP Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.9273, Test Accuracy: 0.8777
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.8439, Test Accuracy: 0.7830
+\end{itemize}
+
+\textbf{Scikit-learn MLP Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.9939, Test Accuracy: 0.8992
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.9673, Test Accuracy: 0.7900
+\end{itemize}
+
+\textbf{Observations:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} SMOTEN improved training performance across models but did not significantly enhance test performance. Scikit-learn MLP overfitted to the training set.
+    \item \textbf{Salary Dataset:} SMOTEN resulted in slight performance improvements with the Scikit-learn MLP showing overfitting tendencies.
+\end{itemize}
+
+\subsection{SVMSMOTE}
+
+SVMSMOTE combines the benefits of SMOTE and Support Vector Machines (SVM) to generate synthetic samples for the minority class, focusing on samples near the decision boundary.
+
+\begin{table}[h!]
+    \centering
+    \caption{Comparative Table for SVMSMOTE - AVC Dataset}
+    \begin{tabularx}{\textwidth}{|l|l|X|X|X|}
+    \hline
+    \textbf{Algorithm} & \textbf{Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+    \hline
+    Manual LogReg & Train (AVC) & \textbf{0.8447} & \textbf{0.8447} & \textbf{0.8447} \\
+    Manual LogReg & Test (AVC) & 0.544656 & 0.590637 & 0.54857 \\
+    Scikit-learn LogReg & Train (AVC) & 0.840062 & 0.840061 & 0.840061 \\
+    Scikit-learn LogReg & Test (AVC) & 0.546758 & 0.596248 & 0.551006 \\
+    Manual MLP & Train (AVC) & 0.870026 & 0.869826 & 0.869809 \\
+    Manual MLP & Test (AVC) & 0.573505 & 0.636114 & 0.587089 \\
+    Scikit-learn MLP & Train (AVC) & \textbf{0.9972} & \textbf{0.9972} & \textbf{0.9972} \\
+    Scikit-learn MLP & Test (AVC) & 0.475181 & 0.486603 & 0.479756 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{Comparative Table for SVMSMOTE - Salary Dataset}
+    \begin{tabularx}{\textwidth}{|l|l|X|X|X|}
+    \hline
+    \textbf{Algorithm} & \textbf{Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+    \hline
+    Manual LogReg & Train (Salary) & 0.819845 & 0.816634 & 0.816172 \\
+    Manual LogReg & Test (Salary) & 0.738636 & 0.798838 & 0.752839 \\
+    Scikit-learn LogReg & Train (Salary) & \textbf{0.8313} & \textbf{0.8285} & \textbf{0.8281} \\
+    Scikit-learn LogReg & Test (Salary) & 0.742854 & 0.800715 & 0.757885 \\
+    Manual MLP & Train (Salary) & 0.836491 & 0.826752 & 0.82549 \\
+    Manual MLP & Test (Salary) & 0.734376 & 0.803108 & 0.745032 \\
+    Scikit-learn MLP & Train (Salary) & \textbf{0.9773} & \textbf{0.9770} & \textbf{0.9770} \\
+    Scikit-learn MLP & Test (Salary) & 0.731967 & 0.74733 & 0.738796 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Overall Accuracy}
+
+\textbf{Manual Logistic Regression Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.8447, Test Accuracy: 0.8102
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.8166, Test Accuracy: 0.7915
+\end{itemize}
+
+\textbf{Scikit-learn Logistic Regression Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.8401, Test Accuracy: 0.8092
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.8285, Test Accuracy: 0.7975
+\end{itemize}
+
+\textbf{Manual MLP Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.8698, Test Accuracy: 0.8376
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.8268, Test Accuracy: 0.7790
+\end{itemize}
+
+\textbf{Scikit-learn MLP Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.9972, Test Accuracy: 0.8904
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.9770, Test Accuracy: 0.8010
+\end{itemize}
+
+\textbf{Observations:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} SVMSMOTE improved training performance but did not significantly enhance test performance. Scikit-learn MLP showed signs of overfitting.
+    \item \textbf{Salary Dataset:} SVMSMOTE led to balanced performance improvements, with Scikit-learn MLP showing high training accuracy but signs of overfitting.
+\end{itemize}
+
+\subsection{BorderlineSMOTE}
+
+BorderlineSMOTE focuses on generating synthetic samples near the borderline of the decision boundary, aiming to improve the classification performance of the minority class.
+
+\begin{table}[h!]
+    \centering
+    \caption{Comparative Table for BorderlineSMOTE - AVC Dataset}
+    \begin{tabularx}{\textwidth}{|l|l|X|X|X|}
+    \hline
+    \textbf{Algorithm} & \textbf{Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+    \hline
+    Manual LogReg & Train (AVC) & \textbf{0.8371} & \textbf{0.8307} & \textbf{0.8299} \\
+    Manual LogReg & Test (AVC) & 0.574971 & 0.708596 & 0.574122 \\
+    Scikit-learn LogReg & Train (AVC) & 0.826682 & 0.817195 & 0.815858 \\
+    Scikit-learn LogReg & Test (AVC) & 0.572524 & 0.715396 & 0.563595 \\
+    Manual MLP & Train (AVC) & 0.859279 & 0.850409 & 0.84948 \\
+    Manual MLP & Test (AVC) & 0.580014 & 0.711433 & 0.585297 \\
+    Scikit-learn MLP & Train (AVC) & \textbf{0.9971} & \textbf{0.9971} & \textbf{0.9971} \\
+    Scikit-learn MLP & Test (AVC) & 0.517354 & 0.5068 & 0.504139 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{Comparative Table for BorderlineSMOTE - Salary Dataset}
+    \begin{tabularx}{\textwidth}{|l|l|X|X|X|}
+    \hline
+    \textbf{Algorithm} & \textbf{Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+    \hline
+    Manual LogReg & Train (Salary) & 0.779367 & 0.774515 & 0.773531 \\
+    Manual LogReg & Test (Salary) & 0.727228 & \textbf{0.8002} & 0.732432 \\
+    Scikit-learn LogReg & Train (Salary) & \textbf{0.7958} & 0.790721 & \textbf{0.7898} \\
+    Scikit-learn LogReg & Test (Salary) & 0.729024 & 0.798883 & 0.737513 \\
+    Manual MLP & Train (Salary) & 0.808824 & 0.796726 & 0.794715 \\
+    Manual MLP & Test (Salary) & 0.727434 & 0.802787 & 0.729881 \\
+    Scikit-learn MLP & Train (Salary) & \textbf{0.9654} & \textbf{0.9654} & \textbf{0.9654} \\
+    Scikit-learn MLP & Test (Salary) & 0.715291 & 0.698581 & 0.705899 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Overall Accuracy}
+
+\textbf{Manual Logistic Regression Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.8307, Test Accuracy: 0.7671
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.7746, Test Accuracy: 0.7630
+\end{itemize}
+
+\textbf{Scikit-learn Logistic Regression Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.8172, Test Accuracy: 0.7456
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.7907, Test Accuracy: 0.7705
+\end{itemize}
+
+\textbf{Manual MLP Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.8504, Test Accuracy: 0.7838
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.7967, Test Accuracy: 0.7585
+\end{itemize}
+
+\textbf{Scikit-learn MLP Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.9971, Test Accuracy: 0.9051
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.9654, Test Accuracy: 0.7915
+\end{itemize}
+
+\textbf{Observations:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} BorderlineSMOTE improved training performance but did not significantly enhance test performance. Scikit-learn MLP showed signs of overfitting.
+    \item \textbf{Salary Dataset:} BorderlineSMOTE led to balanced performance improvements, with Scikit-learn MLP showing high training accuracy but signs of overfitting.
+\end{itemize}
+
+\subsection{ADASYN}
+
+ADASYN (Adaptive Synthetic Sampling) is an oversampling technique that creates synthetic samples for the minority class by focusing more on difficult-to-learn samples, thereby reducing the bias towards the majority class.
+
+\begin{table}[h!]
+    \centering
+    \caption{Comparative Table for ADASYN - AVC Dataset}
+    \begin{tabularx}{\textwidth}{|l|l|X|X|X|}
+    \hline
+    \textbf{Algorithm} & \textbf{Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+    \hline
+    Manual LogReg & Train (AVC) & \textbf{0.7860} & \textbf{0.7806} & \textbf{0.7798} \\
+    Manual LogReg & Test (AVC) & 0.564043 & 0.703583 & 0.541346 \\
+    Scikit-learn LogReg & Train (AVC) & 0.782177 & 0.773342 & 0.771902 \\
+    Scikit-learn LogReg & Test (AVC) & 0.569575 & 0.728469 & 0.542192 \\
+    Manual MLP & Train (AVC) & 0.817658 & 0.805704 & 0.804259 \\
+    Manual MLP & Test (AVC) & 0.56857 & 0.717973 & 0.547586 \\
+    Scikit-learn MLP & Train (AVC) & \textbf{0.9947} & \textbf{0.9946} & \textbf{0.9947} \\
+    Scikit-learn MLP & Test (AVC) & 0.51025 & 0.506075 & 0.505342 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{Comparative Table for ADASYN - Salary Dataset}
+    \begin{tabularx}{\textwidth}{|l|l|X|X|X|}
+    \hline
+    \textbf{Algorithm} & \textbf{Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+    \hline
+    Manual LogReg & Train (Salary) & 0.775217 & 0.770507 & 0.769901 \\
+    Manual LogReg & Test (Salary) & 0.719606 & 0.78963 & 0.724566 \\
+    Scikit-learn LogReg & Train (Salary) & \textbf{0.7900} & 0.785553 & \textbf{0.7851} \\
+    Scikit-learn LogReg & Test (Salary) & 0.730071 & \textbf{0.8010} & 0.738148 \\
+    Manual MLP & Train (Salary) & 0.794071 & 0.78766 & 0.786938 \\
+    Manual MLP & Test (Salary) & 0.733909 & 0.807167 & 0.741459 \\
+    Scikit-learn MLP & Train (Salary) & \textbf{0.9741} & \textbf{0.9738} & \textbf{0.9739} \\
+    Scikit-learn MLP & Test (Salary) & 0.718174 & 0.716648 & 0.717402 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Overall Accuracy}
+
+\textbf{Manual Logistic Regression Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.7809, Test Accuracy: 0.7123
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.7708, Test Accuracy: 0.7565
+\end{itemize}
+
+\textbf{Scikit-learn Logistic Regression Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.7738, Test Accuracy: 0.7016
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.7860, Test Accuracy: 0.7705
+\end{itemize}
+
+\textbf{Manual MLP Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.8062, Test Accuracy: 0.7162
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.7882, Test Accuracy: 0.7725
+\end{itemize}
+
+\textbf{Scikit-learn MLP Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.9947, Test Accuracy: 0.8924
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.9739, Test Accuracy: 0.7925
+\end{itemize}
+
+\textbf{Observations:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} ADASYN improved training performance but did not significantly enhance test performance. Scikit-learn MLP showed signs of overfitting.
+    \item \textbf{Salary Dataset:} ADASYN led to balanced performance improvements, with Scikit-learn MLP showing high training accuracy but signs of overfitting.
+\end{itemize}
+
+\subsection{Tomek Links}
+
+Tomek Links is an undersampling technique that identifies and removes the majority class samples that are closest to the minority class, thereby creating a more balanced dataset and potentially improving model performance.
+
+\begin{table}[h!]
+    \centering
+    \caption{Comparative Table for Tomek Links - AVC Dataset}
+    \begin{tabularx}{\textwidth}{|l|l|X|X|X|}
+    \hline
+    \textbf{Algorithm} & \textbf{Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+    \hline
+    Manual LogReg & Train (AVC) & \textbf{0.5784} & \textbf{0.5024} & \textbf{0.4943} \\
+    Manual LogReg & Test (AVC) & 0.463271 & 0.499472 & 0.480691 \\
+    Scikit-learn LogReg & Train (AVC) & 0.478255 & 0.5 & 0.488886 \\
+    Scikit-learn LogReg & Test (AVC) & 0.463307 & 0.5 & 0.480955 \\
+    Manual MLP & Train (AVC) & 0.478255 & 0.5 & 0.488886 \\
+    Manual MLP & Test (AVC) & 0.463307 & 0.5 & 0.480955 \\
+    Scikit-learn MLP & Train (AVC) & \textbf{0.8118} & \textbf{0.5056} & \textbf{0.5002} \\
+    Scikit-learn MLP & Test (AVC) & 0.463271 & 0.499472 & 0.480691 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{Comparative Table for Tomek Links - Salary Dataset}
+    \begin{tabularx}{\textwidth}{|l|l|X|X|X|}
+    \hline
+    \textbf{Algorithm} & \textbf{Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+    \hline
+    Manual LogReg & Train (Salary) & 0.787294 & 0.753162 & 0.76726 \\
+    Manual LogReg & Test (Salary) & 0.753141 & 0.737349 & 0.744509 \\
+    Scikit-learn LogReg & Train (Salary) & \textbf{0.8069} & \textbf{0.7727} & \textbf{0.7871} \\
+    Scikit-learn LogReg & Test (Salary) & 0.775146 & 0.756314 & 0.764803 \\
+    Manual MLP & Train (Salary) & 0.8044 & 0.781617 & 0.791766 \\
+    Manual MLP & Test (Salary) & 0.774383 & 0.765 & 0.769456 \\
+    Scikit-learn MLP & Train (Salary) & \textbf{0.9746} & \textbf{0.9820} & \textbf{0.9782} \\
+    Scikit-learn MLP & Test (Salary) & 0.728436 & 0.747802 & 0.736712 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Overall Accuracy}
+
+\textbf{Manual Logistic Regression Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.9538, Test Accuracy: 0.9256
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.8388, Test Accuracy: 0.8275
+\end{itemize}
+
+\textbf{Scikit-learn Logistic Regression Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.9565, Test Accuracy: 0.9266
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.8477, Test Accuracy: 0.8325
+\end{itemize}
+
+\textbf{Manual MLP Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.9565, Test Accuracy: 0.9266
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.8484, Test Accuracy: 0.8330
+\end{itemize}
+
+\textbf{Scikit-learn MLP Results:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Train Accuracy: 0.9568, Test Accuracy: 0.9256
+    \item \textbf{Salary Dataset:} Train Accuracy: 0.9834, Test Accuracy: 0.7975
+\end{itemize}
+
+\textbf{Observations:}
+\begin{itemize}
+    \item \textbf{AVC Dataset:} Tomek Links slightly improved the performance without overfitting.
+    \item \textbf{Salary Dataset:} Tomek Links led to better performance with no signs of overfitting for Logistic Regression models but some overfitting for the MLP model.
+\end{itemize}
+
+\newpage
+
+\section{Final Conclusions}
+
+\subsection{Overview}
+
+This section provides a summary of the performance improvements and challenges associated with each resampling technique applied to the Logistic Regression and Multi-Layer Perceptron (MLP) models on the AVC and Salary datasets. The goal is to identify the most effective approach and understand the trade-offs involved in each technique.
+
+\subsection{Overall Algorithm Comparison}
+
+Based on the analysis and comparison of Logistic Regression (LogReg) and Multi-Layer Perceptron (MLP) models across different resampling techniques, we can draw the following conclusions:
+
+\begin{itemize}
+    \item \textbf{Logistic Regression:} The Scikit-learn LogReg model generally performed better than the manual implementation, particularly with SMOTEN and SVMSMOTE techniques. These techniques enhanced recall and F1-score significantly. However, LogReg models showed less overfitting compared to MLP models.
+    \item \textbf{Multi-Layer Perceptron:} The Scikit-learn MLP model exhibited the highest performance metrics on the training sets across all resampling techniques, but it frequently suffered from overfitting, leading to lower test performance. Manual MLP models demonstrated more balanced performance but lower overall metrics.
+    \item \textbf{Best Techniques:} SMOTEN and SVMSMOTE were the most effective resampling techniques, providing significant improvements in recall and F1-score for both LogReg and MLP models. These techniques were particularly beneficial for Scikit-learn LogReg models.
+    \item \textbf{Overfitting Issues:} Overfitting was a recurrent problem in Scikit-learn MLP models, especially with techniques like SMOTE and ADASYN. Regularization and more sophisticated model tuning are necessary to mitigate this issue.
+    \item \textbf{Model Recommendations:} For applications requiring high precision and balanced performance without significant overfitting, the Scikit-learn LogReg model with SVMSMOTE or SMOTEN is recommended. For scenarios where MLP is preferred, careful tuning and regularization are crucial to prevent overfitting.
+\end{itemize}
+
+These conclusions provide a comprehensive overview of the performance of different models and resampling techniques applied to the AVC and Salary datasets. The choice of model and technique should be guided by the specific requirements of the application, focusing on balancing precision, recall, and the risk of overfitting.
+
+\newpage
+
+\subsection{Summary of Resampling Techniques}
+
+\begin{table}[h!]
+    \centering
+    \caption{Summary of Resampling Techniques (Part 1)}
+    \begin{tabularx}{\textwidth}{|l|X|X|}
+    \hline
+    \textbf{Technique} & \textbf{Advantages} & \textbf{Disadvantages} \\
+    \hline
+    Normal (Base Model) & 
+    \begin{itemize}
+        \item Simplicity and ease of implementation.
+        \item Baseline for comparison with other techniques.
+    \end{itemize} & 
+    \begin{itemize}
+        \item Struggles with class imbalance, leading to lower recall and F1-scores for the minority class.
+        \item Potential for underfitting in complex models.
+    \end{itemize} \\
+    \hline
+    SMOTE & 
+    \begin{itemize}
+        \item Significant improvement in recall and F1-score.
+        \item Effective in balancing class distribution.
+    \end{itemize} & 
+    \begin{itemize}
+        \item High risk of overfitting, especially in MLP models.
+        \item Synthetic samples might not represent real data accurately.
+    \end{itemize} \\
+    \hline
+    SMOTEN & 
+    \begin{itemize}
+        \item Enhanced recall and F1-score, especially for Scikit-learn LogReg.
+        \item Better handling of nominal features.
+    \end{itemize} & 
+    \begin{itemize}
+        \item Overfitting in MLP models.
+        \item Lower performance in manual models compared to other techniques.
+    \end{itemize} \\
+    \hline
+    SVMSMOTE & 
+    \begin{itemize}
+        \item Good balance between precision and recall.
+        \item Improved test performance for LogReg models.
+    \end{itemize} & 
+    \begin{itemize}
+        \item Overfitting in MLP models.
+        \item Less improvement in manual models compared to LogReg.
+    \end{itemize} \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{Summary of Resampling Techniques (Part 2)}
+    \begin{tabularx}{\textwidth}{|l|X|X|}
+    \hline
+    \textbf{Technique} & \textbf{Advantages} & \textbf{Disadvantages} \\
+    \hline
+    BORDERLINESMOTE & 
+    \begin{itemize}
+        \item Balanced improvement in recall and precision.
+        \item High performance on training sets.
+    \end{itemize} & 
+    \begin{itemize}
+        \item Overfitting in MLP models.
+        \item Less improvement in manual models.
+    \end{itemize} \\
+    \hline
+    ADASYN & 
+    \begin{itemize}
+        \item Enhanced performance metrics, particularly for Scikit-learn models.
+        \item Effective in generating more realistic synthetic samples.
+    \end{itemize} & 
+    \begin{itemize}
+        \item Overfitting in MLP models.
+        \item Lower performance in manual models.
+    \end{itemize} \\
+    \hline
+    TomekLinks Undersampler & 
+    \begin{itemize}
+        \item Improvement in precision and recall.
+        \item Effective in removing noisy samples.
+    \end{itemize} & 
+    \begin{itemize}
+        \item Overfitting in Scikit-learn MLP models.
+        \item Balanced but lower performance in manual models.
+    \end{itemize} \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+
 \end{document}

@@ -1,0 +1,44 @@
+Comparative Table for AVC
+                   Algorithm Dataset   precision      recall    f1-score
+0        Manual LogReg Train  LogReg  **0.8447**  **0.8447**  **0.8447**
+1         Manual LogReg Test  LogReg    0.544656    0.590637     0.54857
+2  Scikit-learn LogReg Train  LogReg    0.840062    0.840061    0.840061
+3   Scikit-learn LogReg Test  LogReg    0.546758    0.596248    0.551006
+
+Comparative Table for Salary
+                   Algorithm Dataset   precision      recall    f1-score
+0        Manual LogReg Train  LogReg    0.819845    0.816634    0.816172
+1         Manual LogReg Test  LogReg    0.738636    0.798838    0.752839
+2  Scikit-learn LogReg Train  LogReg  **0.8313**  **0.8285**  **0.8281**
+3   Scikit-learn LogReg Test  LogReg    0.742854    0.800715    0.757885
+
+Comparative Table for AVC
+                Algorithm Dataset   precision      recall    f1-score
+0        Manual MLP Train     MLP    0.870026    0.869826    0.869809
+1         Manual MLP Test     MLP    0.573505    0.636114    0.587089
+2  Scikit-learn MLP Train     MLP  **0.9972**  **0.9972**  **0.9972**
+3   Scikit-learn MLP Test     MLP    0.475181    0.486603    0.479756
+
+Comparative Table for Salary
+                Algorithm Dataset   precision      recall    f1-score
+0        Manual MLP Train     MLP    0.836491    0.826752     0.82549
+1         Manual MLP Test     MLP    0.734376    0.803108    0.745032
+2  Scikit-learn MLP Train     MLP  **0.9773**  **0.9770**  **0.9770**
+3   Scikit-learn MLP Test     MLP    0.731967     0.74733    0.738796
+
+Manual Logistic Regression Results:
+AVC Dataset - Train Accuracy: 0.8446601941747572, Test Accuracy: 0.8101761252446184
+Salary Dataset - Train Accuracy: 0.8165514972030273, Test Accuracy: 0.7915
+
+Scikit-learn Logistic Regression Results:
+AVC Dataset - Train Accuracy: 0.8400613183444047, Test Accuracy: 0.8091976516634051
+Salary Dataset - Train Accuracy: 0.8284797630799605, Test Accuracy: 0.7975
+
+
+Manual MLP Results:
+AVC Dataset - Train Accuracy: 0.8698262646908533, Test Accuracy: 0.837573385518591
+Salary Dataset - Train Accuracy: 0.8267522211253702, Test Accuracy: 0.779
+
+Scikit-learn MLP Results:
+AVC Dataset - Train Accuracy: 0.9971895758814512, Test Accuracy: 0.8904109589041096
+Salary Dataset - Train Accuracy: 0.9770483711747285, Test Accuracy: 0.801

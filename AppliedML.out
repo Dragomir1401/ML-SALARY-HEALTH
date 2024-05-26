@@ -78,3 +78,20 @@
 \BOOKMARK [3][-]{subsubsection.15.3.7}{Overfit Analysis}{subsection.15.3}% 78
 \BOOKMARK [2][-]{subsection.15.4}{Comparison of Logistic Regression and Multi Layer Perceptron}{section.15}% 79
 \BOOKMARK [3][-]{subsubsection.15.4.1}{Observations}{subsection.15.4}% 80
+\BOOKMARK [1][-]{section.16}{Dataset Optimizations}{}% 81
+\BOOKMARK [2][-]{subsection.16.1}{SMOTE \(Synthetic Minority Over-sampling Technique\)}{section.16}% 82
+\BOOKMARK [3][-]{subsubsection.16.1.1}{Overall Accuracy}{subsection.16.1}% 83
+\BOOKMARK [2][-]{subsection.16.2}{SMOTEN}{section.16}% 84
+\BOOKMARK [3][-]{subsubsection.16.2.1}{Overall Accuracy}{subsection.16.2}% 85
+\BOOKMARK [2][-]{subsection.16.3}{SVMSMOTE}{section.16}% 86
+\BOOKMARK [3][-]{subsubsection.16.3.1}{Overall Accuracy}{subsection.16.3}% 87
+\BOOKMARK [2][-]{subsection.16.4}{BorderlineSMOTE}{section.16}% 88
+\BOOKMARK [3][-]{subsubsection.16.4.1}{Overall Accuracy}{subsection.16.4}% 89
+\BOOKMARK [2][-]{subsection.16.5}{ADASYN}{section.16}% 90
+\BOOKMARK [3][-]{subsubsection.16.5.1}{Overall Accuracy}{subsection.16.5}% 91
+\BOOKMARK [2][-]{subsection.16.6}{Tomek Links}{section.16}% 92
+\BOOKMARK [3][-]{subsubsection.16.6.1}{Overall Accuracy}{subsection.16.6}% 93
+\BOOKMARK [1][-]{section.17}{Final Conclusions}{}% 94
+\BOOKMARK [2][-]{subsection.17.1}{Overview}{section.17}% 95
+\BOOKMARK [2][-]{subsection.17.2}{Overall Algorithm Comparison}{section.17}% 96
+\BOOKMARK [2][-]{subsection.17.3}{Summary of Resampling Techniques}{section.17}% 97

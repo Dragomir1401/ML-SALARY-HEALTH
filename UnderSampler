@@ -1,0 +1,45 @@
+AVC
+Algorithm,Dataset,precision,recall,f1-score
+Manual LogReg Train,LogReg,**0.5784**,**0.5024**,**0.4943**
+Manual LogReg Test,LogReg,0.4632713026444662,0.49947201689545934,0.4806910569105691
+Scikit-learn LogReg Train,LogReg,0.4782554361409648,0.5,0.4888860500766479
+Scikit-learn LogReg Test,LogReg,0.46330724070450097,0.5,0.4809547993905536
+
+Salary
+Algorithm,Dataset,precision,recall,f1-score
+Manual LogReg Train,LogReg,0.7872940974998096,0.7531623374801673,0.7672598012172145
+Manual LogReg Test,LogReg,0.7531409944649019,0.7373488629007194,0.7445085972857013
+Scikit-learn LogReg Train,LogReg,**0.8069**,**0.7727**,**0.7871**
+Scikit-learn LogReg Test,LogReg,0.7751456876456877,0.7563138630160784,0.7648026044425629
+
+AVC
+Algorithm,Dataset,precision,recall,f1-score
+Manual MLP Train,MLP,0.4782554361409648,0.5,0.4888860500766479
+Manual MLP Test,MLP,0.46330724070450097,0.5,0.4809547993905536
+Scikit-learn MLP Train,MLP,**0.8118**,**0.5056**,**0.5002**
+Scikit-learn MLP Test,MLP,0.4632713026444662,0.49947201689545934,0.4806910569105691
+
+Salary
+Algorithm,Dataset,precision,recall,f1-score
+Manual MLP Train,MLP,0.8044002810408422,0.7816171405237418,0.7917657878917108
+Manual MLP Test,MLP,0.774383072125863,0.7649990296282323,0.7694564279551337
+Scikit-learn MLP Train,MLP,**0.9746**,**0.9820**,**0.9782**
+Scikit-learn MLP Test,MLP,0.7284360237008567,0.7478017347261448,0.7367120009595385
+
+Manual Logistic Regression Results:
+AVC Dataset - Train Accuracy: 0.9537615596100975, Test Accuracy: 0.9256360078277887
+Salary Dataset - Train Accuracy: 0.8387945782339782, Test Accuracy: 0.8275
+
+Scikit-learn Logistic Regression Results:
+AVC Dataset - Train Accuracy: 0.9565108722819295, Test Accuracy: 0.9266144814090019
+Salary Dataset - Train Accuracy: 0.8477431240952757, Test Accuracy: 0.8325
+
+Manual MLP Results:
+AVC Dataset - Train Accuracy: 0.9565108722819295, Test Accuracy: 0.9266144814090019
+Salary Dataset - Train Accuracy: 0.8484011054086064, Test Accuracy: 0.833
+
+Scikit-learn MLP Results:
+AVC Dataset - Train Accuracy: 0.9567608097975506, Test Accuracy: 0.9256360078277887
+Salary Dataset - Train Accuracy: 0.9834188709040663, Test Accuracy: 0.7975
+
+

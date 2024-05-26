@@ -168,11 +168,11 @@ def preprocess_data_wrapper():
             df_encoded, label_encoder, onehot_encoder = encode_categorical(df_standardized, target_column, encoder=None)
             fitted_encoders[name] = (label_encoder, onehot_encoder)
             
-            # Apply SMOTE to balance the classes
-            # oversampler = SMOTEN()
-            # X_oversampled, T_oversampled = oversampler.fit_resample(df_encoded.drop(columns=[target_column]), df_encoded[target_column])
-            # df_encoded = pd.DataFrame(X_oversampled, columns=df_encoded.drop(columns=[target_column]).columns)
-            # df_encoded[target_column] = T_oversampled
+            # Apply a oversampler to balance the classes
+            oversampler = SVMSMOTE()
+            X_oversampled, T_oversampled = oversampler.fit_resample(df_encoded.drop(columns=[target_column]), df_encoded[target_column])
+            df_encoded = pd.DataFrame(X_oversampled, columns=df_encoded.drop(columns=[target_column]).columns)
+            df_encoded[target_column] = T_oversampled
             
             # Apply Tomek Links to balance the classes
             # tl = TomekLinks()
@@ -196,8 +196,7 @@ def preprocess_data_wrapper():
             # Apply the transformations using the fitted objects
             df_imputed, _ = impute_missing_values(df, numeric_columns_after_drop, categorical_columns, fit=False, imputer=imputer)
             df_outliers_handled = handle_extreme_values(df_imputed, numeric_columns_after_drop)
-            df_outliers_imputed, _ = impute_missing_values(df_outliers_handled, numeric_columns_after_drop, categorical_columns, fit=False, imputer=imputer)
-            df_standardized = standardize_data(df_outliers_imputed, numeric_columns_after_drop, method='standard', fit=False, scaler=scaler)
+            df_standardized = standardize_data(df_outliers_handled, numeric_columns_after_drop, method='standard', fit=False, scaler=scaler)
             df_encoded, _, _ = encode_categorical(df_standardized, target_column, encoder=None)
 
             # Ensure the test data has the same columns as the train data
@@ -466,16 +465,16 @@ def __main__():
     # print(f"Best hyperparameters for MLP on Salary dataset: {best_model_salary_mlp.get_params()}")
     
 
-    # # Logistic Regression
-    # return_tuple_avc_logreg, return_tuple_salary_logreg, return_tuple_sklearn_logreg = logistic_regression_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test)
+    # Logistic Regression
+    return_tuple_avc_logreg, return_tuple_salary_logreg, return_tuple_sklearn_logreg = logistic_regression_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test)
 
-    # # First call for LogReg algorithm
-    # process_and_generate_reports(
-    #     return_tuple_avc_logreg, return_tuple_salary_logreg, return_tuple_sklearn_logreg,
-    #     X_avc_train, T_avc_train, X_avc_test, T_avc_test, 
-    #     X_salary_train, T_salary_train, X_salary_test, T_salary_test, 
-    #     "LogReg"
-    # )
+    # First call for LogReg algorithm
+    process_and_generate_reports(
+        return_tuple_avc_logreg, return_tuple_salary_logreg, return_tuple_sklearn_logreg,
+        X_avc_train, T_avc_train, X_avc_test, T_avc_test, 
+        X_salary_train, T_salary_train, X_salary_test, T_salary_test, 
+        "LogReg"
+    )
         
     # Define the MLP architecture and training parameters
     return_tuple_avc_mlp, return_tuple_salary_mlp, return_tuple_sklearn_mlp = mlp_wrapper(X_avc_train, T_avc_train, X_avc_test, T_avc_test, X_salary_train, T_salary_train, X_salary_test, T_salary_test)
