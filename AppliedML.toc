@@ -113,3 +113,4 @@
 \contentsline {subsection}{\numberline {17.1}Overview}{70}{subsection.17.1}%
 \contentsline {subsection}{\numberline {17.2}Overall Algorithm Comparison}{70}{subsection.17.2}%
 \contentsline {subsection}{\numberline {17.3}Summary of Resampling Techniques}{71}{subsection.17.3}%
+\contentsline {section}{\numberline {18}References}{72}{section.18}%

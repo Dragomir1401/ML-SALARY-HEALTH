@@ -448,21 +448,21 @@ def __main__():
     X_avc_train, T_avc_train, X_avc_test, T_avc_test = return_tuple_avc
     X_salary_train, T_salary_train, X_salary_test, T_salary_test = return_tuple_salary
     
-    # # Find best hyperparameters for logistic regression
-    # best_model_avc = find_best_logreg_hyperparams(X_avc_train, T_avc_train)
-    # best_model_salary = find_best_logreg_hyperparams(X_salary_train, T_salary_train)
+    # Find best hyperparameters for logistic regression
+    best_model_avc = find_best_logreg_hyperparams(X_avc_train, T_avc_train)
+    best_model_salary = find_best_logreg_hyperparams(X_salary_train, T_salary_train)
     
-    # # Print best hyperparameters
-    # print(f"Best hyperparameters for AVC dataset: {best_model_avc.get_params()}")
-    # print(f"Best hyperparameters for Salary dataset: {best_model_salary.get_params()}")
+    # Print best hyperparameters
+    print(f"Best hyperparameters for AVC dataset: {best_model_avc.get_params()}")
+    print(f"Best hyperparameters for Salary dataset: {best_model_salary.get_params()}")
     
-    # # Find best hyperparameters for MLP
-    # best_model_avc_mlp = find_best_mlp_hyperparams(X_avc_train, T_avc_train)
-    # best_model_salary_mlp = find_best_mlp_hyperparams(X_salary_train, T_salary_train)
+    # Find best hyperparameters for MLP
+    best_model_avc_mlp = find_best_mlp_hyperparams(X_avc_train, T_avc_train)
+    best_model_salary_mlp = find_best_mlp_hyperparams(X_salary_train, T_salary_train)
     
-    # # Print best hyperparameters
-    # print(f"Best hyperparameters for MLP on AVC dataset: {best_model_avc_mlp.get_params()}")
-    # print(f"Best hyperparameters for MLP on Salary dataset: {best_model_salary_mlp.get_params()}")
+    # Print best hyperparameters
+    print(f"Best hyperparameters for MLP on AVC dataset: {best_model_avc_mlp.get_params()}")
+    print(f"Best hyperparameters for MLP on Salary dataset: {best_model_salary_mlp.get_params()}")
     
 
     # Logistic Regression
